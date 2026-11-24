@@ -207,6 +207,7 @@ $('ct-csv').addEventListener('click',()=>{
  const rows=[['Estação','Nome da estação','Questão','Operação','Resultado','Tentativas','Dicas','Explorou estratégia','Pontos de missão (base)','Concluída']];
  for(const r of records)rows.push([r.station,r.activity,r.question,r.multiplication,r.answer,r.tries,r.hints,r.explored?'Sim':'Não',r.points,'Sim']);
  rows.push(['RESUMO','','','','25 desafios',records.reduce((s,r)=>s+r.tries,0),records.reduce((s,r)=>s+r.hints,0),'',score,'Concluído']);
+ rows.push(...JPVisibilidade.csvRows(10));
  const csv='\uFEFF'+rows.map(row=>row.map(csvCell).join(';')).join('\r\n');
  const url=URL.createObjectURL(new Blob([csv],{type:'text/csv;charset=utf-8'})),a=document.createElement('a');
  a.href=url;a.download='jp-circuito-tabuada-'+new Date().toISOString().slice(0,10)+'.csv';
