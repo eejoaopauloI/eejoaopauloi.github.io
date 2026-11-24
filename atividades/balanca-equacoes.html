@@ -53,11 +53,81 @@
 .eq-guide{margin-top:20px;background:white;border:1px solid #d0e4ec;border-radius:18px;padding:21px}.eq-guide summary{font-weight:850;color:#063966;cursor:pointer}.eq-guide details{border-bottom:1px solid #e3edf1;padding:13px 0}.eq-guide p{color:#496c7e;line-height:1.6}
 @media(max-width:920px){.eq-grid{grid-template-columns:1fr}}@media(max-width:650px){.eq-app{padding:11px 9px 40px}.eq-hud{grid-template-columns:repeat(2,1fr)}.eq-map{gap:4px}.eq-map>div{font-size:11px;padding:8px 2px}.eq-map span{font-size:21px}.eq-map small{font-size:9px}.eq-actions{grid-template-columns:1fr}.eq-weight{min-width:29px;height:32px;font-size:16px}.eq-blocks{min-height:98px}.eq-pan-label{font-size:18px}.eq-balance{min-height:277px}}
 @media(prefers-reduced-motion:reduce){.eq-progress>div{transition:none}}
+
+/* Miniaula orientada antes da prática */
+.eq-intro{background:#fff;border:1px solid #c7e2ec;border-radius:23px;margin:19px 0 22px;padding:clamp(20px,4vw,35px);box-shadow:0 9px 25px #0639660e}
+.eq-intro h2{color:#063966;font-size:clamp(29px,3.5vw,43px);line-height:1.17;margin:9px 0 13px}
+.eq-intro h3{color:#063966;margin:12px 0;font-size:22px}
+.eq-intro p{font-size:17px;line-height:1.7;color:#345d73;margin:11px 0}
+.eq-intro-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px;margin:18px 0}
+.eq-intro-card{border:1px solid #cce4ed;border-radius:17px;background:#f4fbfe;padding:17px}
+.eq-intro-card:nth-child(2){background:#fff8e9;border-color:#f0dda9}
+.eq-intro-card strong{color:#063966;font-size:19px}
+.eq-intro-card .eq-intro-formula{font:900 clamp(22px,3vw,30px)/1.5 ui-monospace,monospace;color:#0d658b;margin:9px 0}
+.eq-intro-visual{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:end;background:linear-gradient(#e8f9fc,#f9fcff);border-radius:18px;border:2px solid #b8e1eb;padding:18px 14px 13px;margin:20px 0 12px}
+.eq-intro-pan{text-align:center;min-width:0}.eq-intro-pan small{display:block;font-weight:850;color:#2c637c;font-size:13px;margin:9px 0}
+.eq-intro-weights{display:flex;flex-wrap:wrap;justify-content:center;align-items:end;gap:5px;min-height:70px}
+.eq-intro-block{display:grid;place-items:center;min-width:38px;height:40px;border-radius:9px;background:#f2af40;color:#583d08;font-size:20px;font-weight:900;box-shadow:0 2px 4px #123c5b21;border:2px solid #fff}
+.eq-intro-block.x{background:#118ac2;color:white;min-width:48px}
+.eq-intro-plate{height:9px;background:#315d80;border-radius:0 0 30px 30px;margin:8px auto;width:95%}
+.eq-intro-middle{font-size:30px;font-weight:900;color:#15816a;padding-bottom:23px}
+.eq-intro-pan b{font-size:clamp(20px,2.7vw,29px);color:#063966;font-family:ui-monospace,monospace}
+.eq-intro-switch{display:flex;flex-wrap:wrap;gap:8px;margin:15px 0}
+.eq-intro-switch button{flex:1 1 150px;border:2px solid #c6e3eb;color:#064864;border-radius:11px;background:#f1f9fc;padding:11px;font-weight:850;font-size:14px;cursor:pointer}
+.eq-intro-switch button[aria-pressed=true]{background:#063966;color:#fff;border-color:#063966}
+.eq-intro-switch button:focus-visible,.eq-intro-next:focus-visible,.eq-intro-check:focus-visible{outline:3px solid #14b7c9;outline-offset:3px}
+.eq-intro-explanation{background:#e5f7ee;border-left:5px solid #24a172;border-radius:12px;padding:17px;font-size:17px;line-height:1.67;color:#1d5948}
+.eq-intro-step{font-size:12px;font-weight:900;color:#008ca7;letter-spacing:.11em}
+.eq-intro-checklist{display:grid;gap:12px;margin:19px 0}
+.eq-intro-checklist div{display:flex;gap:12px;align-items:start;background:#f3fafc;border-radius:12px;padding:13px 16px;color:#305d71;line-height:1.5;font-size:16px}
+.eq-intro-checklist b{display:grid;place-items:center;flex:0 0 30px;height:30px;background:#cceff1;border-radius:50%;color:#075a73}
+.eq-intro-example{background:#f1edff;border:1px solid #c9bbeb;border-radius:14px;padding:17px;color:#4b3a87;font-size:18px;line-height:1.6}
+.eq-intro-bottom{display:flex;gap:11px;flex-wrap:wrap;align-items:center;margin-top:21px}
+.eq-intro-next{min-height:54px;border:0;border-radius:12px;background:#063966;color:white;padding:13px 23px;font-weight:850;font-size:17px;cursor:pointer}
+.eq-intro-next.secondary{background:#e4f6fc;color:#063966;border:2px solid #a6dbe7}
+.eq-intro-bottom small{color:#5d7684;line-height:1.5}
+.eq-intro-demo-formula{font:900 clamp(22px,3vw,34px)/1.4 ui-monospace,monospace;color:#063966;background:#f0edff;border-radius:11px;text-align:center;padding:10px}
+@media(max-width:650px){.eq-intro-grid{grid-template-columns:1fr}.eq-intro{padding:17px}.eq-intro-visual{padding:12px 7px;gap:6px}.eq-intro-weights{gap:3px}.eq-intro-block{min-width:27px;height:29px;font-size:16px}.eq-intro-block.x{min-width:36px}.eq-intro-middle{font-size:22px}.eq-intro-pan b{font-size:18px}}
 </style></head><body>
 <a class="skip" href="#eq-main">Ir à atividade</a>
 <header><div class="wrap head"><a href="../index.html" class="brand"><span class="jp-logo-pair" aria-label="Marcas da escola"><img src="../assets/logos-institucionais.webp" alt="Escola João Paulo I"><img src="../assets/logos-institucionais.webp" alt="Escola de Tempo Integral MT"></span><span><small>ESCOLA ESTADUAL JOÃO PAULO I</small><strong>JP Recomposição</strong></span></a><a href="../componentes/matematica.html" style="color:#aaf5ed">← Matemática</a></div></header>
 <main id="eq-main" class="eq-app">
 <section class="eq-hero"><span class="eq-kicker">MATEMÁTICA · ÁLGEBRA · RECOMPOSIÇÃO DA APRENDIZAGEM</span><h1>⚖️ Balança <em>das Equações</em></h1><p>Você controla uma balança de verdade matemática: <strong>o que faz de um lado precisa fazer do outro</strong>. Retire pesos iguais, remova caixas misteriosas e divida em grupos para descobrir quanto vale <strong>x</strong>.</p><p>Comece pelo princípio, pratique bastante e avance até problemas com mais de uma operação.</p><div class="eq-pills"><span>🎮 40 missões</span><span>🗺️ 5 níveis · 8 desafios cada</span><span>🧱 Pesos e caixas interativas</span><span>💡 Dicas e explicações</span><span>🏅 Até 100 JPs</span></div></section>
+
+<section class="eq-intro" id="eq-intro" aria-labelledby="eq-intro-title">
+ <div class="eq-label">ANTES DE JOGAR · MINIAULA DE MATEMÁTICA</div>
+ <h2 id="eq-intro-title">⚖️ Por que uma equação se parece com uma balança?</h2>
+ <p>Imagine duas bandejas com a <strong>mesma massa</strong>. Uma balança equilibrada nos diz que o peso total do lado esquerdo é <strong>igual</strong> ao do lado direito. Em Matemática, o sinal <strong>=</strong> também afirma que os valores dos dois lados são iguais.</p>
+ <div class="eq-intro-grid">
+  <div class="eq-intro-card"><strong>1. O que é uma igualdade?</strong><div class="eq-intro-formula">3 + 4 = 7</div><p>O sinal <strong>=</strong> não quer dizer “agora calcule”. Ele afirma que <strong>3 + 4 e 7 representam a mesma quantidade</strong>.</p></div>
+  <div class="eq-intro-card"><strong>2. O que é uma equação?</strong><div class="eq-intro-formula">x + 3 = 7</div><p>É uma <strong>igualdade com uma incógnita</strong>: uma letra que representa um valor que queremos descobrir. Aqui, <strong>x = 4</strong>, pois 4 + 3 = 7.</p></div>
+ </div>
+ <h3>🔎 O segredo do equilíbrio</h3><p>Na atividade, a <strong>caixa azul x</strong> representa sempre o mesmo peso desconhecido. Os <strong>blocos amarelos</strong> representam unidades de peso 1. Queremos deixar a caixa sozinha em um prato, sem mudar o que os dois lados representam.</p>
+ <div class="eq-intro-demo-formula" id="eq-demo-equation">x + 3 = 7</div>
+ <div class="eq-intro-visual" role="group" aria-label="Demonstração visual de equilíbrio">
+  <div class="eq-intro-pan"><small>MEMBRO ESQUERDO</small><div class="eq-intro-weights" id="eq-demo-left"></div><div class="eq-intro-plate"></div><b id="eq-demo-left-label">x + 3</b></div>
+  <div class="eq-intro-middle">=</div>
+  <div class="eq-intro-pan"><small>MEMBRO DIREITO</small><div class="eq-intro-weights" id="eq-demo-right"></div><div class="eq-intro-plate"></div><b id="eq-demo-right-label">7</b></div>
+ </div>
+ <div class="eq-intro-switch" role="group" aria-label="Exemplos de operações iguais nos dois membros">
+  <button type="button" id="eq-demo-sub" aria-pressed="true">➖ Retirar 3 dos dois lados</button>
+  <button type="button" id="eq-demo-add" aria-pressed="false">➕ Adicionar 2 aos dois lados</button>
+  <button type="button" id="eq-demo-div" aria-pressed="false">➗ Dividir ambos por 2</button>
+  <button type="button" id="eq-demo-mul" aria-pressed="false">✖ Multiplicar ambos por 2</button>
+ </div>
+ <div id="eq-demo-explanation" class="eq-intro-explanation" role="status" aria-live="polite">Escolha uma operação para acompanhar cada passo da transformação.</div>
+ <h3>📘 Por que fazemos operações nos dois membros?</h3>
+ <div class="eq-intro-checklist">
+  <div><b>1</b><span><strong>Subtrair:</strong> retiramos a mesma quantidade de ambos os lados para eliminar pesos que acompanham x. Ex.: x + 3 = 7 → x = 4.</span></div>
+  <div><b>2</b><span><strong>Adicionar:</strong> quando falta uma quantidade em um membro, somamos o mesmo número aos dois. Ex.: x − 2 = 5 → x = 7.</span></div>
+  <div><b>3</b><span><strong>Dividir:</strong> se há várias caixas idênticas, repartimos os dois membros pelo mesmo número <strong>diferente de zero</strong>. Ex.: 2x = 8 → x = 4.</span></div>
+  <div><b>4</b><span><strong>Multiplicar:</strong> se uma fração de caixa representa uma quantidade, multiplicamos os dois lados pelo mesmo número diferente de zero. Ex.: x/2 = 4 → x = 8.</span></div>
+ </div>
+ <div class="eq-intro-example"><strong>Exemplo completo:</strong> 2x + 4 = 12.<br>Retiramos 4 de <strong>cada lado</strong>: 2x = 8.<br>Dividimos <strong>ambos os membros</strong> por 2: x = 4.<br><strong>Conferência:</strong> 2 · 4 + 4 = 12. Os dois lados continuam iguais!</div>
+ <p><strong>Atenção:</strong> dizer “o número passou para o outro lado e mudou de sinal” pode até lembrar um procedimento, mas esconde a razão matemática. Aqui, você verá a operação que é feita nos dois membros para preservar a igualdade.</p>
+ <div class="eq-intro-bottom"><button type="button" id="eq-intro-start" class="eq-intro-next">Entendi! Começar as 40 missões →</button><small>Você poderá voltar à explicação durante o jogo. A introdução não exige código e não vale pontos.</small></div>
+</section>
+<div id="eq-game-dashboard" hidden>
 <div class="eq-hud"><div><small>Nível</small><strong id="eq-level">1 / 5</strong></div><div><small>Missões resolvidas</small><strong id="eq-count">0 / 40</strong></div><div><small>JPs</small><strong id="eq-points">0</strong></div><div><small>Patente</small><strong id="eq-rank">Aprendiz</strong></div></div>
 <div class="eq-progress"><div id="eq-progress-fill"></div></div>
 <div class="eq-map" id="eq-map"><div class="current"><span>⚖️</span>Equilíbrio<small>1–8</small></div><div><span>📦</span>Caixas iguais<small>9–16</small></div><div><span>🧩</span>Duas etapas<small>17–24</small></div><div><span>🔍</span>Dois pratos<small>25–32</small></div><div><span>🏆</span>Desafios reais<small>33–40</small></div></div>
@@ -74,6 +144,7 @@
 <div style="margin-top:17px"><button type="button" id="eq-next" class="eq-btn primary" disabled style="width:100%">Resolva a missão para avançar</button></div>
 <p id="eq-partial-status" role="status" style="color:#396b7d;font-size:14px"></p><p id="eq-attempts" style="color:#5d7887;font-size:14px">Não tenha pressa: descubra por que é preciso agir nos dois lados.</p></section></div>
 <section id="eq-end" class="eq-summary" hidden><h2>🏆 Mestre do Equilíbrio!</h2><p id="eq-end-text"></p><div class="eq-toolbar"><button type="button" class="eq-btn" id="eq-report">⬇ Relatório para o professor — sem código</button><button type="button" class="eq-btn" id="eq-again">🔁 Praticar novamente</button></div><p id="eq-export-status" role="status"></p><p style="font-size:14px">O relatório completo é baixado diretamente, sem código, login ou cadastro. Os JPs aparecem como indicador de aprendizagem e ficam registrados no relatório.</p></section>
+<div class="eq-intro-bottom" style="margin:18px 0"><button type="button" class="eq-intro-next secondary" id="eq-intro-return">📘 Rever explicação sobre igualdade e equilíbrio</button></div></div>
 <section class="eq-guide"><h2>📒 Síntese para o caderno e orientações de estudo</h2>
 <details open><summary>1. O que significa uma equação?</summary><p>Uma equação é uma igualdade que contém um valor desconhecido, representado por uma letra. Na equação <strong>x + 3 = 7</strong>, o valor de x é 4, porque 4 + 3 = 7.</p></details>
 <details><summary>2. O princípio da balança</summary><p>Se dois pratos têm a mesma massa, retirar a mesma quantidade dos dois mantém o equilíbrio. Do mesmo modo, podemos somar ou subtrair o mesmo número dos dois lados de uma equação; também podemos multiplicar ou dividir os dois membros pelo mesmo número não nulo.</p></details>
@@ -82,4 +153,4 @@
 <details><summary>5. Exercícios para registrar no caderno</summary><p>Resolva mostrando cada operação nos dois membros: (a) x + 5 = 11; (b) x + 8 = 15; (c) 3x = 18; (d) 4x = 28; (e) 2x + 3 = 17; (f) 5x + 2 = 22; (g) 3x + 4 = x + 12; (h) 4x + 5 = 2x + 17. Confira cada resultado por substituição na equação original.</p></details>
 <details><summary>6. Acompanhamento pedagógico e JPs</summary><p>São 40 missões distribuídas em cinco níveis, com oito desafios por nível. Cada missão vale até 2 JPs, e a conclusão integral acrescenta 20 JPs, alcançando até 100. Erros não bloqueiam o avanço; a atividade oferece dicas e permite refazer passos. O estudante pode baixar o progresso parcial a qualquer momento, sem código. O relatório registra procedimentos, tentativas e resultados. O resultado pode ser baixado sem identificação. A validação pedagógica é realizada pelo professor.</p></details>
 </section></main><footer><div class="wrap foot"><strong>JP Recomposição · Aprender, superar e avançar.</strong><small>Escola Estadual João Paulo I · Paranaíta–MT</small></div></footer>
-<script src="balanca-equacoes.js?v=1"></script></body></html>
+<script src="balanca-equacoes.js?v=2"></script></body></html>
