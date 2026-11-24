@@ -178,6 +178,7 @@ function download(){
  const data=[['Fase','Questão','Figura','Área-alvo (cm²)','Área marcada/construída (cm²)','Acerto','Tentativas','Pontos de missão (base)']];
  for(const r of records)data.push([r.phase,r.challenge,r.kind,r.goal,r.answer,r.correct?'Sim':'Não',r.attempts,r.xp]);
  data.push(['RESUMO','','','',right+' acertos / 12 investigações','8 construções',completed,score]);
+ data.push(...JPVisibilidade.csvRows(8));
  const contents='\uFEFF'+data.map(row=>row.map(csv).join(';')).join('\r\n');
  const url=URL.createObjectURL(new Blob([contents],{type:'text/csv;charset=utf-8'}));
  const link=document.createElement('a');link.href=url;link.download='jp-recomposicao-missao-geometria-'+new Date().toISOString().slice(0,10)+'.csv';
