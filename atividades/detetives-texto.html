@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#063966">
+<meta name="description" content="Detetives do Texto: trilha gamificada de Língua Portuguesa sobre inferência de informações implícitas e uso de pistas textuais.">
+<title>Detetives do Texto — Missão Inferência | JP Recomposição</title>
+<link rel="stylesheet" href="../style.css?v=logos-20261124">
+<style>
+:root{--navy:#063966;--blue:#00688b;--cyan:#00a8ba;--purple:#7152cd;--gold:#edab2e;--green:#148565;--ink:#234b63;--line:#c9e6ec}
+*[hidden]{display:none!important}
+body{background:#eef6fb}
+.dt-wrap{max-width:1220px;margin:auto;padding:20px 18px 70px}
+.dt-hero{background:linear-gradient(120deg,#052c57 0%,#075b82 57%,#028c9e 100%);color:#fff;border-radius:25px;padding:clamp(26px,5vw,48px);overflow:hidden;position:relative}
+.dt-hero:after{content:"?";position:absolute;right:2%;top:-90px;color:#ffffff10;font-size:370px;font-weight:900;line-height:1}
+.dt-hero>*{position:relative;z-index:1}
+.dt-eyebrow{color:#b0f5ef;font-weight:850;letter-spacing:.13em;font-size:13px}
+.dt-hero h1{font-size:clamp(38px,6vw,71px);color:#fff;line-height:1.09;margin:12px 0 14px;letter-spacing:-.04em}
+.dt-hero h1 em{font-style:normal;color:#98f3eb}
+.dt-hero p{font-size:clamp(17px,2vw,21px);line-height:1.6;color:#e0f5fc;max-width:830px;margin:8px 0}
+.dt-pills{display:flex;gap:9px;flex-wrap:wrap;margin-top:21px}
+.dt-pills span{border-radius:28px;padding:9px 12px;background:#ffffff20;border:1px solid #ffffff4d;font-size:13px;font-weight:750}
+.dt-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:19px 0 11px}
+.dt-stat{border-radius:15px;border:1px solid var(--line);background:#fff;padding:16px}
+.dt-stat:nth-child(1){background:#e4f5fc}.dt-stat:nth-child(2){background:#f2eaff}.dt-stat:nth-child(3){background:#fdf1d6}.dt-stat:nth-child(4){background:#e2f7ed}
+.dt-stat small{font-size:12px;display:block;color:#486b7c;font-weight:800}
+.dt-stat strong{display:block;font-size:clamp(23px,3vw,36px);line-height:1.25;color:#063966}
+.dt-progress{height:14px;background:#cde4eb;border-radius:30px;overflow:hidden;margin:12px 0 19px}
+.dt-progress>div{height:100%;background:linear-gradient(90deg,#09b0c7,#15bb8d);width:0;transition:width .25s}
+.dt-map{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:21px}
+.dt-node{background:#fff;border:2px solid #d0e3e9;color:#5d7787;text-align:center;border-radius:14px;padding:14px 9px;font-weight:800;min-width:0}
+.dt-node .dt-emoji{display:block;font-size:29px;margin-bottom:4px}
+.dt-node small{display:block;font-size:11px;font-weight:600;margin-top:5px}
+.dt-node.current{background:#e0f7fb;border-color:#008aa7;color:#063966;box-shadow:0 5px 18px #06396616}
+.dt-node.done{background:#e1f5e9;border-color:#89d4a8;color:#206945}
+.dt-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.04fr);gap:19px;align-items:start}
+.dt-card{background:#fff;border-radius:21px;border:1px solid var(--line);padding:clamp(19px,3vw,30px);box-shadow:0 6px 22px #0a3b5b10;min-width:0}
+.dt-card:first-child{border-top:6px solid #05b3c5}.dt-card:nth-child(2){border-top:6px solid #805fe1}
+.dt-card h2{font-size:clamp(24px,3vw,34px);line-height:1.17;color:#063966;margin:8px 0 13px}
+.dt-small-label{font-size:12px;font-weight:900;letter-spacing:.1em;color:#008ca6}
+.dt-paper{border:2px solid #d6e7d7;background:linear-gradient(#fffef8,#fbfaf0);border-radius:16px;padding:clamp(19px,3vw,30px);min-height:228px;position:relative}
+.dt-paper:before{content:"TEXTO DO CASO";position:absolute;right:17px;top:-11px;font-size:11px;letter-spacing:.08em;font-weight:900;color:#74520c;background:#ffe5a1;padding:4px 9px;border-radius:6px}
+.dt-paper p{color:#2d4050;font-size:clamp(20px,2.3vw,26px);line-height:1.75;margin:11px 0;white-space:pre-line}
+.dt-paper mark{background:#ffdf88;color:inherit;border-radius:3px;padding:2px}
+.dt-reading-tip{background:#ebf8fd;border-left:5px solid #1398b5;padding:15px;border-radius:10px;line-height:1.5;color:#315d73;margin:15px 0;font-size:15px}
+.dt-annotation{font-size:14px;color:#4a7082;line-height:1.5}
+.dt-question{font-size:clamp(21px,2.65vw,29px);font-weight:850;color:#063966;line-height:1.35;margin:16px 0}
+.dt-choice-grid{display:grid;gap:10px;margin:15px 0}
+.dt-choice{border:2px solid #c9dfe8;background:#f3fbfe;color:#0e4462;min-height:61px;border-radius:13px;padding:13px 15px;font-size:16px;font-weight:740;text-align:left;cursor:pointer;line-height:1.4;display:flex;align-items:center;gap:11px}
+.dt-choice:nth-child(2){background:#fff8eb}.dt-choice:nth-child(3){background:#f3efff}
+.dt-choice:hover:not(:disabled){border-color:#009cb8;background:#e0f8fc}
+.dt-choice:focus-visible,.dt-button:focus-visible{outline:3px solid #04b6d0;outline-offset:3px}
+.dt-choice b{display:grid;place-items:center;flex:0 0 32px;width:32px;height:32px;background:#fff;border-radius:9px;color:#063966}
+.dt-choice.correct{background:#dcf7e6;border-color:#2e9266}
+.dt-choice.wrong{background:#ffe7e3;border-color:#d06753;opacity:.88}
+.dt-choice:disabled{cursor:default}
+.dt-feedback{background:#ebf7fb;color:#315a6e;border-left:5px solid #179bb7;border-radius:11px;padding:16px;font-size:16px;line-height:1.6;margin-top:16px}
+.dt-feedback.good{background:#e3f7ec;border-color:#2b9064}
+.dt-feedback.try{background:#fff1e7;border-color:#c58434}
+.dt-actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}
+.dt-button{border:2px solid #063966;background:#063966;color:#fff;border-radius:12px;padding:11px 16px;min-height:49px;font:inherit;font-weight:850;cursor:pointer}
+.dt-button.alt{background:#e7f8fb;color:#063966;border-color:#abdce7}
+.dt-button:disabled{opacity:.45;cursor:default}
+.dt-phase-badge{border-radius:11px;background:#f0eafa;padding:12px 15px;color:#4a397d;font-weight:760;line-height:1.5}
+.dt-finale{padding:clamp(25px,4vw,43px);background:linear-gradient(120deg,#052c57,#037e9b);border-radius:23px;color:white;margin:22px 0}
+.dt-finale h2{font-size:clamp(29px,4vw,46px);color:white}
+.dt-finale p{color:#e5f8f9;font-size:18px;line-height:1.6}
+.dt-finale .dt-button{background:#b9f1f0;color:#063966;border-color:#b9f1f0}
+.dt-guide{margin-top:22px}
+.dt-guide details{background:#fff;border:1px solid #cfe4eb;border-radius:12px;padding:16px 19px;margin:11px 0}
+.dt-guide summary{font-weight:850;color:#063966;cursor:pointer}
+.dt-guide p{color:#456b7b;line-height:1.65}
+.dt-sign{font-size:13px;color:#58798a;margin:10px 0}
+@media(max-width:920px){.dt-layout{grid-template-columns:1fr}}
+@media(max-width:630px){.dt-wrap{padding:12px 10px 48px}.dt-stats{grid-template-columns:repeat(2,1fr)}.dt-map{gap:5px}.dt-node{padding:9px 4px;font-size:11px}.dt-node .dt-emoji{font-size:23px}.dt-node small{font-size:9px}.dt-paper{min-height:170px;padding:19px}.dt-paper p{font-size:20px}.dt-card{padding:16px}}
+@media(prefers-reduced-motion:reduce){.dt-progress>div{transition:none}}
+@media print{header,footer,.dt-actions,.dt-map,.dt-stats,.dt-progress,.dt-hero{display:none!important}.dt-card{box-shadow:none}.dt-layout{display:block}.dt-card{break-inside:avoid}}
+</style></head><body>
+<a class="skip" href="#dt-main">Ir para a atividade</a>
+<header><div class="wrap head"><a href="../index.html" class="brand"><span class="jp-logo-pair" aria-label="Marcas institucionais"><img src="../assets/logos-institucionais.webp" alt="Escola João Paulo I"><img src="../assets/logos-institucionais.webp" alt="Escola de Tempo Integral MT"></span><span><small>ESCOLA ESTADUAL JOÃO PAULO I</small><strong>JP Recomposição</strong></span></a><a href="../componentes/lingua-portuguesa.html" style="color:#95eff7">← Língua Portuguesa</a></div></header>
+<main id="dt-main" class="dt-wrap">
+<section class="dt-hero"><span class="dt-eyebrow">LÍNGUA PORTUGUESA · TRILHA DE RECOMPOSIÇÃO</span><h1>🕵️ Detetives <em>do Texto</em></h1><p>Uma missão de leitura e investigação: descubra o que o texto dá a entender e prove sua hipótese usando pistas.</p><p><strong>Não é adivinhação:</strong> uma inferência precisa fazer sentido e ter apoio no texto.</p><div class="dt-pills"><span>🔍 20 casos</span><span>🗺️ 4 territórios</span><span>🧩 2 etapas por caso</span><span>🏅 até 100 JPs</span><span>💡 Dicas após erros</span></div></section>
+<div class="dt-stats"><div class="dt-stat"><small>Território</small><strong id="dt-territory">1 / 4</strong></div><div class="dt-stat"><small>Casos investigados</small><strong id="dt-done">0 / 20</strong></div><div class="dt-stat"><small>Recompensa</small><strong id="dt-jps">0 JPs</strong></div><div class="dt-stat"><small>Patente</small><strong id="dt-rank">Aprendiz</strong></div></div>
+<div class="dt-progress"><div id="dt-progress-bar"></div></div>
+<div class="dt-map" id="dt-map"><div class="dt-node current"><span class="dt-emoji">🔎</span>Indícios<small>Casos 1–5</small></div><div class="dt-node"><span class="dt-emoji">💬</span>Emoções<small>Casos 6–10</small></div><div class="dt-node"><span class="dt-emoji">🧠</span>Intenções<small>Casos 11–15</small></div><div class="dt-node"><span class="dt-emoji">🏆</span>Casos complexos<small>Casos 16–20</small></div></div>
+<div class="dt-layout" id="dt-play">
+<section class="dt-card"><div class="dt-small-label" id="dt-level">TERRITÓRIO 1 · CASO 1</div><h2>📖 Leia o registro</h2>
+<div class="dt-paper"><p id="dt-text">O próximo caso aparecerá aqui.</p></div>
+<div class="dt-reading-tip" id="dt-tip">Leia com atenção. O que o texto diz? O que ele deixa entender?</div>
+<div class="dt-actions"><button class="dt-button alt" id="dt-read" type="button">🔊 Ouvir o texto</button><button class="dt-button alt" id="dt-hint" type="button">💡 Solicitar pista</button></div>
+<p class="dt-annotation" id="dt-audio-status">A leitura em voz alta utiliza a voz disponível no navegador; também é possível ler o texto diretamente.</p>
+</section>
+<section class="dt-card"><span class="dt-small-label" id="dt-question-label">ETAPA 1 · INVESTIGAÇÃO</span><h2 id="dt-heading">O que podemos concluir?</h2><p class="dt-question" id="dt-question"></p>
+<div id="dt-stage-note" class="dt-phase-badge">Primeiro deduza a informação. Depois, escolha a pista textual que sustenta sua conclusão.</div>
+<div id="dt-options" class="dt-choice-grid" role="group" aria-label="Alternativas de resposta"></div>
+<div class="dt-feedback" id="dt-feedback" aria-live="polite" role="status">Escolha a interpretação que melhor combina com as pistas do texto.</div>
+<div class="dt-actions"><button class="dt-button" type="button" id="dt-next" disabled>Resolva o caso para avançar</button></div><p id="dt-tries" class="dt-sign">Você pode revisar suas hipóteses. O erro ajuda a encontrar novas pistas.</p>
+</section></div>
+<section id="dt-finale" class="dt-finale" hidden><h2>🏆 Você desvendou os 20 casos!</h2><p id="dt-summary"></p><div class="dt-actions"><button type="button" class="dt-button" id="dt-certificate">🏅 Baixar comprovante JPs</button><button type="button" class="dt-button" id="dt-report">⬇ Baixar relatório pedagógico CSV</button><button type="button" class="dt-button" id="dt-reset">🔁 Refazer trilha</button></div><p id="dt-export-status" role="status"></p></section>
+<section class="dt-guide"><div class="dt-card"><h2>Orientações pedagógicas</h2>
+<details open><summary>Como funciona a missão?</summary><p>Em cada caso, o estudante realiza duas ações: (1) infere uma informação que não está escrita de forma direta; (2) identifica o trecho que sustenta sua conclusão. Pode ouvir o texto, solicitar pistas e tentar novamente. Os casos avançam de situações simples para contextos de maior complexidade.</p></details>
+<details><summary>Informação explícita × informação implícita</summary><p>Informação explícita é aquela declarada pelo texto. Informação implícita é o que podemos concluir a partir de indícios, relações de sentido e conhecimentos relevantes, sem acrescentar fatos que o texto não autoriza. A atividade não premia palpites sem evidências.</p></details>
+<details><summary>Recomposição e acessibilidade</summary><p>Os textos são curtos, com letras amplas, opção de leitura em voz alta pelo navegador, alternativas de boa legibilidade e possibilidade de novas tentativas. O professor pode mediar oralmente e utilizar o texto impresso.</p></details>
+<details><summary>JPs e acompanhamento</summary><p>São 20 casos, cada um valendo até 5 JPs: 3 pela interpretação e 2 pela identificação da evidência. Respostas corretas após tentativas adicionais também pontuam, mas em menor quantidade. O relatório detalha tentativas, pistas utilizadas e desempenho por habilidade. O comprovante JPs é exportado apenas ao finalizar os 20 casos e deve ser validado pela coordenação.</p></details>
+<details><summary>Privacidade dos resultados</summary><p>As respostas não são enviadas automaticamente para o servidor. O estudante baixa o arquivo para entregar ao professor. Para o ranking JPs, utilize o código de participação fornecido pela escola. O painel registra apenas a melhor tentativa por atividade e não constitui mecanismo de autenticação.</p></details>
+</div></section></main>
+<footer><div class="wrap foot"><strong>JP Recomposição · Aprender, superar e avançar.</strong><small>EE João Paulo I · Paranaíta–MT</small></div></footer>
+<script src="jp-pontos.js?v=2"></script><script src="detetives-texto.js?v=1"></script>
+</body></html>
