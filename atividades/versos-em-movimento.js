@@ -1,26 +1,32 @@
 'use strict';
 const $=id=>document.getElementById(id);
 const poems=[
- {title:'A cidade cabe no bolso',text:'Na tela pequena\no mundo cabe no dedo.\n\nDeslizo notícias,\nrostos, promessas,\no anúncio de uma vida perfeita.\n\nDo lado de fora,\no ônibus ainda demora\ne a chuva não aceita filtros.',guide:'O poema aproxima a linguagem digital da experiência urbana. O verso livre e o contraste entre tela e rua ajudam a construir uma leitura crítica.',
+ {title:'Futebol',author:'Carlos Drummond de Andrade',date:'Publicado em Poesia errante; reunido em Quando é dia de futebol',sport:'⚽ FUTSAL · FUTEBOL',source:'https://www.tudoepoema.com.br/carlos-drummond-de-andrade-futebol/',
+ text:'Futebol se joga no estádio?\nFutebol se joga na praia,\nfutebol se joga na rua,\nfutebol se joga na alma.',
+ guide:'O texto de Drummond amplia o futebol para além das quadras ou estádios. Leia o poema completo no link da fonte. O fragmento permite analisar repetição, pergunta retórica e o deslocamento do espaço físico para uma experiência afetiva.',
  questions:[
-  {q:'A oposição entre a tela e a rua sugere principalmente:',options:['Uma crítica à diferença entre imagens idealizadas e a realidade cotidiana.','Uma defesa de que o ônibus deve ter acesso à internet.','A afirmação de que a chuva ocorre somente nas redes.'],correct:0,why:'A tela oferece imagens idealizadas, mas o cotidiano permanece com espera e chuva. Esse contraste produz uma crítica.'},
-  {q:'Em “a chuva não aceita filtros”, o principal recurso expressivo é:',options:['Personificação e aproximação com a linguagem das redes.','Explicação científica sobre aplicativos.','Descrição literal de um filtro de água.'],correct:0,why:'A chuva recebe uma ação humana — aceitar ou não — e “filtros” remete ao universo digital.'},
-  {q:'A organização dos versos indica que o poema:',options:['Utiliza verso livre, sem esquema fixo obrigatório de rimas.','Está inteiramente organizado em sonetos tradicionais.','Não pode ser considerado poesia porque não apresenta rimas.'],correct:0,why:'A poesia contemporânea pode usar versos livres e produzir ritmo por pausas, imagens e cortes.'},
-  {q:'A expressão “Na tela pequena / o mundo cabe no dedo” constrói:',options:['Uma imagem metafórica da experiência digital.','Uma medida real do tamanho do mundo.','Uma instrução técnica para reparar celulares.'],correct:0,why:'É uma imagem poética: o acesso ao mundo parece caber no gesto de tocar a tela.'}
+  {q:'No trecho, a sequência “estádio”, “praia”, “rua” e “alma” sugere que o futebol:',options:['Transcende o espaço de jogo e também integra a vida afetiva.','Só pode ocorrer em estádios oficiais.','É apresentado apenas como obrigação profissional.'],correct:0,why:'O percurso vai de lugares físicos até “alma”, metáfora de vínculo emocional com o esporte.'},
+  {q:'A repetição de “Futebol se joga” funciona como:',options:['Anáfora que produz ritmo e amplia progressivamente o sentido.','Uma indicação de regras técnicas de futsal.','Uma afirmação de que não há recursos expressivos no poema.'],correct:0,why:'A retomada da expressão inicial dos versos cria paralelismo e intensifica o argumento poético.'},
+  {q:'O verso “futebol se joga na alma” apresenta:',options:['Sentido figurado que associa o jogo a sentimentos e identidade.','Descrição literal de um órgão corporal.','Prova de que o poema é um manual de esporte.'],correct:0,why:'O termo “alma” desloca o jogo para o campo do afeto e da cultura.'},
+  {q:'A relação mais adequada com o futsal praticado na escola é:',options:['Reconhecer que o jogo pode integrar cultura, memória e pertencimento, além da técnica.','Concluir que poemas são incapazes de dialogar com práticas esportivas.','Afirmar que a quadra escolar impede qualquer experiência poética.'],correct:0,why:'A experiência esportiva também pode produzir vínculos e sentidos compartilhados.'}
  ]},
- {title:'Notificação',text:'O celular vibra.\nUma luz corta a mesa.\n\n“Você está aí?”\n\nEstou.\nMas minha resposta\nfica parada entre\no caderno aberto\ne a palavra que não envio.\n\nLá fora,\nalguém chama pelo meu nome.',guide:'O poema trabalha silêncio, pausa, fragmentação e subjetividade. A experiência contemporânea aparece no conflito entre presença digital e relações ao redor.',
+ {title:'Voleibol',author:'Alberto da Cunha Melo',date:'Poemas para o jardim da infância (1981)',sport:'🏐 VOLEIBOL',source:'https://www.escritas.org/pt/t/97881/voleibol',
+ text:'Uma menininha de nada\njogava voleibol\ne pegava os saques mais baixos',
+ guide:'Na composição de Alberto da Cunha Melo, o voleibol surge ligado a uma personagem pequena, apresentada com delicadeza e valorização por imagens poéticas. Abra o poema completo na fonte para observar as comparações com elementos da natureza e da luminosidade.',
  questions:[
-  {q:'O eu lírico é melhor compreendido como:',options:['A voz que expressa a experiência interior apresentada no poema.','Necessariamente a pessoa real que escreveu o poema.','A pessoa que envia a mensagem “Você está aí?”.'],correct:0,why:'Eu lírico é a voz que se manifesta no texto; não deve ser confundido automaticamente com seu autor.'},
-  {q:'A resposta que fica “parada” sugere:',options:['Hesitação ou dificuldade de se comunicar.','Defeito comprovado no aparelho de celular.','Certeza de que ninguém está tentando contato.'],correct:0,why:'O silêncio e a palavra não enviada indicam hesitação, não um defeito técnico.'},
-  {q:'Os versos curtos e as pausas ajudam a criar:',options:['Um ritmo de interrupção que acompanha a indecisão da voz poética.','Um padrão obrigatório de rimas alternadas.','A estrutura fixa de uma epopeia clássica.'],correct:0,why:'O corte dos versos dá ritmo à hesitação e ao silêncio da experiência narrada.'},
-  {q:'O chamado que vem de fora introduz a ideia de:',options:['Convivência entre o ambiente digital e as relações presenciais.','Proibição de escrever poemas sobre tecnologia.','Desaparecimento completo da comunicação humana.'],correct:0,why:'A voz do lado de fora contrapõe a notificação digital a uma relação concreta e próxima.'}
+  {q:'O contraste entre “menininha de nada” e a habilidade no voleibol permite perceber:',options:['Valorização poética de uma personagem aparentemente pequena ou discreta.','Afirmação de que apenas adultos podem praticar esporte.','Descrição de uma competição exclusivamente profissional.'],correct:0,why:'O diminutivo contrasta com o protagonismo da personagem, que participa ativamente do jogo.'},
+  {q:'A expressão “menininha de nada” pode produzir qual efeito?',options:['Um tom afetivo e de aparente fragilidade, posteriormente ressignificado.','Uma estatística precisa da altura da jogadora.','Uma regra oficial da modalidade.'],correct:0,why:'O diminutivo é expressivo, não um dado esportivo ou medida objetiva.'},
+  {q:'No trecho, “pegava os saques mais baixos” destaca:',options:['Uma ação concreta do voleibol transformada em matéria poética.','Uma jogada de xadrez entre duas peças.','A obrigatoriedade de rimas em todos os poemas.'],correct:0,why:'O poeta transforma um gesto esportivo cotidiano em imagem literária.'},
+  {q:'Ao ler a íntegra na fonte, as imagens da natureza reforçam principalmente:',options:['Uma representação lírica da personagem, que vai além da descrição do esporte.','Um relatório técnico do placar do jogo.','A rejeição de toda comparação poética.'],correct:0,why:'As imagens de natureza e luz ampliam a dimensão afetiva do retrato poético.'}
  ]},
- {title:'Quadra aberta',text:'No chão da escola\nas linhas parecem fronteiras.\n\nAté que a bola atravessa\num risco de tinta,\ne um passe encontra\nquem estava de fora.\n\nNa rede,\nnão cabe a palavra “sozinho”.\n\nO jogo começa\nquando todos podem entrar.',guide:'Este poema utiliza linguagem cotidiana e imagens do esporte para sugerir inclusão. A passagem da quadra para relações humanas amplia o sentido dos versos.',
+ {title:'Ajedrez (Xadrez)',author:'Jorge Luis Borges',date:'El hacedor (1960) · original em espanhol',sport:'♟️ XADREZ',source:'https://www.cuentoneta.ar/literary-work/ajedrez-poema',
+ text:'En su grave rincón, los jugadores\nrigen las lentas piezas.',
+ guide:'Vocabulário de apoio: “jugadores” = jogadores; “rigen” = conduzem; “piezas” = peças. No poema de Borges, o xadrez é mais que uma partida: pode representar escolhas, tempo e forças que condicionam a existência. Leia o original completo no link. É um poema hispano-americano de 1960, utilizado para diálogo comparativo com a produção contemporânea.',
  questions:[
-  {q:'As “linhas” que “parecem fronteiras” podem simbolizar:',options:['Barreiras que separam pessoas e grupos.','Apenas os limites oficiais de uma quadra, sem possibilidade simbólica.','Uma divisão de países desenhada no chão da escola.'],correct:0,why:'A imagem cria duplo sentido: as marcações reais da quadra evocam barreiras sociais.'},
-  {q:'O momento em que o passe encontra “quem estava de fora” sugere:',options:['Inclusão de alguém que não participava.','Expulsão definitiva de outro participante.','Cancelamento obrigatório da partida.'],correct:0,why:'O passe aproxima quem estava excluído da atividade coletiva.'},
-  {q:'Em “Na rede, / não cabe a palavra ‘sozinho’”, o termo “rede” permite:',options:['Um jogo de sentidos entre o esporte e a ideia de relações coletivas.','Somente a referência a uma rede elétrica.','A descrição técnica de uma rede de pesca.'],correct:0,why:'O termo atua no contexto esportivo e sugere vínculos entre pessoas, ampliando a imagem poética.'},
-  {q:'A principal reflexão social proposta pelo poema é:',options:['A importância da participação e do acolhimento no coletivo.','A necessidade de vencer a qualquer custo.','A ideia de que esportes não podem ser tema de poesia.'],correct:0,why:'O verso final associa o início verdadeiro do jogo à possibilidade de participação de todos.'}
+  {q:'No verso citado, a expressão “lentas piezas” contribui para construir:',options:['Uma atmosfera de estratégia, paciência e tempo no jogo.','Um placar de partida de futsal.','Uma cena de grande velocidade física.'],correct:0,why:'O adjetivo “lentas” aproxima a cena do pensamento estratégico, característica do xadrez.'},
+  {q:'No poema integral, o tabuleiro pode ser lido como metáfora de:',options:['Relações entre liberdade, escolhas, limites e destino.','Um campo destinado ao saque de vôlei.','A inexistência de regras e conflitos.'],correct:0,why:'Borges expande a imagem do tabuleiro para questões filosóficas sobre quem move e quem é movido.'},
+  {q:'A leitura do texto original em espanhol pode ser favorecida por:',options:['Reconhecimento de palavras próximas do português e apoio contextual.','Substituição do poema por uma descrição de regras técnicas.','Exigência de tradução literal de todas as palavras antes de interpretar.'],correct:0,why:'As semelhanças entre línguas e o contexto do xadrez apoiam a compreensão, mesmo sem fluência em espanhol.'},
+  {q:'Ao relacionar o poema ao xadrez praticado na escola, uma reflexão pertinente é:',options:['Perceber que a partida permite pensar escolhas e consequências.','Afirmar que toda partida tem duração infinita.','Concluir que poesia não pode tratar de questões filosóficas.'],correct:0,why:'O jogo fornece imagens para pensar ação, limites e estratégias de vida.'}
  ]}
 ];
 const all=poems.flatMap((p,i)=>p.questions.map((q,j)=>({...q,poem:i,local:j})));
@@ -47,7 +53,7 @@ function render(){
   $('vm-label').textContent='ETAPA 1 · MINIAULA DE LITERATURA';
   $('vm-reading-title').textContent='O que é poesia contemporânea?';
   $('vm-lesson').innerHTML='<p><strong>Poesia contemporânea</strong> é uma produção plural: não existe uma única forma de escrever poemas hoje. Os textos dialogam com o presente, com experiências pessoais e coletivas e com diferentes linguagens.</p><ul><li><strong>Eu lírico:</strong> voz que se expressa no poema, diferente do autor como pessoa real.</li><li><strong>Verso livre:</strong> verso sem métrica fixa obrigatória; rimas podem existir ou não.</li><li><strong>Imagem poética:</strong> relação criativa entre palavras, ideias e sensações, como metáforas e personificação.</li><li><strong>Temas e linguagens:</strong> cidade, tecnologia, identidade, afetos, desigualdade, cotidiano, memória e crítica social.</li><li><strong>Experimentação:</strong> os cortes dos versos, as pausas, a repetição e a disposição gráfica ajudam a produzir significado.</li></ul><p><strong>Estratégia de leitura:</strong> identifique o tema, a voz poética, as palavras mais expressivas e os sentidos sugeridos pelas imagens.</p>';
-  $('vm-paper').hidden=true;$('vm-audio').disabled=true;$('vm-hint').disabled=true;
+  $('vm-paper').hidden=true;$('vm-source').hidden=true;$('vm-audio').disabled=true;$('vm-hint').disabled=true;
   $('vm-task-level').textContent='ATIVIDADE DE RETOMADA';
   $('vm-task-title').textContent='Como estudar esta aula?';
   $('vm-question').textContent='1. Leia a miniaula. 2. Analise três poemas originais. 3. Responda a 12 questões comentadas. 4. Produza seus próprios versos. 5. Baixe o relatório e entregue ao professor.';
@@ -61,8 +67,10 @@ function render(){
  const p=poems[stage],q=all[idx];
  attempts=0;usedHint=false;answered=false;
  $('vm-label').textContent='ETAPA '+(stage+2)+' · LITERATURA CONTEMPORÂNEA · POEMA '+(stage+1);
- $('vm-reading-title').textContent=p.title;
- $('vm-lesson').textContent=p.guide;
+ $('vm-reading-title').textContent=p.title+' — '+p.author;
+ $('vm-lesson').textContent=p.sport+' · '+p.date+'. '+p.guide;
+ $('vm-source').href=p.source;$('vm-source').textContent='📖 Ler o poema completo na fonte ↗';$('vm-source').hidden=false;
+ $('vm-attribution').textContent=p.author+' · '+p.date+' · trecho breve de obra publicada';
  $('vm-paper').hidden=false;$('vm-verse').textContent=p.text;
  $('vm-audio').disabled=false;$('vm-hint').disabled=false;
  $('vm-task-level').textContent='DESAFIO '+(idx+1)+' DE 12';
@@ -94,7 +102,7 @@ function writeStage(){
  $('vm-label').textContent='ETAPA 5 · OFICINA DE CRIAÇÃO LITERÁRIA';
  $('vm-reading-title').textContent='Sua voz também é poesia';
  $('vm-lesson').innerHTML='<p><strong>Proposta:</strong> escreva um poema contemporâneo de 6 a 14 versos. Você pode escolher um tema do presente e experimentar ritmo, repetição, imagens poéticas ou versos livres.</p><p>Uma possibilidade é começar observando um objeto comum e transformá-lo em imagem: uma tela, uma janela, um caminho, uma bola, uma palavra ou o espaço da escola.</p><p>Evite copiar poemas de outras pessoas. Seus versos devem ser autorais.</p>';
- $('vm-paper').hidden=true;$('vm-audio').disabled=true;$('vm-hint').disabled=true;
+ $('vm-paper').hidden=true;$('vm-source').hidden=true;$('vm-audio').disabled=true;$('vm-hint').disabled=true;
  $('vm-task-level').textContent='PRODUÇÃO AUTORAL · RETOMADA DA AULA';
  $('vm-task-title').textContent='Escreva um poema contemporâneo';
  $('vm-question').textContent='Use suas experiências e suas escolhas de linguagem para provocar sentidos no leitor.';
