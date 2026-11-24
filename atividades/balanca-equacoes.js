@@ -197,6 +197,7 @@ function report(partial=false){
  if(partial&&index<40){rows.push(['EM ANDAMENTO','Próxima missão: '+(index+1),'','','','','','']);rows.push(['Equação atual',equation(state),'Operações: '+history.join(' | '),'Tentativas: '+attempts,'Dicas: '+hints,'','',''])}
  rows.push(['RESULTADO',done+' / 40 missões','','','','','',score]);
  rows.push(['Observação','Relatório sem código pessoal, login ou cadastro. A verificação do trabalho deve ser realizada pelo professor.','','','','','','']);
+ rows.push(...JPVisibilidade.csvRows(8));
  download('JP-equacoes-balanca-'+(partial?'progresso-parcial':'relatorio-final')+'-'+new Date().toISOString().slice(0,10)+'.csv',rows);
  const note='Arquivo baixado sem código. Entregue ao professor pelo canal indicado pela escola.';
  if(partial)$('eq-partial-status').textContent=note;else $('eq-export-status').textContent=note;
