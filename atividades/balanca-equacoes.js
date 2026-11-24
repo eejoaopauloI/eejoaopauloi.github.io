@@ -218,14 +218,14 @@ $('eq-again').addEventListener('click',()=>{
 function restore(){
  try{
   const data=JSON.parse(localStorage.getItem(storeKey)||'null');
-  if(!data||!Number.isInteger(data.index)||data.index<0||data.index>40||!Number.isInteger(data.done)||data.done!==data.index)return false;
-  if(!Array.isArray(data.log)||data.log.length!==data.done||!Number.isFinite(data.score))return false;
+  if(!data||!Number.isInteger(data.index)||data.index<0||data.index>40||!Number.isInteger(data.done)||data.done!==data.index+(data.solved&&data.index<40?1:0))return false;
+  if(!Array.isArray(data.log)||data.log.length!==data.done||!Number.isFinite(data.score)||data.score<0||data.score>100)return false;
   if(data.index===40&&data.score<20)return false;
   index=data.index;done=data.done;score=data.score;log=data.log;
   if(index===40){finish();return true}
   state=data.state;history=data.history;attempts=data.attempts||0;hints=data.hints||0;solved=Boolean(data.solved);firstSolve=Boolean(data.firstSolve);
   const q=cases[index],lvl=Math.floor(index/8);
-  if(!state||!Number.isInteger(state.a)||state.x!==q.x||state.a<1||state.d<0||state.b<0||state.c<0||state.a*state.x+state.b!==state.d*state.x+state.c)throw Error('Estado inválido');
+  if(!state||!Array.isArray(history)||!Number.isInteger(state.a)||state.x!==q.x||state.a<1||state.d<0||state.b<0||state.c<0||state.a*state.x+state.b!==state.d*state.x+state.c)throw Error('Estado inválido');
   $('eq-topic').textContent='NÍVEL '+(lvl+1)+' · MISSÃO '+(index+1)+' / 40 · '+levels[lvl].name;
   $('eq-instruction').innerHTML='<strong>Aprenda fazendo.</strong> '+levels[lvl].intro+'<br><strong>Seu objetivo:</strong> '+levels[lvl].goal;
   $('eq-context').hidden=lvl!==4;if(lvl===4)$('eq-context').textContent='🏟️ Problema contextualizado: '+q.context;
