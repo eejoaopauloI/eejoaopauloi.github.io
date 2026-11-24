@@ -9,7 +9,8 @@ const activities={
  'inteiros-laboratorio':'Laboratório de Números Inteiros',
  'inteiros-desafios':'Desafios de Números Inteiros',
  'palavras-vivas':'Palavras Vivas',
- 'detetives-texto':'Detetives do Texto — Inferências'
+ 'detetives-texto':'Detetives do Texto — Inferências',
+ 'poesia-contemporanea-ba':'Versos em Movimento — Poesia Contemporânea'
 };
 const normal=v=>String(v??'').trim().toUpperCase();
 const validCode=c=>/^[A-Z0-9_-]{4,18}$/.test(c);
