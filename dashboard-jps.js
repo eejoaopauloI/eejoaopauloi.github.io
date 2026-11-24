@@ -9,7 +9,8 @@ const CATALOG={
  'areas-malha':'Missão Geometria — Áreas',
  'inteiros-laboratorio':'Laboratório de Números Inteiros',
  'inteiros-desafios':'Desafios de Números Inteiros',
- 'palavras-vivas':'Palavras Vivas'
+ 'palavras-vivas':'Palavras Vivas',
+ 'detetives-texto':'Detetives do Texto — Inferências'
 };
 let archive=[];
 function validCode(code){return /^[A-Z0-9_-]{4,18}$/.test(String(code))}
