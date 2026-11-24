@@ -56,7 +56,7 @@ function render(){
   $('vm-paper').hidden=true;$('vm-source').hidden=true;$('vm-audio').disabled=true;$('vm-hint').disabled=true;
   $('vm-task-level').textContent='ATIVIDADE DE RETOMADA';
   $('vm-task-title').textContent='Como estudar esta aula?';
-  $('vm-question').textContent='1. Leia a miniaula. 2. Analise três poemas originais. 3. Responda a 12 questões comentadas. 4. Produza seus próprios versos. 5. Baixe o relatório e entregue ao professor.';
+  $('vm-question').textContent='1. Leia a miniaula. 2. Analise três poemas publicados. 3. Responda a 12 questões comentadas. 4. Produza seus próprios versos. 5. Baixe o relatório e entregue ao professor.';
   $('vm-options').replaceChildren();$('vm-editor-pane').hidden=true;
   $('vm-next').disabled=false;$('vm-next').textContent='Começar poemas →';
   setMsg('Uma poesia não precisa rimar para ser poesia. Observe como as escolhas de linguagem criam sentidos.');
