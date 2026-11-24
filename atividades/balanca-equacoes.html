@@ -1,0 +1,85 @@
+<!doctype html><html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#063966"><meta name="description" content="Balança das Equações: 40 missões progressivas para aprender igualdade e equações do 1º grau retirando pesos e dividindo os dois lados.">
+<title>⚖️ Balança das Equações | JP Recomposição</title><link rel="stylesheet" href="../style.css?v=logos-20261124">
+<style>
+*[hidden]{display:none!important}body{background:#eef7fb}.eq-app{max-width:1240px;margin:auto;padding:20px 17px 70px}
+.eq-hero{background:linear-gradient(115deg,#062b57,#09648a 60%,#0aa7a7);color:white;border-radius:25px;padding:clamp(25px,5vw,50px);position:relative;overflow:hidden}
+.eq-hero:after{content:'⚖';position:absolute;right:24px;bottom:-90px;font-size:260px;opacity:.12}
+.eq-hero>*{position:relative;z-index:1}.eq-kicker{font-weight:850;color:#a2f8ef;letter-spacing:.1em;font-size:13px}
+.eq-hero h1{color:#fff;font-size:clamp(38px,5.5vw,70px);line-height:1.1;margin:12px 0}.eq-hero h1 em{color:#b3fcdf;font-style:normal}
+.eq-hero p{font-size:clamp(17px,2vw,21px);line-height:1.55;color:#e6f9fe;max-width:900px}
+.eq-pills{display:flex;flex-wrap:wrap;gap:9px;margin-top:18px}.eq-pills span{border:1px solid #ffffff55;background:#ffffff20;border-radius:35px;padding:7px 12px;font-size:13px;font-weight:760}
+.eq-hud{display:grid;grid-template-columns:repeat(4,1fr);gap:11px;margin:17px 0 12px}.eq-hud>div{background:#fff;border:1px solid #cfe5eb;border-radius:15px;padding:15px}.eq-hud>div:nth-child(1){background:#e4f7fb}.eq-hud>div:nth-child(2){background:#f2edff}.eq-hud>div:nth-child(3){background:#fff0d8}.eq-hud>div:nth-child(4){background:#e4f8ef}.eq-hud small{display:block;font-size:12px;color:#4b6c7d;font-weight:800}.eq-hud strong{display:block;font-size:clamp(23px,3vw,34px);line-height:1.3;color:#063966}
+.eq-progress{height:14px;border-radius:30px;background:#cee6ed;overflow:hidden}.eq-progress>div{width:0;height:100%;background:linear-gradient(90deg,#0cb2cf,#20bf8e);transition:width .3s}
+.eq-map{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:9px;margin:15px 0 21px}.eq-map>div{background:white;border:2px solid #d3e7ee;border-radius:13px;padding:11px 5px;text-align:center;font-weight:850;color:#5a7180;font-size:14px}.eq-map span{font-size:28px;display:block}.eq-map small{display:block;font-size:11px;font-weight:650}.eq-map .current{border-color:#008aa7;background:#def8fa;color:#07476b}.eq-map .done{background:#e2f8ec;border-color:#76d0a1;color:#225d43}
+.eq-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(320px,.88fr);align-items:start;gap:17px}
+.eq-card{background:white;border:1px solid #cce3ea;border-radius:21px;padding:clamp(17px,3vw,29px);box-shadow:0 7px 22px #06396610;min-width:0}
+.eq-card:nth-child(1){border-top:6px solid #00a7c4}.eq-card:nth-child(2){border-top:6px solid #8262da}
+.eq-card h2{font-size:clamp(24px,3vw,32px);color:#063966;line-height:1.2;margin:7px 0 12px}.eq-card p{color:#426778;line-height:1.6}.eq-label{color:#007fa0;font-weight:850;font-size:12px;letter-spacing:.11em}
+.eq-lesson{background:#ebf8fb;border-left:5px solid #0aa6bb;border-radius:10px;padding:13px 16px;color:#28596d;line-height:1.65;margin:12px 0}
+.eq-lesson strong{color:#063966}.eq-formula{background:#f0eaff;color:#3c2d75;font-size:clamp(24px,4vw,37px);font-weight:900;text-align:center;border-radius:13px;padding:13px;margin:12px 0;font-family:ui-monospace,monospace}
+.eq-world{background:#fff9e9;border-left:5px solid #edb54a;border-radius:10px;padding:14px;color:#71541d;line-height:1.6;margin:12px 0}
+.eq-balance{background:linear-gradient(#e7f8fc,#f8fcfd);border:2px solid #b9dfe9;border-radius:17px;padding:12px 10px 23px;margin:15px 0;min-height:320px;position:relative;overflow:hidden}
+.eq-beam{position:relative;margin-top:33px;height:14px;background:#315d80;border-radius:9px;box-shadow:0 4px 7px #0d325031}.eq-beam:after{content:'';width:17px;height:17px;border-radius:50%;background:#eebf63;border:4px solid #234b70;position:absolute;top:-5px;left:50%;transform:translateX(-50%);z-index:3}
+.eq-stand{width:0;height:0;border-left:31px solid transparent;border-right:31px solid transparent;border-bottom:100px solid #276385;margin:-2px auto 0}
+.eq-base{height:17px;background:#1b4d6a;border-radius:20px;width:200px;max-width:60%;margin:0 auto}
+.eq-scale-panels{display:grid;grid-template-columns:1fr 1fr;gap:19px;position:relative}
+.eq-side{text-align:center;min-width:0}.eq-side h3{margin:0 0 8px;color:#063966;font-size:17px}
+.eq-blocks{min-height:116px;display:flex;align-content:end;align-items:end;justify-content:center;flex-wrap:wrap;gap:5px;padding:12px 4px}
+.eq-weight{display:grid;place-items:center;min-width:33px;height:36px;border-radius:8px;font-weight:900;font-size:18px;border:2px solid #fff;box-shadow:0 3px 3px #0a3c5c25}
+.eq-weight.x{background:#0089c6;color:white}.eq-weight.unit{background:#f0a336;color:#493200}
+.eq-weight.group{background:#ebe2ff;color:#4b3b8e;border:2px dashed #9074cc}
+.eq-pan{width:94%;height:13px;margin:0 auto;background:#315d80;border-radius:0 0 45px 45px;position:relative}
+.eq-pan:before,.eq-pan:after{content:'';position:absolute;top:-15px;border-left:3px solid #6897ad;height:19px}.eq-pan:before{left:10px}.eq-pan:after{right:10px}
+.eq-pan-label{font-weight:900;color:#224a67;min-height:34px;font-size:clamp(19px,3vw,26px);font-family:ui-monospace,monospace;margin-top:7px}
+.eq-equality{text-align:center;font-weight:900;color:#137f67;font-size:19px;margin-top:7px}
+.eq-legend{display:flex;gap:9px;justify-content:center;flex-wrap:wrap;font-size:13px;color:#496b7f}
+.eq-legend b{background:#d9f1fa;color:#006992;border-radius:6px;padding:2px 7px}
+.eq-legend b:last-child{background:#fce8c5;color:#8c5a12}
+.eq-equation-steps{background:#f7fafc;border:1px dashed #c9dde6;border-radius:11px;padding:12px 15px;margin-top:13px}
+.eq-equation-steps ol{margin:7px 0 0;padding-left:21px;color:#3b6172;font-size:14px;line-height:1.65;max-height:190px;overflow:auto}
+.eq-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:13px 0}
+.eq-btn{min-height:57px;border:2px solid #bddde7;background:#ecf9fc;color:#064d70;border-radius:12px;padding:11px;font-weight:840;font-size:15px;cursor:pointer;text-align:center;line-height:1.4}
+.eq-btn:hover:not(:disabled){border-color:#009ab0;background:#dcf6fa}
+.eq-btn.primary{background:#063966;color:white;border-color:#063966}.eq-btn.gold{background:#fff4d8;color:#795013;border-color:#e7c778}
+.eq-btn:disabled{opacity:.48;cursor:default}.eq-btn:focus-visible,.eq-answer:focus-visible{outline:3px solid #18bdd1;outline-offset:3px}
+.eq-feedback{background:#e6f6fa;border-left:5px solid #159db6;border-radius:12px;padding:16px;line-height:1.6;color:#315d72;margin:14px 0}.eq-feedback.good{background:#e2f7e9;border-color:#299360}.eq-feedback.warn{background:#fff1e8;border-color:#cf823b}
+.eq-answer-area{background:#e6f7ec;border:1px solid #a6daba;padding:17px;border-radius:13px;margin:14px 0}
+.eq-answer{display:inline-block;width:105px;max-width:100%;border:2px solid #8cb9ce;border-radius:10px;background:white;padding:11px;font-size:24px;font-weight:850;color:#063966;text-align:center}
+.eq-check{border-radius:11px;background:#076c5b;color:white;border:0;padding:13px 16px;min-height:50px;font-weight:840;cursor:pointer}
+.eq-toolbar{display:flex;flex-wrap:wrap;gap:8px}.eq-toolbar .eq-btn{min-height:42px;font-size:13px;flex:1 1 150px}
+.eq-summary{background:linear-gradient(120deg,#063966,#078b9e);color:white;padding:clamp(25px,4vw,45px);border-radius:22px;margin-top:20px}.eq-summary h2{font-size:clamp(32px,4vw,49px);color:white}.eq-summary p{font-size:18px;color:#e4f9fb;line-height:1.6}.eq-summary .eq-btn{background:#baf5ee;border-color:#baf5ee;color:#053966;min-height:49px}
+.eq-guide{margin-top:20px;background:white;border:1px solid #d0e4ec;border-radius:18px;padding:21px}.eq-guide summary{font-weight:850;color:#063966;cursor:pointer}.eq-guide details{border-bottom:1px solid #e3edf1;padding:13px 0}.eq-guide p{color:#496c7e;line-height:1.6}
+@media(max-width:920px){.eq-grid{grid-template-columns:1fr}}@media(max-width:650px){.eq-app{padding:11px 9px 40px}.eq-hud{grid-template-columns:repeat(2,1fr)}.eq-map{gap:4px}.eq-map>div{font-size:11px;padding:8px 2px}.eq-map span{font-size:21px}.eq-map small{font-size:9px}.eq-actions{grid-template-columns:1fr}.eq-weight{min-width:29px;height:32px;font-size:16px}.eq-blocks{min-height:98px}.eq-pan-label{font-size:18px}.eq-balance{min-height:277px}}
+@media(prefers-reduced-motion:reduce){.eq-progress>div{transition:none}}
+</style></head><body>
+<a class="skip" href="#eq-main">Ir à atividade</a>
+<header><div class="wrap head"><a href="../index.html" class="brand"><span class="jp-logo-pair" aria-label="Marcas da escola"><img src="../assets/logos-institucionais.webp" alt="Escola João Paulo I"><img src="../assets/logos-institucionais.webp" alt="Escola de Tempo Integral MT"></span><span><small>ESCOLA ESTADUAL JOÃO PAULO I</small><strong>JP Recomposição</strong></span></a><a href="../componentes/matematica.html" style="color:#aaf5ed">← Matemática</a></div></header>
+<main id="eq-main" class="eq-app">
+<section class="eq-hero"><span class="eq-kicker">MATEMÁTICA · ÁLGEBRA · RECOMPOSIÇÃO DA APRENDIZAGEM</span><h1>⚖️ Balança <em>das Equações</em></h1><p>Você controla uma balança de verdade matemática: <strong>o que faz de um lado precisa fazer do outro</strong>. Retire pesos iguais, remova caixas misteriosas e divida em grupos para descobrir quanto vale <strong>x</strong>.</p><p>Comece pelo princípio, pratique bastante e avance até problemas com mais de uma operação.</p><div class="eq-pills"><span>🎮 40 missões</span><span>🗺️ 5 níveis · 8 desafios cada</span><span>🧱 Pesos e caixas interativas</span><span>💡 Dicas e explicações</span><span>🏅 Até 100 JPs</span></div></section>
+<div class="eq-hud"><div><small>Nível</small><strong id="eq-level">1 / 5</strong></div><div><small>Missões resolvidas</small><strong id="eq-count">0 / 40</strong></div><div><small>JPs</small><strong id="eq-points">0</strong></div><div><small>Patente</small><strong id="eq-rank">Aprendiz</strong></div></div>
+<div class="eq-progress"><div id="eq-progress-fill"></div></div>
+<div class="eq-map" id="eq-map"><div class="current"><span>⚖️</span>Equilíbrio<small>1–8</small></div><div><span>📦</span>Caixas iguais<small>9–16</small></div><div><span>🧩</span>Duas etapas<small>17–24</small></div><div><span>🔍</span>Dois pratos<small>25–32</small></div><div><span>🏆</span>Desafios reais<small>33–40</small></div></div>
+<div class="eq-grid" id="eq-game">
+<section class="eq-card"><div class="eq-label" id="eq-topic">NÍVEL 1 · MISSÃO 1</div><h2>🔍 Descubra o peso misterioso</h2><div id="eq-instruction" class="eq-lesson"></div><div id="eq-context" class="eq-world" hidden></div><div id="eq-formula" class="eq-formula">x + 2 = 5</div>
+<div class="eq-balance" aria-label="Representação dos dois lados da igualdade"><div class="eq-scale-panels"><div class="eq-side"><h3>Prato esquerdo</h3><div id="eq-left-blocks" class="eq-blocks"></div><div class="eq-pan"></div><div id="eq-left-label" class="eq-pan-label"></div></div><div class="eq-side"><h3>Prato direito</h3><div id="eq-right-blocks" class="eq-blocks"></div><div class="eq-pan"></div><div id="eq-right-label" class="eq-pan-label"></div></div></div><div class="eq-beam"></div><div class="eq-stand"></div><div class="eq-base"></div><div class="eq-equality">⚖️ OS DOIS PRATOS TÊM O MESMO PESO</div></div>
+<div class="eq-legend"><span><b>📦 x</b> caixa de peso desconhecido</span><span><b>● 1</b> peso de uma unidade</span></div>
+<div class="eq-equation-steps"><strong>Seu histórico de operações</strong><ol id="eq-history"></ol></div></section>
+<section class="eq-card"><span class="eq-label" id="eq-stage">ETAPA 1 · INVESTIGAR</span><h2 id="eq-task">Como manter a balança equilibrada?</h2><p id="eq-guide-text">Cada operação deve ser realizada igualmente nos dois pratos.</p>
+<div class="eq-actions" id="eq-actions"></div>
+<div id="eq-answer-area" class="eq-answer-area" hidden><label for="eq-answer" style="display:block;font-size:19px;font-weight:850;color:#064b44;margin-bottom:8px">Agora responda: quanto vale x?</label><input id="eq-answer" class="eq-answer" type="number" step="1" inputmode="numeric" placeholder="x = ?"><button id="eq-check" type="button" class="eq-check">Conferir x ✓</button><p id="eq-check-tip" style="font-size:13px;color:#386b5a">A solução precisa manter a igualdade inicial verdadeira.</p></div>
+<div id="eq-feedback" class="eq-feedback" role="status" aria-live="polite">Observe a balança: o peso total é igual nos dois pratos.</div>
+<div class="eq-toolbar"><button type="button" class="eq-btn gold" id="eq-hint">💡 Pedir dica</button><button type="button" class="eq-btn" id="eq-reset-mission">↶ Recomeçar missão</button></div>
+<div style="margin-top:17px"><button type="button" id="eq-next" class="eq-btn primary" disabled style="width:100%">Resolva a missão para avançar</button></div>
+<p id="eq-attempts" style="color:#5d7887;font-size:14px">Não tenha pressa: descubra por que é preciso agir nos dois lados.</p></section></div>
+<section id="eq-end" class="eq-summary" hidden><h2>🏆 Mestre do Equilíbrio!</h2><p id="eq-end-text"></p><div class="eq-toolbar"><button type="button" class="eq-btn" id="eq-report">⬇ Relatório para o professor — sem código</button><button type="button" class="eq-btn" id="eq-jps">🏅 Comprovante para ranking JPs</button><button type="button" class="eq-btn" id="eq-again">🔁 Praticar novamente</button></div><p id="eq-export-status" role="status"></p><p style="font-size:14px">O relatório não exige código; o comprovante para o ranking é opcional e solicita um código escolar de participação. Os resultados são baixados no aparelho.</p></section>
+<section class="eq-guide"><h2>📒 Síntese para o caderno e orientações de estudo</h2>
+<details open><summary>1. O que significa uma equação?</summary><p>Uma equação é uma igualdade que contém um valor desconhecido, representado por uma letra. Na equação <strong>x + 3 = 7</strong>, o valor de x é 4, porque 4 + 3 = 7.</p></details>
+<details><summary>2. O princípio da balança</summary><p>Se dois pratos têm a mesma massa, retirar a mesma quantidade dos dois mantém o equilíbrio. Do mesmo modo, podemos somar ou subtrair o mesmo número dos dois lados de uma equação; também podemos multiplicar ou dividir os dois membros pelo mesmo número não nulo.</p></details>
+<details><summary>3. Como isolar x?</summary><p>Em <strong>2x + 4 = 12</strong>, retire 4 unidades de ambos os lados: <strong>2x = 8</strong>. Depois divida ambos os lados por 2: <strong>x = 4</strong>. Confira substituindo 4 na equação original: 2 · 4 + 4 = 12.</p></details>
+<details><summary>4. E quando há x nos dois pratos?</summary><p>Em <strong>3x + 2 = x + 10</strong>, retire uma caixa x de cada lado: <strong>2x + 2 = 10</strong>. Retire 2 unidades de ambos os lados: <strong>2x = 8</strong>. Divida por 2: <strong>x = 4</strong>.</p></details>
+<details><summary>5. Exercícios para registrar no caderno</summary><p>Resolva mostrando cada operação nos dois membros: (a) x + 5 = 11; (b) x + 8 = 15; (c) 3x = 18; (d) 4x = 28; (e) 2x + 3 = 17; (f) 5x + 2 = 22; (g) 3x + 4 = x + 12; (h) 4x + 5 = 2x + 17. Confira cada resultado por substituição na equação original.</p></details>
+<details><summary>6. Acompanhamento pedagógico e JPs</summary><p>São 40 missões distribuídas em cinco níveis, com oito desafios por nível. Cada missão vale até 2 JPs, e a conclusão integral acrescenta 20 JPs, alcançando até 100. Erros não bloqueiam o avanço; a atividade oferece dicas e permite refazer passos. O relatório registra procedimentos, tentativas e resultados. O painel de premiação contabiliza apenas a melhor tentativa por atividade e código.</p></details>
+</section></main><footer><div class="wrap foot"><strong>JP Recomposição · Aprender, superar e avançar.</strong><small>Escola Estadual João Paulo I · Paranaíta–MT</small></div></footer>
+<script src="jp-pontos.js?v=4"></script><script src="balanca-equacoes.js?v=1"></script></body></html>
