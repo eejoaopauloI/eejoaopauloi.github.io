@@ -708,3 +708,60 @@ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-hero-priority .lea
  .jp-priority-links{flex-direction:column}
  .jp-priority-links a{width:100%}
 }
+
+
+/* 2026-11 — Logotipos institucionais: arquivo WebP nativo, corte em regiões
+   independentes da composição original e contraste preservado. */
+.jp-logo-pair{
+ display:inline-flex;align-items:center;justify-content:center;gap:9px;
+ flex:0 0 auto;background:#fff;border:1px solid #dcebf0;
+ border-radius:12px;padding:7px 9px;box-shadow:0 2px 10px #062e4d13;
+}
+.jp-logo-pair img[src$="logos-institucionais.webp"]{
+ display:block;height:58px;max-width:none;object-fit:cover;
+ opacity:1;filter:none;flex:none;border:0;background:#fff;
+}
+.jp-logo-pair img:first-child[src$="logos-institucionais.webp"]{
+ width:103px;object-position:left center;
+}
+.jp-logo-pair img:last-child[src$="logos-institucionais.webp"]{
+ width:119px;object-position:right center;
+}
+body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip{
+ display:grid;grid-template-columns:minmax(148px,1fr) minmax(0,2fr) minmax(174px,1fr);
+ min-height:126px;gap:20px;align-items:center;
+}
+body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo[src$="logos-institucionais.webp"]{
+ display:block;box-sizing:content-box;height:78px;max-width:none;
+ opacity:1;filter:none;object-fit:cover;background:white;
+ border:6px solid white;border-radius:12px;
+ box-shadow:0 6px 20px #001a3a33;
+}
+body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo-jp[src$="logos-institucionais.webp"]{
+ width:138px;object-position:left center;justify-self:start;
+}
+body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo-eti[src$="logos-institucionais.webp"]{
+ width:160px;object-position:right center;justify-self:end;
+}
+.learning-home .learn-hero .hero-watermarks{display:none!important}
+@media(max-width:900px){
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip{
+  grid-template-columns:116px minmax(0,1fr) 132px;gap:12px;min-height:105px;
+ }
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo[src$="logos-institucionais.webp"]{height:62px;max-width:none}
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo-jp[src$="logos-institucionais.webp"]{width:110px}
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo-eti[src$="logos-institucionais.webp"]{width:127px}
+}
+@media(max-width:650px){
+ .jp-logo-pair{gap:5px;padding:5px}
+ .jp-logo-pair img[src$="logos-institucionais.webp"]{height:40px;max-width:none}
+ .jp-logo-pair img:first-child[src$="logos-institucionais.webp"]{width:71px}
+ .jp-logo-pair img:last-child[src$="logos-institucionais.webp"]{width:82px}
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip{
+  grid-template-columns:84px minmax(0,1fr) 94px;gap:8px;min-height:84px;padding:9px 10px!important;
+ }
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo[src$="logos-institucionais.webp"]{height:43px;max-width:none;border-width:3px;border-radius:7px}
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo-jp[src$="logos-institucionais.webp"]{width:76px}
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo-eti[src$="logos-institucionais.webp"]{width:88px}
+ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .learn-logo-heading strong{font-size:clamp(15px,4.4vw,21px)}
+}
