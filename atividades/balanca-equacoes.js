@@ -238,4 +238,46 @@ function restore(){
   return true;
  }catch(e){return false}
 }
+
+/* Introdução guiada. Cada exemplo mantém a igualdade; o bloco de unidades
+   torna visível a operação simultânea nos dois membros. */
+const demos={
+ sub:{from:{a:1,b:3,d:0,c:7},to:{a:1,b:0,d:0,c:4},operation:'−3 em ambos os membros',why:'Retiramos 3 pesos do prato esquerdo E 3 pesos do direito. A balança continua equilibrada: x + 3 − 3 = 7 − 3; portanto, x = 4. Não mudamos nenhum peso de um lado só.'},
+ add:{from:{a:1,b:3,d:0,c:7},to:{a:1,b:5,d:0,c:9},operation:'+2 em ambos os membros',why:'Adicionamos 2 pesos em cada prato: x + 3 + 2 = 7 + 2. A igualdade permanece verdadeira: x + 5 = 9. Adicionar aos dois lados preserva o equilíbrio, mesmo quando não isola x imediatamente. Para resolver x − 2 = 5, somamos 2 aos dois membros e encontramos x = 7.'},
+ div:{from:{a:2,b:0,d:0,c:8},to:{a:1,b:0,d:0,c:4},operation:'÷2 em ambos os membros',why:'Duas caixas iguais equilibram 8 unidades. Se dividimos cada prato em 2 grupos iguais, cada grupo contém uma caixa e 4 unidades. Portanto, 2x ÷ 2 = 8 ÷ 2 e x = 4. Nunca dividimos por zero.'},
+ mul:{from:{a:1,b:0,d:0,c:4},to:{a:2,b:0,d:0,c:8},operation:'×2 em ambos os membros',why:'Duplicamos tudo em cada prato: x · 2 = 4 · 2 e obtemos 2x = 8. O peso dos dois lados continua igual. Isso explica a operação inversa usada, por exemplo, em x/2 = 4: multiplicamos os dois membros por 2 e encontramos x = 8.'}
+};
+let demoKey='sub',demoApplied=false;
+function demoPieces(target,xCount,unitCount){
+ const el=$(target);el.replaceChildren();
+ for(let i=0;i<xCount;i++){const b=document.createElement('span');b.className='eq-intro-block x';b.textContent='x';el.append(b)}
+ for(let i=0;i<unitCount;i++){const b=document.createElement('span');b.className='eq-intro-block';b.textContent='1';el.append(b)}
+}
+function demoRender(){
+ const d=demos[demoKey],q=demoApplied?d.to:d.from;
+ $('eq-demo-equation').textContent=expression(q.a,q.b)+' = '+expression(q.d,q.c);
+ $('eq-demo-left-label').textContent=expression(q.a,q.b);
+ $('eq-demo-right-label').textContent=expression(q.d,q.c);
+ demoPieces('eq-demo-left',q.a,q.b);demoPieces('eq-demo-right',q.d,q.c);
+ $('eq-demo-explanation').textContent=demoApplied?'✅ Operação realizada: '+d.operation+'. '+d.why:'⚖️ Esta é a balança ANTES da operação. Clique no botão "'+d.operation+'" para ver como agir nos dois lados.';
+ for(const key of Object.keys(demos))$('eq-demo-'+key).setAttribute('aria-pressed',String(key===demoKey));
+}
+for(const key of Object.keys(demos)){
+ $('eq-demo-'+key).addEventListener('click',()=>{
+  if(demoKey===key){demoApplied=!demoApplied}else{demoKey=key;demoApplied=true}
+  demoRender();
+ });
+}
+function openIntro(){
+ $('eq-intro').hidden=false;$('eq-game-dashboard').hidden=true;
+ $('eq-intro').scrollIntoView({block:'start',behavior:'smooth'});
+ demoRender();
+}
+$('eq-intro-start').addEventListener('click',()=>{
+ $('eq-intro').hidden=true;$('eq-game-dashboard').hidden=false;
+ $('eq-game-dashboard').scrollIntoView({block:'start',behavior:'smooth'});
+});
+$('eq-intro-return').addEventListener('click',openIntro);
+
 if(!restore())render();
+demoRender();
