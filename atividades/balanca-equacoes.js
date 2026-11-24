@@ -148,7 +148,7 @@ function check(){
  const raw=$('eq-answer').value.trim(),guess=Number(raw);
  if(raw===''||!Number.isInteger(guess)){message('Digite um número inteiro para representar o peso da caixa x.','warn');return}
  if(guess!==state.c){
-  mistake('Verifique: neste momento, a balança mostra x = '+state.c+'. Use o valor indicado no prato direito.');
+  mistake('Observe o número no prato direito e teste seu valor na equação original. O resultado precisa manter os pratos iguais.');
   return;
  }
  solved=true;done++;
@@ -191,14 +191,15 @@ function download(filename,rows){
  const a=document.createElement('a');a.href=url;a.download=filename;document.body.append(a);a.click();a.remove();
  setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
-function report(){
- if(done!==40)return;
+function report(partial=false){
  const rows=[['Missão','Nível','Equação original','Valor de x','Histórico das operações','Erros','Dicas solicitadas','JPs']];
  log.forEach(x=>rows.push([x.mission,x.level,x.initial,x.value,x.operations,x.errors,x.hints,x.earned]));
- rows.push(['RESULTADO','40 missões','','','','','',''+score]);
+ if(partial&&index<40){rows.push(['EM ANDAMENTO','Próxima missão: '+(index+1),'','','','','','']);rows.push(['Equação atual',equation(state),'Operações: '+history.join(' | '),'Tentativas: '+attempts,'Dicas: '+hints,'','',''])}
+ rows.push(['RESULTADO',done+' / 40 missões','','','','','',score]);
  rows.push(['Observação','Relatório sem código pessoal, login ou cadastro. A verificação do trabalho deve ser realizada pelo professor.','','','','','','']);
- download('JP-equacoes-balanca-relatorio-'+new Date().toISOString().slice(0,10)+'.csv',rows);
- $('eq-export-status').textContent='Relatório baixado. Envie ao professor pelo canal indicado pela escola.';
+ download('JP-equacoes-balanca-'+(partial?'progresso-parcial':'relatorio-final')+'-'+new Date().toISOString().slice(0,10)+'.csv',rows);
+ const note='Arquivo baixado sem código. Entregue ao professor pelo canal indicado pela escola.';
+ if(partial)$('eq-partial-status').textContent=note;else $('eq-export-status').textContent=note;
 }
 function finish(){
  $('eq-game').hidden=true;$('eq-end').hidden=false;
@@ -209,7 +210,8 @@ function finish(){
  $('eq-end-text').textContent='Você concluiu as 40 missões, aprendeu a manter a igualdade, isolar a incógnita e conferir a solução. Resultado: '+score+' de 100 JPs. O relatório guarda cada transformação e pode ser baixado sem código.';
  $('eq-end').scrollIntoView({block:'start',behavior:'smooth'});
 }
-$('eq-report').addEventListener('click',report);
+$('eq-report').addEventListener('click',()=>report(false));
+$('eq-partial-report').addEventListener('click',()=>report(true));
 $('eq-again').addEventListener('click',()=>{
  if(!confirm('Recomeçar as 40 missões? Baixe o relatório antes para preservar os resultados.'))return;
  index=score=done=0;history=[];attempts=hints=0;log=[];solved=false;firstSolve=true;
