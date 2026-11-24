@@ -138,6 +138,7 @@ $('dt-report').addEventListener('click',()=>{
  const rows=[['Caso','Território','Texto','Inferência','Pista textual','Erros na inferência','Erros na pista','Dicas','JPs']];
  for(const r of records)rows.push([r.case,r.territory,r.passages,r.inference,r.evidence,r.wrongInference,r.wrongEvidence,r.hints,r.points]);
  rows.push(['RESUMO','20 casos','','','','','','',jps]);
+ rows.push(...JPVisibilidade.csvRows(9));
  JPPontos.saveCSV('jp-detetives-texto-relatorio-'+new Date().toISOString().slice(0,10)+'.csv',rows);
  $('dt-export-status').textContent='Relatório gerado neste aparelho. Entregue o arquivo ao professor; os dados não são transmitidos automaticamente.';
 });
