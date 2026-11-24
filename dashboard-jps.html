@@ -1,0 +1,72 @@
+<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#063966"><meta name="description" content="Painel local de JPs para a coordenação pedagógica: importar comprovantes, acompanhar pontos e classificar os 3 primeiros.">
+<title>Dashboard JPs | JP Recomposição</title><link rel="stylesheet" href="style.css?v=jps-dashboard-1">
+<style>
+*[hidden]{display:none!important}body{background:#eff6fa}.jp-wrap{max-width:1230px;margin:0 auto;padding:22px 18px 75px}
+.jp-hero{background:linear-gradient(125deg,#063966 0%,#07527b 57%,#008da7 100%);padding:clamp(25px,5vw,46px);border-radius:25px;color:white}
+.jp-hero small{color:#9df2f6;font-size:13px;letter-spacing:.12em;font-weight:800}
+.jp-hero h1{font-size:clamp(36px,5vw,61px);color:#fff;letter-spacing:-.03em;line-height:1.15;margin:11px 0 17px}
+.jp-hero p{font-size:18px;color:#d8f2f7;max-width:910px;line-height:1.6}
+.jp-hero .jp-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:19px}
+.jp-hero .jp-pills span{border:1px solid #ffffff44;background:#ffffff18;color:#eefcff;padding:9px 12px;border-radius:30px;font-size:13px;font-weight:750}
+.jp-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:18px 0}
+.jp-metric{background:white;border:1px solid #cbe3eb;border-radius:15px;padding:18px}
+.jp-metric:nth-child(1){background:#e4f5ff}.jp-metric:nth-child(2){background:#fff4da}.jp-metric:nth-child(3){background:#e6f7eb}.jp-metric:nth-child(4){background:#f1eaff}
+.jp-metric small{display:block;color:#486b80;font-size:13px;font-weight:800}.jp-metric strong{font-size:clamp(27px,3vw,43px);color:#063966}
+.jp-panel{background:#fff;border:1px solid #c9e2ea;border-radius:20px;margin:18px 0;padding:clamp(20px,3vw,32px);box-shadow:0 8px 23px #052c6011}
+.jp-panel h2{font-size:clamp(25px,3vw,35px);color:#063966;margin:0 0 10px}
+.jp-panel p,.jp-panel li{color:#3e6477;line-height:1.65;font-size:16px}
+.jp-panel .jp-strong-note{background:#fff1e3;border-left:5px solid #ce8e32;padding:15px 18px;border-radius:10px;color:#694913}
+.jp-button{background:#063966;color:white;border:2px solid #063966;border-radius:11px;padding:12px 16px;cursor:pointer;min-height:49px;font:inherit;font-weight:790}
+.jp-button.alt{background:#e7f7fb;border-color:#a7d8e2;color:#063966}
+.jp-button.danger{background:#fff0ee;border-color:#dba8a0;color:#a03c30}
+.jp-button:focus-visible{outline:3px solid #10b8cb;outline-offset:3px}
+.jp-actions{display:flex;flex-wrap:wrap;gap:10px;margin:16px 0}
+.jp-files{border:2px dashed #99cfdf;border-radius:15px;background:#f1fbfe;padding:24px}
+.jp-files label{font-weight:850;color:#063966;display:block;margin-bottom:11px}
+.jp-files input{font:inherit;max-width:100%;color:#063966}
+.jp-subinfo{font-size:14px;color:#597b8b}
+.jp-status{padding:13px;background:#e7f8ed;border-radius:11px;border-left:5px solid #2b9260;color:#24573e;font-weight:700;line-height:1.6}
+.jp-awards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;margin:22px 0}
+.jp-winner{border-radius:18px;padding:24px;background:#f7fbfd;border:2px solid #d2e4ea}
+.jp-winner:nth-child(1){border-color:#e7c56f;background:#fff7df}.jp-winner:nth-child(2){border-color:#adbfc8;background:#f0f5f8}.jp-winner:nth-child(3){border-color:#d6ae94;background:#fff2e8}
+.jp-winner .jp-medal{font-size:34px}.jp-winner small{display:block;color:#43677d;font-weight:800}
+.jp-winner strong{font-size:clamp(22px,3vw,33px);color:#063966;display:block;margin:9px 0}
+.jp-winner span{font-size:18px;font-weight:850;color:#126c83}
+.jp-table-scroll{overflow:auto;max-width:100%}.jp-table{width:100%;border-collapse:collapse;min-width:740px}
+.jp-table th,.jp-table td{text-align:left;padding:14px 11px;border-bottom:1px solid #dbe8ed}
+.jp-table th{background:#e7f7fa;color:#063966;font-size:14px}.jp-table td{color:#294f66;font-weight:600}
+.jp-table tr:nth-child(even) td{background:#fafcfd}
+.jp-code{font-family:ui-monospace,monospace;background:#e8f5f8;border-radius:6px;padding:5px 7px;color:#063966}
+.jp-empty{padding:24px;background:#f2f9fc;border-radius:12px;color:#5b7c8b}
+.jp-rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.jp-rule{border:1px solid #d1e3e9;border-radius:13px;padding:18px;background:#f7fbfe}
+.jp-rule strong{color:#063966;display:block;font-size:19px}
+.jp-rule p{margin:8px 0;font-size:14px}
+@media(max-width:820px){.jp-metrics{grid-template-columns:repeat(2,1fr)}.jp-awards,.jp-rules{grid-template-columns:1fr}}
+@media(max-width:600px){.jp-wrap{padding:12px 10px 50px}.jp-panel{padding:17px}.jp-metric{padding:12px}}
+@media print{header,footer,.jp-files,.jp-actions,.jp-status,.jp-strong-note{display:none!important}.jp-panel{box-shadow:none;break-inside:avoid}}
+</style></head>
+<body><a href="#dashboard" class="skip">Ir para o dashboard</a><header><div class="wrap head"><a class="brand" href="index.html"><span class="jp-logo-pair" aria-label="Marcas institucionais"><img src="assets/logo-jp-original.svg" alt="Escola João Paulo I"><img src="assets/logo-eti-original.svg" alt="Escola de Tempo Integral MT"></span><span><small>ESCOLA ESTADUAL JOÃO PAULO I</small><strong>JP Recomposição</strong></span></a><a href="index.html" style="color:#7ce4ef">← Portal</a></div></header>
+<main id="dashboard" class="jp-wrap">
+<section class="jp-hero"><small>COORDENAÇÃO PEDAGÓGICA · RECONHECIMENTO DA APRENDIZAGEM</small><h1>🏆 Dashboard JPs</h1><p>JPs — Pontos de Aprendizagem. Importe os comprovantes CSV das trilhas, acompanhe a participação dos estudantes e identifique os três primeiros colocados para premiação.</p><div class="jp-pills"><span>100 JPs por trilha, no máximo</span><span>Melhor tentativa por atividade</span><span>5 atividades disponíveis</span><span>Sem nomes na classificação pública</span></div></section>
+<div class="jp-metrics"><div class="jp-metric"><small>Estudantes com pontos</small><strong id="metric-students">0</strong></div><div class="jp-metric"><small>Comprovantes válidos</small><strong id="metric-records">0</strong></div><div class="jp-metric"><small>JPs acumulados</small><strong id="metric-points">0</strong></div><div class="jp-metric"><small>Atividades no programa</small><strong id="metric-activities">5</strong></div></div>
+<section class="jp-panel"><h2>Importar resultados das trilhas</h2><p>Peça aos estudantes que concluam as atividades e baixem o arquivo <strong>Comprovante JPs</strong> informando o código de participação fornecido pela escola. Aqui, importe um ou vários CSVs ao mesmo tempo.</p>
+<div class="jp-files"><label for="jp-import">Selecionar comprovantes CSV</label><input id="jp-import" type="file" accept=".csv,text/csv" multiple><p class="jp-subinfo">A importação é processada neste navegador. O arquivo deve ser gerado pelo sistema JPs, com o código escolar de participação.</p><button type="button" class="jp-button" id="jp-import-action">Importar arquivos selecionados</button></div>
+<p class="jp-status" id="jp-status" role="status" aria-live="polite">Nenhum arquivo importado nesta sessão.</p>
+<div class="jp-actions"><button type="button" class="jp-button alt" id="jp-export">⬇ Exportar classificação CSV</button><button type="button" class="jp-button alt" id="jp-backup">⬇ Backup dos comprovantes</button><button type="button" class="jp-button alt" id="jp-print">🖨️ Imprimir classificação</button><button type="button" class="jp-button danger" id="jp-clear">Apagar dados locais</button></div>
+<div class="jp-strong-note"><strong>Importante:</strong> este é um painel local, sem autenticação nem banco de dados central. O ranking só reúne os arquivos importados neste navegador. Os CSVs podem ser alterados por terceiros: antes de premiar, a coordenação deve conferir autoria, conclusão e integridade dos registros. Mantenha a correspondência entre código e nome em controle institucional separado e protegido.</div>
+</section>
+<section class="jp-panel"><h2>🥇 Pódio — três primeiros colocados</h2><p>O ranking soma o melhor resultado de cada estudante em cada atividade, até o máximo de <strong>500 JPs</strong> nas cinco trilhas atuais. Em caso de empate em JPs, é considerada a quantidade de atividades concluídas; persistindo o empate, é indicada a necessidade de deliberação institucional.</p>
+<div class="jp-awards" id="jp-podium"><div class="jp-empty">Importe os comprovantes para formar o pódio.</div></div>
+</section>
+<section class="jp-panel"><h2>Classificação geral</h2><p class="jp-subinfo">O painel não exibe nomes. Utilize códigos de participação atribuídos pela escola. A ordenação é provisória até a validação dos resultados.</p>
+<div class="jp-table-scroll"><table class="jp-table"><thead><tr><th>Posição</th><th>Código do estudante</th><th>JPs</th><th>Trilhas concluídas</th><th>Aproveitamento</th><th>Situação</th></tr></thead><tbody id="jp-ranking"><tr><td colspan="6">Sem registros. Importe os comprovantes para começar.</td></tr></tbody></table></div>
+</section>
+<section class="jp-panel"><h2>Critérios de pontuação e premiação</h2><div class="jp-rules">
+<div class="jp-rule"><strong>1 · Participação</strong><p>JPs são atribuídos apenas a atividades concluídas. O estudante pode aprender no próprio ritmo e utilizar recursos de apoio.</p></div>
+<div class="jp-rule"><strong>2 · Justiça na comparação</strong><p>Cada trilha oferece até 100 JPs. Refazer a atividade pode melhorar a pontuação, mas nunca acrescenta JPs duplicados.</p></div>
+<div class="jp-rule"><strong>3 · Validação pedagógica</strong><p>O pódio é preliminar. A escola deve avaliar autenticidade, critérios de desempate e condições equitativas de acesso antes da entrega de prêmios.</p></div>
+</div></section>
+</main><footer><div class="wrap foot"><strong>JP Recomposição · JPs — Pontos de Aprendizagem</strong><small>Painel local de acompanhamento e classificação provisória</small></div></footer>
+<script src="dashboard-jps.js?v=1"></script></body></html>

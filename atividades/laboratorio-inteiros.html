@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10384e"><meta name="description" content="Laboratório interativo de números inteiros com prática orientada, feedback e relatório para o professor.">
+<title>Laboratório de Números Inteiros | Recomposição JP</title>
+<link rel="stylesheet" href="../style.css">
+<style>
+.lab{max-width:920px;margin:auto}.lab .card{margin:20px 0;padding:26px}.lab h2{font-size:clamp(23px,3vw,29px)}
+.positive{color:#075db7!important;font-weight:800}.negative{color:#c62828!important;font-weight:800}.zero{color:#344759;font-weight:800}
+.legend{display:flex;flex-wrap:wrap;gap:12px;margin:15px 0}.legend span{background:white;border:1px solid #d7e4e8;border-radius:9px;padding:7px 12px}
+.step-list{padding-left:24px}.step-list li{padding:4px 0}
+.practice-panel{background:#edf6fb;border-left:4px solid #075db7;padding:15px 18px;border-radius:9px;margin:16px 0}
+.options{display:flex;gap:10px;flex-wrap:wrap}.options button{border:1px solid #aac8ce;background:#fff;border-radius:9px;padding:12px 19px;cursor:pointer;font:inherit;font-size:20px;min-width:78px}
+.options button:disabled{cursor:default}.options .correct{border:2px solid #25835a;background:#d9f1e6}.options .wrong{border:2px solid #b94d3d;background:#fce9e5}
+.controls{display:flex;align-items:end;gap:12px;flex-wrap:wrap}.controls label{flex:1;min-width:135px}.equation{font-size:clamp(25px,4vw,39px);font-weight:800;text-align:center;margin:22px 0;line-height:1.4}
+.hint{padding:13px;border-radius:10px;background:#eef5f6;margin:13px 0}.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.lab select,.lab input{width:100%}
+.mini{font-size:14px;color:#536e7c}.report-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.report-grid label{font-weight:650}.screen-only{}.print-only{display:none}.stage-track{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:14px 0}.stage-step{padding:10px 7px;border:1px solid #bdd2dc;border-radius:10px;background:#f0f5f7;font-size:12px;text-align:center;font-weight:700}.stage-step.done{background:#def5e9;border-color:#65af8b}.stage-step.current{border:2px solid #176b78;background:#e9f6fa}.meter{height:13px;background:#d8e7ed;border-radius:15px;overflow:hidden;margin:9px 0}.meter>div{height:100%;background:#176b78;width:0%;transition:width .25s}.locked-note{padding:12px;background:#fff7e5;border:1px solid #e7cc88;border-radius:10px}.reward{font-size:15px;color:#176b78;font-weight:750}@media(max-width:650px){.stage-track{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:650px){.report-grid{grid-template-columns:1fr}.lab .card{padding:18px}.actions .btn{flex-grow:1}}
+@media print{header,.page-hero,footer,.screen-only,.options,.actions,#explorar,#praticar,#inicio,.notice{display:none!important}.print-only{display:block!important}body{color:#000}.lab{max-width:none}.lab .card{box-shadow:none;margin:0;padding:8px;border:0}}
+
+/* Visual ampliado para leitura em Chromebook, celular e projetor */
+.lab{max-width:1040px}
+.lab .card{border-radius:22px;border:1px solid #cddfe6;box-shadow:0 9px 30px rgba(16,56,78,.075);padding:clamp(20px,3vw,34px)}
+.lab h2{font-size:clamp(27px,3.6vw,38px);letter-spacing:-.025em}
+.lab h3{font-size:clamp(22px,2.7vw,29px);line-height:1.4}
+#diagquestion{padding:22px 24px;background:#f0f6fb;border-radius:16px;border-left:5px solid #176b78;font-weight:750}
+.positive{color:#0757b5!important}.negative{color:#bd2424!important}
+.equation{font-size:clamp(42px,6.8vw,76px);line-height:1.25;padding:24px 12px;margin:22px 0;border-radius:18px;background:linear-gradient(135deg,#f1f8fc,#fff);border:2px solid #cbdfe8;letter-spacing:1px;overflow-wrap:anywhere}
+.options{gap:14px}.options button{flex:1 1 115px;min-height:76px;font-size:clamp(28px,4vw,39px);font-weight:850;border-width:2px;border-radius:14px;box-shadow:0 3px 0 #d5e1e6}
+.options button:focus-visible{outline:4px solid #e5c278}
+.lab input[type=number],.lab select{min-height:57px;font-size:clamp(21px,3vw,29px);font-weight:750}
+.lab input#explore-answer{min-height:75px;font-size:clamp(30px,5vw,45px);border:3px solid #176b78;background:#f7fcfd;text-align:center}
+.hint{font-size:clamp(17px,2.2vw,21px);line-height:1.55;padding:17px 20px}
+#level-target,#explore-target,#diag-target{font-size:clamp(18px,2.4vw,24px)}
+.stage-step{font-size:15px;padding:15px 10px;border-radius:12px}
+.meter{height:18px}.stage-track{gap:10px}
+#worksheet{background:#fff}.worksheet-top{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap}
+.worksheet-lead{background:#eef5f6;border-left:4px solid #176b78;border-radius:9px;padding:12px 15px}
+.worksheet-fields{display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;margin:18px 0 24px}
+.worksheet-fields span{border-bottom:1px solid #596f7a;min-height:35px;display:flex;align-items:end;gap:8px;font-size:14px}
+.worksheet-part{border:1px solid #cad9de;border-radius:14px;padding:16px 20px;margin:20px 0;break-inside:avoid}
+.worksheet-part h3{background:#10384e;color:#fff;border-radius:8px;padding:9px 12px;font-size:20px;margin:0 0 13px}
+.worksheet-rule{font-size:15px;color:#27485a;margin:7px 0 12px}
+.worksheet-example{font-size:19px;margin:10px 0 18px;padding:12px;background:#edf6fb;border-radius:10px}
+.worksheet-exercises{display:grid;grid-template-columns:1fr 1fr;column-gap:22px;row-gap:8px}
+.worksheet-exercises div{font-size:22px;font-weight:750;min-height:57px;padding:10px 0 16px;border-bottom:1px dotted #91a6ae;break-inside:avoid}
+.worksheet-context{font-size:16px;line-height:1.6}.worksheet-context li{margin:12px 0;break-inside:avoid}
+.worksheet-reflection{border:1px solid #cad9de;border-radius:12px;padding:14px 18px;margin:18px 0}
+.worksheet-line{height:28px;border-bottom:1px dotted #94a6ad}
+@media (max-width:620px){.worksheet-fields{grid-template-columns:1fr}.worksheet-exercises{grid-template-columns:1fr}.lab .card{padding:18px}.equation{font-size:clamp(38px,9vw,52px)}}
+@media print{
+  @page{size:A4;margin:15mm}
+  body:not(.worksheet-print) #worksheet{display:none!important}
+  body.worksheet-print main .lab>*{display:none!important}
+  body.worksheet-print main .lab>#worksheet{display:block!important}
+  body.worksheet-print .worksheet-actions{display:none!important}
+  body.worksheet-print header,body.worksheet-print footer,body.worksheet-print .page-hero{display:none!important}
+  body.worksheet-print main{padding:0!important}
+  body.worksheet-print .wrap{max-width:none!important;padding:0!important}
+  body.worksheet-print #worksheet{border:0!important;box-shadow:none!important;padding:0!important;margin:0!important}
+  body.worksheet-print #worksheet h2{font-size:23px!important;margin:0 0 8px}
+  body.worksheet-print .worksheet-top{display:block}
+  body.worksheet-print .worksheet-fields{grid-template-columns:2fr 1fr 1fr;margin:10px 0 18px}
+  body.worksheet-print .worksheet-part{padding:12px 15px;margin:14px 0;border-color:#9daeb4}
+  body.worksheet-print .worksheet-part h3{background:#e9f0f2!important;color:#000!important;padding:6px 9px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body.worksheet-print .worksheet-exercises{grid-template-columns:1fr 1fr;row-gap:5px}
+  body.worksheet-print .worksheet-exercises div{font-size:18px;min-height:51px;padding:8px 0 12px}
+  body.worksheet-print .worksheet-example{background:#f3f5f6!important;font-size:16px;padding:8px}
+  body.worksheet-print .worksheet-context{font-size:14px}
+  body.worksheet-print .worksheet-reflection{break-inside:avoid}
+  body.worksheet-print .negative{color:#a82121!important}
+  body.worksheet-print .positive{color:#064fa9!important}
+}
+
+
+/* Múltipla escolha na investigação de números inteiros */
+.explore-values{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:18px 0}
+.explore-value{display:flex;flex-direction:column;gap:7px;color:#3d6378;font-size:15px;font-weight:750}
+.explore-operand{display:grid;place-items:center;min-height:71px;padding:10px 6px;border:2px solid #d1e5ed;background:#f0f9fc;border-radius:14px;color:#063966;font-size:clamp(28px,4vw,45px);font-weight:850}
+.explore-options{margin:14px 0 22px}.explore-options button{min-height:78px}
+@media(max-width:520px){.explore-values{gap:6px}.explore-operand{min-height:59px;font-size:28px}.explore-value{font-size:12px}}
+</style>
+</head>
+<body>
+<header><div class="wrap head"><a href="../index.html" class="brand"><span class="jp-logo-pair" aria-label="Marcas da escola"><img src="../assets/logo-jp-original.svg" alt="Escola João Paulo I"><img src="../assets/logo-eti-original.svg" alt="Escola de Tempo Integral MT"></span><span><small>ESCOLA ESTADUAL JOÃO PAULO I</small><strong>JP Recomposição</strong></span></a><a href="../recomposicao.html" style="color:#63eaf1">← Recomposição</a></div></header>
+<div class="page-hero"><div class="wrap"><div class="kicker">7º ano · Matemática · Recomposição da aprendizagem</div><h1>Laboratório de Números Inteiros</h1><p>Investigue os sinais, treine com calma, receba explicações e registre seu progresso.</p></div></div>
+<main class="wrap content"><div class="lab">
+<div class="notice">Esta atividade funciona no navegador e não envia respostas para a escola. Ao final, você pode baixar um relatório e entregá-lo ao professor. Ele não substitui os registros oficiais de nota e frequência.</div>
+<section class="card"><div class="eyebrow">Sua jornada</div><h2>Treine uma operação por vez</h2><p>Todas as questões interativas são de <strong>múltipla escolha</strong>, sem digitar respostas. Primeiro, responda <strong>10 situações-problema</strong> na Atividade 1 e resolva <strong>40 exercícios (10 por operação)</strong> na Atividade 2. Depois, na Atividade 3, resolva <strong>10 adições, 10 subtrações, 10 multiplicações e 10 divisões</strong>. A cada grupo de 10 respostas, você libera a próxima operação. <strong>Não é necessário acertar tudo para avançar:</strong> leia o feedback e tente aprender com cada erro.</p><div class="stage-track" id="stage-track"><div class="stage-step current" id="stage-d">1 · 10 situações</div><div class="stage-step" id="stage-e">2 · 40 exercícios</div><div class="stage-step" id="stage-1">3 · Adição (10)</div><div class="stage-step" id="stage-2">4 · Subtração (10)</div><div class="stage-step" id="stage-3">5 · Multiplicação (10)</div><div class="stage-step" id="stage-4">6 · Divisão (10)</div></div><p id="journey-status" class="hint" aria-live="polite">Comece pelas 10 situações da Atividade 1.</p></section><div class="legend" aria-label="Legenda das cores"><span><span class="positive">+ Azul</span> = número positivo</span><span><span class="negative">− Vermelho</span> = número negativo</span><span><span class="zero">0</span> = zero (neutro)</span></div>
+<section class="card" id="inicio">
+<div class="eyebrow">Atividade 1 · Aprender e treinar</div>
+<h2>Vamos praticar os números inteiros!</h2>
+<div class="practice-panel"><strong>Reserve de 10 a 15 minutos para esta atividade.</strong> Não responda apenas uma vez: pratique vários exemplos, leia as explicações e tente melhorar. <strong>Responda às 10 situações para liberar a Atividade 2.</strong> Aproveite cada explicação, mesmo quando errar.</div>
+<h3>O que você deve fazer?</h3>
+<ol class="step-list">
+<li>Leia a situação apresentada com atenção.</li>
+<li>Identifique os valores <span class="positive">positivos (azul)</span> e <span class="negative">negativos (vermelho)</span>.</li>
+<li>Faça a conta mentalmente ou no caderno.</li>
+<li>Clique na alternativa que considera correta.</li>
+<li>Leia o feedback, mesmo quando acertar. Se errar, entenda a explicação antes de avançar.</li>
+<li>Clique em <strong>Praticar outra questão</strong> e continue treinando durante o tempo sugerido.</li>
+</ol>
+<p><strong id="diag-target">Questão 1 de 10</strong></p><div class="meter"><div id="diag-meter"></div></div><div class="eyebrow" id="diagtype">Situação 1</div><h3 id="diagquestion">Carregando situação...</h3>
+<div class="options" id="diagnostic"></div>
+<p class="hint" id="diagfeedback" role="status" aria-live="polite">Escolha uma resposta e confira a explicação.</p>
+<div class="actions"><button type="button" class="btn" id="next-diagnostic" disabled>Responda primeiro</button><a class="btn" href="#explorar" id="goto-explore" hidden>Ir para a Atividade 2 →</a><strong id="diagscore">0 acertos em 0 tentativas</strong></div>
+<p class="mini" id="diagguidance">Meta: 10 tentativas. Continue praticando até compreender os sinais.</p>
+</section>
+<section class="card" id="explorar">
+<div class="eyebrow">Atividade 2 · Questões de múltipla escolha</div><h2>Resolva e escolha a alternativa correta</h2><p class="locked-note" id="explore-lock">🔒 Responda primeiro às 10 situações da Atividade 1.</p><strong id="explore-target">Adição: 0 de 10 questões</strong><div class="meter"><div id="explore-meter"></div></div>
+<p>Responda a <strong>10 adições, 10 subtrações, 10 multiplicações e 10 divisões</strong>. Resolva cada conta no caderno, escolha uma das quatro alternativas e confira a explicação. Depois de 10 respostas, a próxima operação será liberada.</p>
+<div class="controls explore-values"><div class="explore-value"><span>Primeiro número</span><output id="a" class="explore-operand">—</output></div><div class="explore-value"><span>Operação</span><output id="op" class="explore-operand">—</output></div><div class="explore-value"><span>Segundo número</span><output id="b" class="explore-operand">—</output></div></div>
+<p class="mini"><strong>Qual é o resultado correto?</strong> Clique em uma alternativa. A correção será imediata.</p><div class="options explore-options" id="explore-choices" role="group" aria-label="Alternativas para a conta"></div><p class="actions"><button class="btn" type="button" id="explore-next" disabled>Próxima questão →</button><a class="btn" href="#praticar" id="goto-challenges" hidden>Ir para os desafios →</a></p>
+<div class="equation" id="expression" aria-live="polite"></div>
+<p class="hint" id="explain">Resolva a expressão e escolha a alternativa correta.</p><p class="mini" id="exploration-count">Total: 0 de 40 respostas.</p>
+</section>
+<section class="card" id="praticar">
+<div class="eyebrow">Atividade 3 · Desafios progressivos</div><h2>Quatro operações, quatro etapas</h2><p class="locked-note" id="challenge-lock">🔒 Resolva 10 questões de cada operação na Atividade 2 para liberar a adição.</p><p><strong id="level-target">Adição: 0 de 10 respostas</strong></p><div class="meter"><div id="level-meter"></div></div><p id="level-message" class="reward" aria-live="polite">Responda às 10 questões de adição para desbloquear a subtração.</p>
+<label for="level">Operação em estudo:</label><select id="level" disabled><option value="1">Etapa 1 — Adição (+)</option><option value="2" disabled>Etapa 2 — Subtração (−)</option><option value="3" disabled>Etapa 3 — Multiplicação (×)</option><option value="4" disabled>Etapa 4 — Divisão (÷)</option></select>
+<p class="hint">Resolva mentalmente ou no caderno. Depois de responder, confira o feedback e faça uma nova questão. Faça 10 questões de cada operação. Depois de cada resposta, leia a explicação e avance. Ao concluir 10 respostas de uma operação, a próxima será liberada.</p>
+<div class="equation" id="question" aria-label="Expressão para resolver"></div><div class="options" id="choices"></div>
+<p id="feedback" class="hint" role="status" aria-live="polite">Escolha uma alternativa para conferir seu raciocínio.</p>
+<div class="actions"><button class="btn" type="button" id="new-question" disabled>Responda primeiro</button><button class="btn" type="button" id="advance-level" hidden>Avançar para próxima operação →</button><strong id="score">Acertos: 0 de 0</strong></div>
+</section>
+<section class="card" id="monitoramento">
+<div class="eyebrow">Atividade 4 · Registro de aprendizagem</div><h2>Meu relatório para o professor</h2>
+<p>Quando terminar a prática, preencha os campos abaixo e clique em <strong>Baixar resultados (CSV)</strong>. Envie o arquivo ao professor pelo canal indicado pela escola.</p>
+<div class="report-grid screen-only"><label>Nome do estudante (para identificar o relatório)<input id="student-name" maxlength="100" autocomplete="name" placeholder="Digite seu nome"></label><label>Turma<input id="student-class" maxlength="30" placeholder="Ex.: 7º A"></label></div>
+<p class="mini">Nome e turma são utilizados somente para gerar o arquivo no seu dispositivo; não são enviados automaticamente ao JP Recomposição.</p>
+<div class="stats"><div class="stat"><small>Etapas realizadas</small><b id="participation">0%</b></div><div class="stat"><small>Desafios respondidos</small><b id="count">0</b></div><div class="stat"><small>Aproveitamento geral</small><b id="performance">—</b></div></div>
+<p class="hint" id="performance-message">Faça as atividades para acompanhar seu rendimento.</p>
+<p class="reward" id="jps-lab-total">JPs para premiação: 0 / 100 (liberados após as 90 respostas obrigatórias)</p><div class="actions screen-only"><button class="btn" type="button" id="jps-lab">🏅 Baixar comprovante JPs</button><button class="btn" id="download-csv" type="button">⬇ Baixar resultados (CSV)</button><button class="btn" id="copy-report" type="button">Copiar resumo</button><button class="btn" id="print-report" type="button">Imprimir / Salvar PDF</button><button class="btn" id="reset" type="button" style="background:#607887">Reiniciar sessão</button></div>
+<p class="mini" id="report-status" role="status" aria-live="polite"></p>
+<div class="print-only" id="print-summary"></div>
+</section>
+<section class="card" id="worksheet">
+<div class="worksheet-top"><div><div class="eyebrow">Material de estudo e revisão · 7º ano</div><h2>Síntese para o caderno: números inteiros</h2><p>Leia as regras, observe os exemplos resolvidos e registre os cálculos no espaço disponível.</p></div>
+<div class="actions worksheet-actions"><button type="button" class="btn" id="print-worksheet">🖨️ Imprimir ficha de estudos</button></div></div>
+<div class="worksheet-fields"><span><b>Estudante:</b> _____________________</span><span><b>Turma:</b> ______</span><span><b>Data:</b> ___/___/_____</span></div>
+<div class="legend"><span><span class="positive">Azul</span>: números positivos</span><span><span class="negative">Vermelho</span>: números negativos</span><span>Zero: nem positivo nem negativo</span></div>
+<div class="worksheet-part"><h3>1. Adição de números inteiros (+)</h3>
+<p class="worksheet-rule"><b>Sinais iguais:</b> some os valores absolutos e conserve o sinal. <b>Sinais diferentes:</b> subtraia os valores absolutos e conserve o sinal do número com maior valor absoluto. Se os valores absolutos forem iguais, o resultado será zero.</p>
+<p class="worksheet-example"><b>Exemplos:</b> (<span class="negative">−6</span>) + (<span class="negative">−4</span>) = <span class="negative">−10</span> &nbsp; | &nbsp; (<span class="negative">−9</span>) + (<span class="positive">+12</span>) = <span class="positive">+3</span></p>
+<div class="worksheet-exercises"><div>a) (−8) + (−7) = ______</div><div>b) (+14) + (−9) = ______</div><div>c) (−13) + (+5) = ______</div><div>d) (+11) + (+6) = ______</div><div>e) (−20) + (+20) = ______</div><div>f) (+18) + (−25) = ______</div></div></div>
+<div class="worksheet-part"><h3>2. Subtração de números inteiros (−)</h3>
+<p class="worksheet-rule">Para subtrair, <b>adicione o oposto do segundo número</b>. Atenção: subtrair um número negativo equivale a adicionar um positivo.</p>
+<p class="worksheet-example"><b>Exemplos:</b> (<span class="negative">−3</span>) − (<span class="negative">−8</span>) = −3 + 8 = <span class="positive">+5</span> &nbsp; | &nbsp; (+4) − (+11) = <span class="negative">−7</span></p>
+<div class="worksheet-exercises"><div>a) (−9) − (+4) = ______</div><div>b) (+6) − (−8) = ______</div><div>c) (−15) − (−6) = ______</div><div>d) (+18) − (+25) = ______</div><div>e) (−7) − (+10) = ______</div><div>f) (+13) − (−12) = ______</div></div></div>
+<div class="worksheet-part"><h3>3. Multiplicação de números inteiros (×)</h3>
+<p class="worksheet-rule"><b>Sinais iguais:</b> resultado positivo. <b>Sinais diferentes:</b> resultado negativo. Primeiro multiplique os valores absolutos, depois determine o sinal.</p>
+<p class="worksheet-example"><b>Exemplos:</b> (<span class="negative">−5</span>) × (<span class="negative">−3</span>) = <span class="positive">+15</span> &nbsp; | &nbsp; (<span class="positive">+7</span>) × (<span class="negative">−2</span>) = <span class="negative">−14</span></p>
+<div class="worksheet-exercises"><div>a) (−6) × (+4) = ______</div><div>b) (−8) × (−5) = ______</div><div>c) (+9) × (−7) = ______</div><div>d) (+12) × (+3) = ______</div><div>e) (−11) × (0) = ______</div><div>f) (−4) × (−9) = ______</div></div></div>
+<div class="worksheet-part"><h3>4. Divisão de números inteiros (÷)</h3>
+<p class="worksheet-rule">A regra dos sinais é a mesma da multiplicação: <b>iguais, positivo; diferentes, negativo</b>. Não existe divisão por zero.</p>
+<p class="worksheet-example"><b>Exemplos:</b> (<span class="negative">−24</span>) ÷ (<span class="negative">−6</span>) = <span class="positive">+4</span> &nbsp; | &nbsp; (<span class="positive">+35</span>) ÷ (<span class="negative">−5</span>) = <span class="negative">−7</span></p>
+<div class="worksheet-exercises"><div>a) (−48) ÷ (+6) = ______</div><div>b) (−63) ÷ (−9) = ______</div><div>c) (+56) ÷ (−7) = ______</div><div>d) (+72) ÷ (+8) = ______</div><div>e) (0) ÷ (−4) = ______</div><div>f) (−100) ÷ (+10) = ______</div></div></div>
+<div class="worksheet-part"><h3>5. Desafios: expressões e situações-problema</h3>
+<p class="worksheet-rule"><b>Ordem das operações:</b> resolva primeiro multiplicações e divisões e, depois, adições e subtrações. Utilize parênteses quando necessário.</p>
+<div class="worksheet-exercises"><div>a) (−5) + 3 × (−4) = ______</div><div>b) 18 ÷ (−3) − (−4) = ______</div><div>c) (−2) × (−6) + (−9) = ______</div><div>d) 24 ÷ (−6) + 7 = ______</div></div>
+<ol class="worksheet-context"><li>Em uma cidade, a temperatura era <b>−4 °C</b>. Durante o dia, aumentou 9 °C e, à noite, caiu 6 °C. Qual foi a temperatura final? Registre a conta.</li><li>Um mergulhador estava a <b>−15 metros</b>. Ele subiu 7 metros e depois desceu 5 metros. Qual é sua nova posição em relação à superfície?</li><li>Uma pessoa tinha saldo de <b>R$ −18</b> e recebeu R$ 30. Após pagar uma despesa de R$ 9, qual ficou sendo o saldo?</li></ol></div>
+<div class="worksheet-reflection"><b>6. Autoavaliação</b><p>Marque: ( ) Entendi os sinais &nbsp; ( ) Preciso praticar mais &nbsp; ( ) Quero ajuda do professor</p><p><b>Qual operação ainda considero mais difícil? Por quê?</b></p><div class="worksheet-line"></div><div class="worksheet-line"></div></div>
+<p class="mini">EE João Paulo I — JP Recomposição · Recomposição da Aprendizagem · Matemática · 7º ano</p>
+</section>
+</div></main><footer><div class="wrap foot"><strong>JP Recomposição — Aprender, superar e avançar.</strong><small>Escola Estadual João Paulo I · Paranaíta–MT</small></div></footer>
+<script src="jp-pontos.js?v=1"></script><script>
+'use strict';
+const $=id=>document.getElementById(id),fmt=x=>x<0?'−'+Math.abs(x):x>0?'+'+x:'0',natural=x=>x<0?'−'+Math.abs(x):String(x),wrap=x=>x<0?'('+natural(x)+')':String(x),rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+function paint(el,txt){el.replaceChildren();const parts=String(txt).split(/([−-]?\d+(?:[.,]\d+)?)/g);for(const part of parts){if(!part)continue;const n=Number(part.replace('−','-').replace(',','.'));if(/^[−-]?\d+(?:[.,]\d+)?$/.test(part)){const s=document.createElement('span');s.className=n<0?'negative':n>0?'positive':'zero';s.textContent=part;el.append(s)}else el.append(document.createTextNode(part))}}
+function msg(id,txt){paint($(id),txt)}
+const N_DIAG=10,N_EXPLORE=40,N_PER_OP=10,opnames={1:'Adição',2:'Subtração',3:'Multiplicação',4:'Divisão'};
+let right=0,total=0,answer=0,locked=false,diagLocked=false,diagIndex=0,diagRight=0,diagTotal=0,explorations=0,exploreAttempts={1:0,2:0,3:0,4:0},exploreCorrect={1:0,2:0,3:0,4:0},exploreLevel=1,exploreExpected=0,exploreLocked=false,levelAttempts={1:0,2:0,3:0,4:0},levelCorrect={1:0,2:0,3:0,4:0},expression='',level=1,questionRule='';
+const records=[],started=new Date();
+const situations=[
+{t:'Você tinha uma dívida de R$ 8 e recebeu R$ 12. Depois de pagar a dívida, quanto sobrou?',a:4,o:[-20,4,-4,20],e:'Dívida é negativa: −8 + 12 = +4. Sobram R$ 4.'},
+{t:'A temperatura era −5 °C e aumentou 8 °C. Qual é a nova temperatura?',a:3,o:[-13,13,3,-3],e:'Aumentar significa somar: −5 + 8 = +3 °C.'},
+{t:'Um elevador está no andar −3 e sobe 5 andares. Em qual andar ele chega?',a:2,o:[-8,-2,8,2],e:'Subir é acrescentar: −3 + 5 = +2.'},
+{t:'Você tinha R$ 6 e gastou R$ 10. Qual é o saldo?',a:-4,o:[4,16,-16,-4],e:'O saldo é 6 − 10 = −4: faltam R$ 4.'},
+{t:'A temperatura era +7 °C e caiu 11 °C. Qual é a temperatura final?',a:-4,o:[18,-18,4,-4],e:'Cair 11 significa subtrair: +7 − 11 = −4 °C.'},
+{t:'Um mergulhador estava em −9 m e subiu 4 m. Qual é sua posição?',a:-5,o:[-13,5,-5,13],e:'Subir 4 significa somar +4: −9 + 4 = −5 m.'},
+{t:'Quanto vale (−6) + (−3)?',a:-9,o:[9,-3,-9,3],e:'Na adição com sinais iguais, somam-se os módulos e mantém-se o sinal: −6 + (−3) = −9.'},
+{t:'Quanto vale (+4) − (−5)?',a:9,o:[-1,1,9,-9],e:'Subtrair um número negativo é somar seu oposto: 4 + 5 = +9.'},
+{t:'Quanto vale (−2) + (+9)?',a:7,o:[-11,11,-7,7],e:'Sinais diferentes: 9 − 2 = 7, e o maior módulo é positivo.'},
+{t:'Quanto vale (+3) − (+8)?',a:-5,o:[5,11,-11,-5],e:'Ao retirar 8 de 3: 3 − 8 = −5.'}
+];
+function shuffled(xs){const a=[...xs];for(let i=a.length-1;i>0;i--){const j=rand(0,i);[a[i],a[j]]=[a[j],a[i]]}return a}
+function renderDiag(){diagLocked=false;const s=situations[diagIndex%situations.length];$('diagtype').textContent='Situação '+(diagIndex+1);msg('diagquestion',s.t);$('diagnostic').replaceChildren();shuffled(s.o).forEach(v=>{const b=document.createElement('button');b.type='button';b.dataset.val=String(v);paint(b,fmt(v));b.onclick=()=>chooseDiag(v);$('diagnostic').append(b)});$('diagfeedback').textContent='Leia, calcule e escolha uma resposta. Depois, leia a explicação.';$('next-diagnostic').disabled=true;$('next-diagnostic').textContent='Responda primeiro';updateJourney()}
+function chooseDiag(v){if(diagLocked)return;diagLocked=true;const s=situations[diagIndex%situations.length],ok=v===s.a;diagTotal++;if(ok)diagRight++;records.push({etapa:'Atividade 1',nivel:'Situações-problema',questao:s.t,resposta:fmt(v),correta:fmt(s.a),acerto:ok,data:new Date().toISOString()});[...$('diagnostic').children].forEach(b=>{b.disabled=true;const n=Number(b.dataset.val);if(n===s.a)b.classList.add('correct');else if(n===v)b.classList.add('wrong')});msg('diagfeedback',(ok?'Muito bem! ':'Vamos revisar. ')+s.e);$('diagscore').textContent=diagRight+' acertos em '+diagTotal+' tentativas';if(diagTotal===10)makeExplore();$('diagguidance').textContent=diagTotal<N_DIAG?'Você respondeu '+diagTotal+' de 10 situações. Faltam '+(N_DIAG-diagTotal)+'. Leia a explicação e continue.':'Parabéns! Você completou as 10 situações. A Atividade 2 já está liberada. Você pode continuar treinando aqui, se quiser.';$('next-diagnostic').disabled=false;$('next-diagnostic').textContent=diagTotal<N_DIAG?'Próxima situação →':'Mais uma situação (opcional) →';progress();updateJourney()}
+$('next-diagnostic').onclick=()=>{if(!diagLocked)return;diagIndex++;renderDiag()};
+
+function exploreDone(){return [1,2,3,4].every(n=>exploreAttempts[n]>=10)}
+function exploreAlternatives(correct){
+ const values=new Set([correct]);
+ for(const v of shuffled([correct+1,correct-1,correct+2,correct-2,correct+3,correct-3,-correct,correct+5,correct-5,correct+10,correct-10])){if(values.size>=4)break;values.add(v)}
+ while(values.size<4)values.add(correct+rand(-20,20));
+ return shuffled([...values]);
+}
+function makeExplore(){
+ if(diagTotal<10)return;
+ exploreLocked=false;
+ let a=rand(-12,12),b=rand(-12,12),op=['','+','−','×','÷'][exploreLevel];
+ if(exploreLevel===4){b=rand(-9,9)||2;exploreExpected=rand(-10,10);a=b*exploreExpected}
+ else exploreExpected=exploreLevel===1?a+b:exploreLevel===2?a-b:a*b;
+ $('a').textContent=fmt(a);$('b').textContent=fmt(b);$('op').textContent=op;
+ msg('expression',fmt(a)+' '+op+' '+wrap(b)+' = ?');
+ $('explore-choices').replaceChildren();
+ exploreAlternatives(exploreExpected).forEach(v=>{
+  const button=document.createElement('button');button.type='button';
+  button.dataset.val=String(v);paint(button,fmt(v));
+  button.onclick=()=>chooseExplore(v);$('explore-choices').append(button);
+ });
+ $('explore-next').disabled=true;$('explore-next').textContent='Responda primeiro';
+ $('explain').textContent='Calcule e escolha a alternativa correta. Depois, leia a explicação.';
+ updateJourney();
+}
+function chooseExplore(chosen){
+ if(diagTotal<10||exploreLocked)return;
+ const ok=chosen===exploreExpected;
+ exploreLocked=true;explorations++;exploreAttempts[exploreLevel]++;
+ if(ok)exploreCorrect[exploreLevel]++;
+ const op=$('op').textContent,a=Number($('a').textContent.replace('−','-')),b=Number($('b').textContent.replace('−','-'));
+ const exp=fmt(a)+' '+op+' '+wrap(b);
+ records.push({etapa:'Atividade 2',nivel:opnames[exploreLevel],questao:exp,resposta:fmt(chosen),correta:fmt(exploreExpected),acerto:ok,data:new Date().toISOString()});
+ msg('expression',exp+' = '+fmt(exploreExpected));
+ const tip=exploreLevel===1?'Na adição, observe os sinais e compare os módulos.':exploreLevel===2?'Subtrair é somar o oposto.':'Sinais iguais dão positivo; sinais diferentes dão negativo.';
+ msg('explain',(ok?'Correto! ':'Vamos revisar. Resposta correta: '+fmt(exploreExpected)+'. ')+tip);
+ [...$('explore-choices').children].forEach(button=>{button.disabled=true;const v=Number(button.dataset.val);if(v===exploreExpected)button.classList.add('correct');else if(v===chosen)button.classList.add('wrong')});
+ $('explore-next').disabled=false;
+ $('explore-next').textContent=exploreAttempts[exploreLevel]>=10&&exploreLevel<4?'Avançar para '+opnames[exploreLevel+1]+' →':'Próxima questão →';
+ $('exploration-count').textContent='Atividade 2: '+explorations+' respostas; '+Object.values(exploreCorrect).reduce((a,b)=>a+b,0)+' acertos.';
+ progress();updateJourney();
+}
+$('explore-next').onclick=()=>{if(!exploreLocked)return;if(exploreAttempts[exploreLevel]>=10&&exploreLevel<4)exploreLevel++;makeExplore()};
+function newQuestion(){locked=false;$('feedback').textContent='Escolha uma alternativa e confira o feedback.';$('new-question').disabled=true;$('new-question').textContent='Responda primeiro';if(!exploreDone()){$('question').textContent='🔒 Adição ainda bloqueada';$('choices').replaceChildren();return}level=Number($('level').value);let a=rand(-20,20),b=rand(-20,20);const op=['','+','−','×','÷'][level];if(level===1){answer=a+b;questionRule=a*b<0?'Sinais diferentes na adição: subtraia os módulos e conserve o sinal do maior módulo.':'Sinais iguais na adição: some os módulos e conserve o sinal.'}else if(level===2){answer=a-b;questionRule='Subtrair é somar o oposto: '+natural(a)+' + '+wrap(-b)+' = '+natural(answer)+'.'}else if(level===3){a=rand(-12,12);b=rand(-12,12);answer=a*b;questionRule='Multiplique os módulos. Sinais iguais dão positivo; diferentes, negativo.'}else{b=rand(-12,12)||3;answer=rand(-12,12);a=answer*b;questionRule='Divida os módulos. Sinais iguais dão positivo; diferentes, negativo.'}
+expression=fmt(a)+' '+op+' '+wrap(b);msg('question',expression+' = ?');const opts=new Set([answer]);while(opts.size<4){const d=rand(-15,15);if(d!==0)opts.add(answer+d)}$('choices').replaceChildren();shuffled([...opts]).forEach(v=>{const button=document.createElement('button');button.type='button';button.dataset.val=String(v);paint(button,fmt(v));button.onclick=()=>check(v);$('choices').append(button)});updateJourney()}
+function check(v){if(locked)return;locked=true;total++;levelAttempts[level]++;const ok=v===answer;if(ok){right++;levelCorrect[level]++}records.push({etapa:'Atividade 3',nivel:opnames[level],questao:expression,resposta:fmt(v),correta:fmt(answer),acerto:ok,data:new Date().toISOString()});msg('feedback',(ok?'Resposta correta! Muito bem. ':'Você está aprendendo. Resposta correta: '+fmt(answer)+'. ')+questionRule);[...$('choices').children].forEach(button=>{button.disabled=true;const n=Number(button.dataset.val);if(n===answer)button.className='correct';else if(n===v)button.className='wrong'});$('score').textContent='Acertos: '+right+' de '+total;$('new-question').disabled=false;$('new-question').textContent=levelAttempts[level]>=N_PER_OP?'Mais uma para treinar (opcional) →':'Próxima questão →';progress();updateJourney()}
+$('new-question').onclick=()=>{if(!locked||!exploreDone())return;newQuestion()};
+$('level').onchange=()=>{const wanted=Number($('level').value);if(wanted>1&&levelAttempts[wanted-1]<N_PER_OP){$('level').value=String(level);return}newQuestion();updateJourney()};
+$('advance-level').onclick=()=>{if(level>=4||levelAttempts[level]<N_PER_OP)return;$('level').value=String(level+1);newQuestion();updateJourney();$('praticar').scrollIntoView({behavior:'smooth',block:'start'})};
+function updateJourney(){const completed=[diagTotal>=N_DIAG,exploreDone(),...[1,2,3,4].map(n=>levelAttempts[n]>=N_PER_OP)];const ids=['stage-d','stage-e','stage-1','stage-2','stage-3','stage-4'];let active=completed.indexOf(false);ids.forEach((id,i)=>{$(id).className='stage-step'+(completed[i]?' done':i===active?' current':'')});const messages=['Atividade 1: faltam '+Math.max(0,N_DIAG-diagTotal)+' respostas para a próxima etapa.','Atividade 2: faltam '+[1,2,3,4].reduce((s,n)=>s+Math.max(0,10-exploreAttempts[n]),0)+' questões (10 por operação) para os desafios.',...[1,2,3,4].map(n=>opnames[n]+': faltam '+Math.max(0,N_PER_OP-levelAttempts[n])+' respostas para '+(n===4?'concluir a jornada.':'liberar a próxima operação.'))];$('journey-status').textContent=active<0?'Jornada concluída! Você respondeu às 10 questões de cada operação. Agora baixe seu relatório.':messages[active];$('diag-target').textContent='Atividade 1: '+Math.min(N_DIAG,diagTotal)+' de 10 situações';$('diag-meter').style.width=Math.min(100,diagTotal/N_DIAG*100)+'%';$('goto-explore').hidden=!completed[0];$('explore-lock').hidden=completed[0];[...$('explore-choices').children].forEach(b=>{b.disabled=!completed[0]||exploreLocked});$('explore-target').textContent=opnames[exploreLevel]+': '+Math.min(10,exploreAttempts[exploreLevel])+' de 10 questões concluídas';$('explore-meter').style.width=Math.min(100,exploreAttempts[exploreLevel]/10*100)+'%';$('goto-challenges').hidden=!completed[1];$('challenge-lock').hidden=completed[1];$('level').disabled=!completed[1];[...$('level').options].forEach((o,i)=>{o.disabled=!completed[1]||(i>0&&!completed[1+i]);const names=['Etapa 1 — Adição (+)','Etapa 2 — Subtração (−)','Etapa 3 — Multiplicação (×)','Etapa 4 — Divisão (÷)'];o.textContent=names[i]+(o.disabled?' (bloqueado)':'')});const n=levelAttempts[level];$('level-target').textContent=opnames[level]+': '+Math.min(N_PER_OP,n)+' de 10 questões respondidas';$('level-meter').style.width=Math.min(100,n/N_PER_OP*100)+'%';$('advance-level').hidden=!(n>=N_PER_OP&&level<4);$('advance-level').textContent='Ir para '+opnames[level+1]+' →';$('level-message').textContent=n>=N_PER_OP?(level<4?'Parabéns! Você concluiu '+opnames[level].toLowerCase()+'. A próxima operação está liberada; você também pode continuar treinando aqui.':'Você concluiu todas as quatro operações. Baixe seu relatório!'):'Faltam '+(N_PER_OP-n)+' respostas em '+opnames[level].toLowerCase()+'. Leia o feedback após cada tentativa: não é necessário acertar todas.';if(completed[1]&&$('question').textContent.includes('bloqueada'))newQuestion()}
+function progress(){const completed=[diagTotal>=N_DIAG,exploreDone(),...[1,2,3,4].map(n=>levelAttempts[n]>=N_PER_OP)].filter(Boolean).length;$('participation').textContent=Math.round(completed/6*100)+'%';const all=diagTotal+explorations+total,hit=diagRight+Object.values(exploreCorrect).reduce((x,y)=>x+y,0)+right;$('performance').textContent=all?Math.round(hit/all*100)+'%':'—';$('count').textContent=String(all);const jps=Math.round(hit/Math.max(1,all)*100);$('jps-lab-total').textContent='JPs: '+jps+' / 100 · '+(diagTotal>=10&&exploreDone()&&[1,2,3,4].every(n=>levelAttempts[n]>=10)?'Comprovante liberado':'Conclua 10 situações + 40 exercícios + 40 desafios para pontuar');$('performance-message').textContent=!all?'Comece pela Atividade 1 para acompanhar seus resultados.':all<10?'Continue praticando e lendo as explicações.':hit/all>=.8?'Bom desempenho. Continue para a próxima operação!':hit/all>=.5?'Você está avançando. Leia novamente as explicações das respostas incorretas.':'É normal precisar praticar. Retome as regras de sinais e procure orientação do professor.'}
+function elapsed(){return Math.floor((Date.now()-started.getTime())/60000)}
+function summary(){const all=diagTotal+explorations+total,hit=diagRight+Object.values(exploreCorrect).reduce((a,b)=>a+b,0)+right,rate=all?Math.round(hit/all*100)+'%':'—';return 'EE João Paulo I — Recomposição da Aprendizagem\nLaboratório de números inteiros | 7º ano\nEstudante: '+$('student-name').value.trim()+'\nTurma: '+$('student-class').value.trim()+'\nData: '+new Date().toLocaleString('pt-BR')+'\nTempo nesta sessão: '+elapsed()+' minuto(s)\nAtividade 1: '+diagRight+'/'+diagTotal+' acertos\nAtividade 2: '+explorations+' respostas\n'+[1,2,3,4].map(n=>'Atividade 2 — '+opnames[n]+': '+exploreCorrect[n]+'/'+exploreAttempts[n]+' acertos (meta: 10)').join('\n')+'\nAtividade 3: '+right+'/'+total+' acertos\n'+[1,2,3,4].map(n=>'Atividade 3 — '+opnames[n]+': '+levelCorrect[n]+'/'+levelAttempts[n]+' acertos (meta: 10)').join('\n')+'\nJornada completa: '+(diagTotal>=10&&exploreDone()&&[1,2,3,4].every(n=>levelAttempts[n]>=10)?'SIM':'NÃO')+'\nTotal de respostas: '+all+'\nTotal de acertos: '+hit+'\nAproveitamento geral: '+rate+'\nEtapas realizadas: '+$('participation').textContent+'\nRelatório gerado no dispositivo, sem envio automático à escola. Não equivale a nota ou frequência oficial.'}
+function csvField(v){let s=String(v??'').replace(/[\r\n]+/g,' ').trim();if(/^[=+@\t]/.test(s)||/^-{1}(?!\d)/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+$('download-csv').onclick=()=>{if(!records.length){$('report-status').textContent='Resolva pelo menos uma questão antes de baixar resultados.';return}const name=$('student-name').value.trim(),cls=$('student-class').value.trim();if(!name||!cls){$('report-status').textContent='Preencha nome e turma para gerar o arquivo.';return}const header=['Estudante','Turma','Data da sessão','Minutos de sessão','Atividade','Operação','Questão','Resposta marcada','Resposta correta','Resultado'],lines=[header.map(csvField).join(';')];for(const r of records)lines.push([name,cls,new Date(r.data).toLocaleString('pt-BR'),elapsed(),r.etapa,r.nivel,r.questao,r.resposta,r.correta,r.acerto?'Acerto':'Erro'].map(csvField).join(';'));lines.push(['','','','','RESUMO','',summary().replace(/\n/g,' | '),'','',''].map(csvField).join(';'));const blob=new Blob(['\uFEFF'+lines.join('\r\n')],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='portal-jp-inteiros-7ano-'+new Date().toISOString().slice(0,10)+'.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);$('report-status').textContent='CSV baixado. Entregue ao professor pelo canal indicado pela escola.'};
+$('jps-lab').onclick=()=>{const hit=diagRight+Object.values(exploreCorrect).reduce((a,b)=>a+b,0)+right;const attempts=diagTotal+explorations+total;JPPontos.exportar({atividade:'inteiros-laboratorio',concluida:diagTotal>=10&&exploreDone()&&[1,2,3,4].every(n=>levelAttempts[n]>=10),jps:Math.round(hit/Math.max(1,attempts)*100)})};
+$('copy-report').onclick=async()=>{try{await navigator.clipboard.writeText(summary());$('report-status').textContent='Resumo copiado.'}catch(e){$('report-status').textContent='Não foi possível copiar. Use o CSV.'}};
+$('print-report').onclick=()=>{$('print-summary').textContent=summary();$('print-summary').style.whiteSpace='pre-wrap';document.body.classList.remove('worksheet-print');window.print()};
+$('reset').onclick=()=>{if(!confirm('Reiniciar todas as etapas? Os resultados ainda não baixados serão perdidos.'))return;right=total=diagRight=diagTotal=diagIndex=explorations=0;exploreAttempts={1:0,2:0,3:0,4:0};exploreCorrect={1:0,2:0,3:0,4:0};exploreLevel=1;exploreLocked=false;levelAttempts={1:0,2:0,3:0,4:0};levelCorrect={1:0,2:0,3:0,4:0};level=1;records.length=0;$('level').value='1';$('score').textContent='Acertos: 0 de 0';$('diagscore').textContent='0 acertos em 0 tentativas';$('diagguidance').textContent='Responda às 10 situações para avançar.';$('exploration-count').textContent='Total: 0 de 40 respostas.';$('explore-choices').replaceChildren();$('a').textContent='—';$('b').textContent='—';$('op').textContent='—';$('explore-next').disabled=true;$('expression').textContent='';$('explain').textContent='Escolha uma alternativa em cada questão.';renderDiag();newQuestion();progress();updateJourney();$('report-status').textContent='Sessão reiniciada.'};
+$('print-worksheet').addEventListener('click',()=>{document.body.classList.add('worksheet-print');window.print()});
+window.addEventListener('afterprint',()=>document.body.classList.remove('worksheet-print'));
+renderDiag();newQuestion();progress();updateJourney();
+</script></body></html>

@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="pt-BR"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#063966">
+<meta name="description" content="Aula gamificada de áreas em malha quadriculada: investigue figuras e construa retângulos, quadrados e triângulos. Funciona sem GeoGebra.">
+<title>Missão Geometria · Áreas na malha | JP Recomposição</title>
+<link rel="stylesheet" href="../style.css?v=areas-independente-1">
+<style>
+:root{--navy:#063966;--blue:#075a86;--teal:#008ca7;--cyan:#05c9dc;--ink:#153e58;--pale:#edf8fb;--line:#c7e0e9}
+*{box-sizing:border-box} [hidden]{display:none!important}
+body{background:#f1f7fa}.game-wrap{max-width:1200px;margin:0 auto;padding:22px 18px 68px}
+.game-hero{background:linear-gradient(126deg,#052d56 0%,#065178 63%,#078aa3 100%);border-radius:23px;padding:clamp(25px,5vw,45px);color:white;position:relative;overflow:hidden}
+.game-hero:before{content:"";position:absolute;right:-50px;bottom:-140px;width:330px;height:330px;border:48px solid #ffffff11;border-radius:48px;transform:rotate(23deg)}
+.game-hero>*{position:relative}.game-hero .sup{color:#a2f1f5;font-size:13px;font-weight:850;letter-spacing:.13em}
+.game-hero h1{font-size:clamp(36px,5.8vw,69px);line-height:1.08;letter-spacing:-.035em;max-width:850px;margin:12px 0 20px;color:white}
+.game-hero p{font-size:clamp(17px,2vw,22px);line-height:1.6;max-width:860px;color:#e5f7fc;margin:10px 0}
+.game-pills{display:flex;gap:9px;flex-wrap:wrap;margin-top:19px}.game-pills span{padding:10px 13px;background:#ffffff18;border:1px solid #ffffff42;border-radius:30px;font-size:14px;font-weight:750}
+.game-hud{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;margin:18px 0}
+.game-hud>div{background:white;border:1px solid var(--line);border-radius:15px;padding:16px;box-shadow:0 4px 12px #052c6020}
+.game-hud small{font-size:12px;color:#547388;display:block;font-weight:740;margin-bottom:5px}
+.game-hud strong{color:var(--navy);font-size:clamp(23px,3vw,36px);font-weight:900}
+.game-progress{height:13px;background:#cfe5ec;border-radius:20px;overflow:hidden;margin:14px 0 23px}.game-progress>div{height:100%;background:linear-gradient(90deg,#008aa7,#08b9c8);width:0;transition:width .2s}
+.game-tabs{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px}.game-tabs span{background:white;border:1px solid var(--line);color:#53748a;padding:12px 17px;border-radius:11px;font-weight:850}
+.game-tabs .active{background:var(--navy);color:white;border-color:var(--navy)}.game-tabs .done{background:#e2f5e9;color:#267549;border-color:#a5d6b8}
+.game-main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(290px,.95fr);align-items:start;gap:20px}
+.game-card{background:white;border:1px solid var(--line);border-radius:20px;box-shadow:0 6px 21px #073b6010;padding:clamp(18px,2.7vw,29px);min-width:0}
+.game-card h2{font-size:clamp(24px,3vw,33px);color:var(--navy);line-height:1.18;margin:2px 0 13px}
+.game-card p,.game-card li{font-size:16px;line-height:1.58}
+.game-label{font-weight:850;letter-spacing:.08em;color:#00839e;font-size:12px}
+.game-note{background:#eaf7fa;color:#285872;padding:13px 15px;border-radius:10px;border-left:4px solid var(--teal);font-weight:740;margin:14px 0;line-height:1.55}
+.grid-stage{background:#fbfeff;border:1px solid #b7dce5;border-radius:12px;overflow:hidden;margin-top:13px}
+.grid-stage svg{width:100%;height:auto;display:block;touch-action:manipulation;user-select:none}
+.grid-legend{font-size:14px;color:#4b697c;line-height:1.5;margin:9px 0}
+.game-controls{display:flex;flex-wrap:wrap;gap:9px;margin:14px 0}
+.game-btn{border:2px solid var(--navy);border-radius:11px;padding:11px 16px;min-height:48px;background:var(--navy);color:white;font-weight:820;cursor:pointer;font-size:15px;text-decoration:none}
+.game-btn.ghost{background:#e8f7fb;color:var(--navy);border-color:#a7d7e1}.game-btn:disabled{opacity:.45;cursor:default}
+.game-btn:focus-visible,.game-options button:focus-visible,.grid-stage svg:focus-visible{outline:3px solid var(--cyan);outline-offset:3px}
+.game-task{font-size:clamp(23px,3vw,34px);line-height:1.24;font-weight:870;color:var(--navy);margin:11px 0}
+.game-prompt{color:#45667a}
+.game-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:16px 0}
+.game-options button{min-height:77px;border-radius:13px;border:2px solid #b7d9e3;background:#f8fdff;color:var(--navy);font-size:clamp(22px,3vw,32px);font-weight:900;cursor:pointer}
+.game-options button:hover:not(:disabled){background:#d9f5fa;border-color:#008aa7}
+.game-options button.correct{background:#dcf5e7;border-color:#258650}
+.game-options button.wrong{background:#fce6e2;border-color:#ba5547}
+.game-options button:disabled{cursor:default}
+.game-feedback{border-left:5px solid #008aa7;background:#eef7fa;border-radius:10px;padding:15px 17px;line-height:1.6;color:#265367;margin:15px 0}
+.game-feedback.right{border-color:#288450;background:#e4f6eb}
+.game-feedback.review{border-color:#c77349;background:#fff1e8}
+.game-teacher{margin-top:23px}.game-teacher details{background:white;border:1px solid #d0e6ec;border-radius:11px;padding:14px 17px;margin:10px 0}
+.game-teacher summary{cursor:pointer;font-weight:850;color:var(--navy)}
+.game-finish{background:linear-gradient(120deg,#063966,#087e97);border-radius:19px;padding:28px;color:white;margin:24px 0}
+.game-finish h2{font-size:clamp(28px,4vw,42px);color:white}
+.game-finish p{color:#e5f7fa;font-size:18px;line-height:1.6}
+.game-finish .game-btn{background:#b1f2f6;color:#063966;border-color:#b1f2f6}
+.build-coordinate-controls{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin:16px 0}
+.build-coordinate-controls label{display:flex;flex-direction:column;gap:5px;font-size:14px;font-weight:760;color:#315974}
+.build-coordinate-controls select{min-width:104px;padding:11px;border:1px solid #9cbdc9;border-radius:9px;background:white;color:#073b60;font-size:16px}
+.build-stat{padding:13px 15px;border-radius:11px;background:#ecf8fc;color:#315c70;line-height:1.6;margin:12px 0}
+.build-target{font-size:clamp(38px,5vw,55px);color:#063966;font-weight:900;line-height:1.1;margin:13px 0}
+.build-mini{font-size:14px;color:#4d7284}
+.print-grid{display:none}
+@media(max-width:900px){.game-main{grid-template-columns:1fr}}
+@media(max-width:630px){.game-wrap{padding:12px 10px 45px}.game-hud{grid-template-columns:1fr 1fr}.game-hud>div{padding:11px}.game-card{padding:16px}.game-tabs span{padding:9px}.game-hero h1{font-size:clamp(33px,9vw,48px)}}
+@media print{header,footer,.game-hud,.game-progress,.game-tabs,.game-main,.game-teacher,.game-hero,.game-finish{display:none!important}
+ .print-grid{display:block!important;page-break-before:auto;color:black}
+ .print-grid h2{font-size:22pt}.print-grid p{font-size:11pt}
+ .print-centimeter{width:18cm;height:12cm;max-width:none;border:1px solid #555;background-image:linear-gradient(to right,#c2ccd2 1px,transparent 1px),linear-gradient(to bottom,#c2ccd2 1px,transparent 1px);background-size:1cm 1cm;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ @page{size:A4;margin:15mm}}
+
+/* Paleta da missão gamificada: áreas por cores, conquistas e estados */
+.game-hud>div:nth-child(1){background:#e2f6ff;border-color:#9edcf2}
+.game-hud>div:nth-child(2){background:#ecf8ee;border-color:#aedfba}
+.game-hud>div:nth-child(3){background:#fff3cf;border-color:#f4d481}
+.game-hud>div:nth-child(4){background:#f0e7ff;border-color:#d4b8f7}
+.game-hud>div:nth-child(3) strong{color:#a56c02}
+.game-hud>div:nth-child(4) strong{color:#6c3ac0}
+.game-tabs span.active{background:linear-gradient(115deg,#063966,#078da7);box-shadow:0 5px 13px #06396628}
+.game-card:has(#area-grid){border-top:6px solid #05c9dc}
+.game-card:has(#task-heading){border-top:6px solid #8f6af4}
+.game-options button:nth-child(1){background:#eff7ff}
+.game-options button:nth-child(2){background:#fff6e8}
+.game-options button:nth-child(3){background:#f1eafa}
+.game-options button:nth-child(4){background:#eaf8ee}
+.game-options button.correct{background:#d6f5e5}
+.game-options button.wrong{background:#ffdedb}
+#build-target{display:inline-block;background:#fff0cd;border:2px solid #f1ce72;border-radius:15px;padding:11px 16px}
+#build-measures{border-left:4px solid #08a8b6}
+.game-feedback.right{font-weight:700}
+.game-btn:hover:not(:disabled){filter:brightness(1.07);transform:translateY(-1px)}
+.game-btn{transition:transform .14s,filter .14s}
+@media(prefers-reduced-motion:reduce){.game-btn,.game-progress>div{transition:none}}
+</style></head>
+<body><a class="skip" href="#main">Ir à aula</a>
+<header><div class="wrap head"><a href="../index.html" class="brand"><span class="jp-logo-pair" aria-label="Logos da escola"><img src="../assets/logo-jp-original.svg" alt="Escola João Paulo I"><img src="../assets/logo-eti-original.svg" alt="Escola de Tempo Integral MT"></span><span><small>ESCOLA ESTADUAL JOÃO PAULO I</small><strong>JP Recomposição</strong></span></a><a href="../componentes/matematica.html" style="color:#87eaf5">← Matemática</a></div></header>
+<main id="main" class="game-wrap">
+<section class="game-hero"><span class="sup">MISSÃO GEOMETRIA · RECOMPOSIÇÃO DA APRENDIZAGEM</span>
+<h1>Desafio das Áreas<br>na Malha Quadriculada</h1>
+<p>Uma aula gamificada para aprender fazendo: observe a malha, conte unidades quadradas, resolva desafios e construa figuras com a área solicitada.</p>
+<p><strong>Distância entre linhas: 1 cm na escala matemática. Cada quadradinho representa 1 cm².</strong></p>
+<div class="game-pills"><span>🎨 Malha colorida</span><span>🏆 20 desafios</span><span>⭐ Conquistas e JPs</span><span>🧩 Construção por pontos</span><span>💡 Dicas a cada erro</span></div>
+</section>
+<div class="game-hud"><div><small>Fase atual</small><strong id="hud-phase">1 / 2</strong></div><div><small>Progresso</small><strong id="hud-progress">0 / 20</strong></div><div><small>Pontuação</small><strong id="hud-xp">0 JPs</strong></div><div><small>Conquista</small><strong id="hud-rank">Explorador</strong></div></div>
+<div class="game-progress" aria-label="Progresso da aula"><div id="hud-meter"></div></div>
+<div class="game-tabs" aria-label="Etapas da aula"><span class="active" id="tab-1">1 · Descobrir áreas (12)</span><span id="tab-2">2 · Construir figuras (8)</span></div>
+<div class="game-main" id="game-main">
+<section class="game-card"><span class="game-label" id="grid-stage-label">MALHA QUADRICULADA · 1 CM POR INTERVALO</span>
+<h2 id="grid-title">Observe e investigue</h2>
+<div id="grid-note" class="game-note">Conte os quadradinhos. A área não aparece antes da resposta.</div>
+<div class="grid-stage"><svg id="area-grid" viewBox="0 0 600 450" role="img" tabindex="0" aria-label="Malha de 1 em 1 para observar ou construir figuras"></svg></div>
+<p class="grid-legend">Os eixos estão numerados <strong>de 1 em 1</strong>. A escala de 1 cm é matemática: a dimensão física na tela varia conforme o aparelho.</p>
+<div id="build-coordinates" class="build-coordinate-controls" hidden><label>Coluna (cm)<select id="point-x"></select></label><label>Linha (cm)<select id="point-y"></select></label><button class="game-btn ghost" id="point-add" type="button">Adicionar vértice</button></div>
+<div class="game-controls"><button id="hint" class="game-btn ghost" type="button">Quero uma dica</button><button id="undo" class="game-btn ghost" type="button" hidden>Desfazer ponto</button><button id="clear" class="game-btn ghost" type="button" hidden>Limpar figura</button><button id="print-grid" class="game-btn ghost" type="button">Imprimir malha 1 cm</button></div>
+</section>
+<section class="game-card"><span class="game-label" id="task-level">FASE 1 · NÍVEL 1</span><h2 id="task-heading">Qual é a área da figura?</h2><p id="task-prompt" class="game-prompt"></p>
+<div id="answer-buttons" class="game-options" role="group" aria-label="Quatro alternativas de área"></div>
+<div id="build-area" hidden><div class="build-target" id="build-target">12 cm²</div><p class="game-prompt" id="build-instructions">Marque os vértices na malha.</p><div id="build-measures" class="build-stat">Marque os pontos da figura. As distâncias e a área calculada não serão exibidas antes da conferência.</div><button id="check-build" class="game-btn" type="button">Conferir minha construção</button></div>
+<div id="feedback" class="game-feedback" role="status" aria-live="polite">Observe a figura e escolha uma alternativa.</div>
+<div class="game-controls"><button class="game-btn" id="next" type="button" disabled>Responda para avançar</button></div>
+<p id="tries-label" class="build-mini"></p>
+</section>
+</div>
+<section id="game-finish" class="game-finish" hidden><h2>🏆 Missão Geometria concluída!</h2><p id="finish-summary"></p><div class="game-controls"><button class="game-btn" id="area-jps" type="button">🏅 Baixar comprovante JPs</button><button class="game-btn" id="download-report" type="button">Baixar relatório CSV</button><button class="game-btn" id="restart" type="button">Refazer aula</button></div><p id="report-status" role="status"></p></section>
+<section class="game-teacher"><div class="game-card"><h2>Orientações para aprender e ensinar</h2>
+<details open><summary>Como o estudante realiza a aula?</summary><p><strong>Fase 1:</strong> observe 12 figuras, conte os quadradinhos, calcule e escolha uma das quatro respostas. A malha não apresenta medidas de lados nem área calculada antes da conferência. <strong>Fase 2:</strong> construa 8 figuras marcando pontos da malha; para retângulos, marque dois cantos opostos, e para triângulos, três vértices, com os dois primeiros na mesma linha. Se errar, leia a orientação e tente novamente.</p></details>
+<details><summary>Objetivos pedagógicos da recomposição</summary><p>Reconhecer unidade de área, diferenciar área de perímetro, associar base e altura às quadrículas, decompor figuras compostas e estabelecer as fórmulas por investigação. Alternar contagem, comparação, previsão e explicação oral. Proponha que o estudante desenhe no caderno uma figura diferente com a mesma área.</p></details>
+<details><summary>Quando utilizar fórmulas?</summary><p>Algumas questões apresentam pistas como <strong>A = base × altura</strong>, <strong>A = (base × altura) ÷ 2</strong> e <strong>A = (B + b) × h ÷ 2</strong>. Outras exigem descobrir ou aplicar a relação sem ela visível. Na fase de construção, dicas graduais oferecem o apoio necessário.</p></details>
+<details><summary>Escala e impressão</summary><p>Na tela, cada intervalo corresponde matematicamente a 1 cm, mas a dimensão física depende da resolução do aparelho. Para ter quadradinhos com lados de <strong>1 cm físico</strong>, use o botão de impressão, selecione papel A4 e imprima a <strong>100%, tamanho real, sem ajustar à página</strong>. Confira com régua depois de imprimir.</p></details>
+<details><summary>Resultados e privacidade</summary><p>Os registros ficam nesta sessão e são exportados em CSV apenas quando solicitados. O portal não coleta nome nem matrícula, não envia respostas à escola automaticamente e não substitui avaliações oficiais.</p></details></div></section>
+<section class="print-grid"><h2>JP Recomposição — Malha de quadrados de 1 cm</h2><p>Estudante: __________________________________ Turma: __________ Data: ____/____/______</p><p>Construa um retângulo com área de 12 cm² e um triângulo com área de 6 cm². Justifique as medidas escolhidas.</p><div class="print-centimeter"></div><p>Minha justificativa: _________________________________________________________________________</p><p>Imprima em tamanho real, escala 100%, sem ajustar à página. Meça um quadradinho com régua.</p></section>
+</main><footer><div class="wrap foot"><strong>JP Recomposição · Aprender, superar e avançar.</strong><small>EE João Paulo I · Paranaíta–MT</small></div></footer>
+<script src="jp-pontos.js?v=1"></script><script src="areas-interativas.js?v=jps-1"></script></body></html>
