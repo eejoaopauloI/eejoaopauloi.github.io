@@ -157,6 +157,7 @@ function csv(){
  const txt=$('vm-editor').value.trim().replace(/\r?\n/g,' / ');
  lines.push(['Texto do estudante','Oficina',txt,'Analisar autoria, uso expressivo e sentido','','','','']);
  lines.push(['Resumo','3 poemas / 12 desafios','','JPs provisórios','','','',points]);
+ lines.push(...JPVisibilidade.csvRows(8));
  JPPontos.saveCSV('jp-busca-ativa-literatura-poesia-contemporanea-'+new Date().toISOString().slice(0,10)+'.csv',lines);
  $('vm-status').textContent='Relatório e poema exportados. Entregue ao professor de Literatura para apreciação.';
 }
