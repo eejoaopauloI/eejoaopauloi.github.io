@@ -28,7 +28,7 @@ const save=()=>{try{state.reviewMode=review;localStorage.setItem(key,JSON.string
 const qid=(i,s)=>i+'-'+s;
 const keyNow=()=>qid(state.active,state.step)+(review?'~revision':'');
 const lesson=()=>lessons[state.active];
-const all=Object.keys(state.completed).filter(k=>state.completed[k]).length;
+const all=()=>Object.keys(state.completed).filter(k=>state.completed[k]).length;
 const done=()=>Object.values(state.answers).filter(a=>a?.done).length;
 const pts=()=>Object.values(state.best).reduce((sum,n)=>sum+(Number(n)||0),0);
 const levelDone=n=>lessons.filter(x=>x.level===n).every((x)=>state.completed[lessons.indexOf(x)]);
