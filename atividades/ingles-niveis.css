@@ -40,3 +40,8 @@ body{background:#eaf4f8;color:var(--en-ink)}[hidden]{display:none!important}
 .en-footer-note{margin:20px 0;font-size:13px;color:#5a7e90}
 @media(max-width:780px){.en-level-body{grid-template-columns:1fr}.en-stats{grid-template-columns:repeat(2,1fr)}.en-vocab,.en-fields{grid-template-columns:1fr}.en-wrap{padding:12px 12px 65px}}
 @media(prefers-reduced-motion:reduce){.en-progress>div{transition:none}}
+.en-diagnostic{display:grid;gap:10px;margin:17px 0}
+.en-diagnostic-item{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px;align-items:center;padding:13px 15px;background:#f0f9fc;border:1px solid #c4e4ed;border-radius:12px}
+.en-diagnostic-item strong{color:#0b4a6b;font-size:15px}
+.en-diagnostic-item span{color:#426c80;font-size:13px;font-weight:750}
+@media print{.en-hero,.learn-header,.learn-top,.en-btn,.en-levels,#en-play,#en-complete,.en-actions{display:none!important}.en-panel{box-shadow:none;break-inside:avoid}body{background:white}}
