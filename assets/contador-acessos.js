@@ -14,7 +14,9 @@
   'busca-ativa-multidisciplinar-3em.html':['busca-ativa-multidisciplinar-3em','🎓 Missão Conexões · EM'],
   'busca-ativa-multidisciplinar-2em.html':['busca-ativa-multidisciplinar-2em','🧭 Saberes em Conexão · 2º EM'],
   'busca-ativa-multidisciplinar-8ano.html':['busca-ativa-multidisciplinar-8ano','📚 Aprender e Conectar · 8º ano'],
-  'ingles-niveis.html':['ingles-niveis','🌎 JP Inglês · Missão English']
+  'ingles-niveis.html':['ingles-niveis','🌎 JP Inglês · Missão English'],
+  'matematica-proporcoes-escala.html':['matematica-proporcoes-escala','📐 Proporção e Escala'],
+  'geografia-escalas.html':['geografia-escalas','🗺️ Cartografia · Escalas']
  };
  const names=Object.fromEntries(Object.values(items).map(([id,name])=>[id,name]));
  const config=window.JPAcessosConfig||{};
