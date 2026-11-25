@@ -9,7 +9,8 @@
   'laboratorio-inteiros.html':['inteiros-laboratorio','🔢 Laboratório de Inteiros'],
   'palavras-vivas.html':['palavras-vivas','📖 Palavras Vivas'],
   'detetives-texto.html':['detetives-texto','🔎 Detetives do Texto'],
-  'versos-em-movimento.html':['versos-em-movimento','✍️ Versos em Movimento']
+  'versos-em-movimento.html':['versos-em-movimento','✍️ Versos em Movimento'],
+  'busca-ativa-multidisciplinar.html':['busca-ativa-multidisciplinar','🌎 Missão Conexões']
  };
  const names=Object.fromEntries(Object.values(items).map(([id,name])=>[id,name]));
  const config=window.JPAcessosConfig||{};
