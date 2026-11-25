@@ -172,7 +172,7 @@ function makeExercises(l){
  const meaning=l.vocab[0];
  return [
  {mode:'mc',label:'VOCABULÁRIO',prompt:'O que significa "'+meaning[0]+'"?',options:shuffleUnique([meaning[1],...l.vocab.slice(1).map(x=>x[1])]),answer:meaning[1],explanation:'"'+meaning[0]+'" significa "'+meaning[1]+'".'},
- {mode:'audio',label:'ESCUTA E COMPREENSÃO',prompt:'Ouça a frase e escolha seu significado em português.',audio:l.listen,options:[l.listenPt,l.translation,...l.vocab.slice(0,2).map(x=>x[1])],answer:l.listenPt,explanation:'A expressão "'+l.listen+'" corresponde a "'+l.listenPt+'".'},
+ {mode:'audio',label:'ESCUTA E COMPREENSÃO',prompt:'Ouça a frase e escolha seu significado em português.',audio:l.listen,options:[l.listenPt,...[l.translation,...l.vocab.map(x=>x[1]),'uma frase sobre outro assunto'].filter(x=>!eq(x,l.listenPt)).slice(0,3)],answer:l.listenPt,explanation:'A expressão "'+l.listen+'" corresponde a "'+l.listenPt+'".'},
  {mode:'mc',label:'COMPLETE A FRASE',prompt:l.fill[0],options:l.fill[1],answer:l.fill[1][l.fill[2]],explanation:'A opção correta completa a frase respeitando a estrutura estudada: '+l.tip},
  {mode:'order',label:'ORGANIZE A FRASE',prompt:'Organize as palavras para dizer em inglês: '+l.order[0],answer:l.order[1],explanation:'A ordem adequada é: '+l.order[1]+'.'},
  {mode:'type',label:'ESCRITA',prompt:l.type[0],answer:l.type[1],explanation:'A escrita esperada é: '+l.type[1]+'.'},
