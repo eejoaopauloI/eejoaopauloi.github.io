@@ -8,7 +8,7 @@ revoke all on schema jp_privado from public, anon, authenticated;
 create table if not exists jp_privado.acessos_atividades (
   atividade text not null check (atividade in (
     'balanca-equacoes','circuito-tabuada','areas-malha','inteiros-desafios',
-    'inteiros-laboratorio','palavras-vivas','detetives-texto','versos-em-movimento','busca-ativa-multidisciplinar','busca-ativa-multidisciplinar-3em'
+    'inteiros-laboratorio','palavras-vivas','detetives-texto','versos-em-movimento','busca-ativa-multidisciplinar','busca-ativa-multidisciplinar-3em','busca-ativa-multidisciplinar-2em'
   )),
   navegador uuid not null,
   acessos integer not null default 1 check (acessos > 0),
@@ -25,7 +25,7 @@ as $$
 begin
   if p_navegador is null or p_atividade not in (
     'balanca-equacoes','circuito-tabuada','areas-malha','inteiros-desafios',
-    'inteiros-laboratorio','palavras-vivas','detetives-texto','versos-em-movimento','busca-ativa-multidisciplinar','busca-ativa-multidisciplinar-3em'
+    'inteiros-laboratorio','palavras-vivas','detetives-texto','versos-em-movimento','busca-ativa-multidisciplinar','busca-ativa-multidisciplinar-3em','busca-ativa-multidisciplinar-2em'
   ) then
     raise exception 'Identificador ou atividade inválidos.';
   end if;
