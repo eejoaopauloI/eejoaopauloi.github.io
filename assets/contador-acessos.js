@@ -12,7 +12,8 @@
   'versos-em-movimento.html':['versos-em-movimento','✍️ Versos em Movimento'],
   'busca-ativa-multidisciplinar.html':['busca-ativa-multidisciplinar','🌎 Missão Conexões'],
   'busca-ativa-multidisciplinar-3em.html':['busca-ativa-multidisciplinar-3em','🎓 Missão Conexões · EM'],
-  'busca-ativa-multidisciplinar-2em.html':['busca-ativa-multidisciplinar-2em','🧭 Saberes em Conexão · 2º EM']
+  'busca-ativa-multidisciplinar-2em.html':['busca-ativa-multidisciplinar-2em','🧭 Saberes em Conexão · 2º EM'],
+  'busca-ativa-multidisciplinar-8ano.html':['busca-ativa-multidisciplinar-8ano','📚 Aprender e Conectar · 8º ano']
  };
  const names=Object.fromEntries(Object.values(items).map(([id,name])=>[id,name]));
  const config=window.JPAcessosConfig||{};
