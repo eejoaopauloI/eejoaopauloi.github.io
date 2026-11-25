@@ -12,7 +12,8 @@ const ids=[
  ['busca-ativa-multidisciplinar','🌎 Missão Conexões · 9º ano','atividades/busca-ativa-multidisciplinar.html'],
  ['busca-ativa-multidisciplinar-3em','🎓 Missão Conexões · Ensino Médio','atividades/busca-ativa-multidisciplinar-3em.html'],
  ['busca-ativa-multidisciplinar-2em','🧭 Saberes em Conexão · 2º EM','atividades/busca-ativa-multidisciplinar-2em.html'],
- ['busca-ativa-multidisciplinar-8ano','📚 Aprender e Conectar · 8º ano','atividades/busca-ativa-multidisciplinar-8ano.html']
+ ['busca-ativa-multidisciplinar-8ano','📚 Aprender e Conectar · 8º ano','atividades/busca-ativa-multidisciplinar-8ano.html'],
+ ['ingles-niveis','🌎 JP Inglês · Missão English','atividades/ingles-niveis.html']
 ];
 function rows(result){
  const body=$('ac-rows');body.replaceChildren();
