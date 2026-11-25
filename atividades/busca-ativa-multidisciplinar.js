@@ -227,6 +227,7 @@ function exportReport(final=false){
   const draft=state.drafts[current().n];
   if(draft&&draft.text?.trim())rows.push(['Rascunho não concluído',current().n,blocks[current().b].name,current().type,current().text,draft.text,'',state.attempts[current().n]||'',state.hints[current().n]||'',draft.source||'',draft.reference||'','Rascunho parcial']);
  }
+ rows.unshift(['Identificação do estudante','', '', '', 'Nome (preenchimento opcional)', $('md-student').value.trim(), 'Turma (preenchimento opcional)', $('md-class').value.trim(), '', '', '', '']);
  const total=answeredCount(),objetivas=tasks.filter(t=>t.type==='mc'&&state.answers[t.n]?.complete);
  const firstTry=objetivas.filter(t=>state.answers[t.n].tries===1).length;
  rows.push(['SÍNTESE','','','','Atividades registradas',total+' / 30','Questões objetivas registradas',objetivas.length,'Acertos na primeira tentativa',firstTry,'','']);
