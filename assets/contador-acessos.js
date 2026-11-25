@@ -10,7 +10,8 @@
   'palavras-vivas.html':['palavras-vivas','📖 Palavras Vivas'],
   'detetives-texto.html':['detetives-texto','🔎 Detetives do Texto'],
   'versos-em-movimento.html':['versos-em-movimento','✍️ Versos em Movimento'],
-  'busca-ativa-multidisciplinar.html':['busca-ativa-multidisciplinar','🌎 Missão Conexões']
+  'busca-ativa-multidisciplinar.html':['busca-ativa-multidisciplinar','🌎 Missão Conexões'],
+  'busca-ativa-multidisciplinar-3em.html':['busca-ativa-multidisciplinar-3em','🎓 Missão Conexões · EM']
  };
  const names=Object.fromEntries(Object.values(items).map(([id,name])=>[id,name]));
  const config=window.JPAcessosConfig||{};
