@@ -52,8 +52,36 @@ function stats(){
  $('en-stat-badges').textContent=levels.filter((_,i)=>levelDone(i+1)).length+'/5';
 }
 function allowed(i){return i===0||Boolean(state.completed[i-1])||Boolean(state.completed[i])}
+function diagnosis(){
+ const area=$('en-diagnostic'),btn=$('en-practice-suggested');
+ area.replaceChildren();
+ const reviewed=[];
+ for(let i=0;i<lessons.length;i++){
+  if(!state.completed[i])continue;
+  const records=Array.from({length:6},(_,j)=>state.answers[qid(i,j)]).filter(Boolean);
+  const first=records.filter(x=>x.firstTry).length;
+  const attempts=records.reduce((n,x)=>n+(x.tries||0),0);
+  const hints=records.reduce((n,x)=>n+(x.hints||0),0);
+  reviewed.push({i,first,attempts,hints,need:6-first+hints});
+ }
+ const need=reviewed.filter(x=>x.first<5||x.hints>0).sort((a,b)=>b.need-a.need||a.i-b.i);
+ const heading=document.createElement('p');
+ if(!reviewed.length)heading.textContent='Comece pelo Nível 1. Depois de concluir uma lição, você verá aqui quais temas merecem mais atenção.';
+ else if(!need.length)heading.textContent='Você acertou pelo menos cinco desafios de primeira em cada tema concluído, sem precisar de dicas. Continue avançando e revise quando desejar.';
+ else heading.textContent='Estes temas merecem nova prática. A indicação considera tentativas e dicas, não representa diagnóstico individual definitivo.';
+ area.append(heading);
+ for(const x of need.slice(0,5)){
+  const article=document.createElement('div');article.className='en-diagnostic-item';
+  const label=document.createElement('strong');label.textContent='Lição '+(x.i+1)+' · '+lessons[x.i].topic;
+  const info=document.createElement('span');
+  info.textContent=x.first+'/6 acertos de primeira · '+x.attempts+' tentativas · '+x.hints+' dicas';
+  article.append(label,info);area.append(article);
+ }
+ btn.disabled=!need.length;btn.textContent=need.length?'↶ Revisar '+lessons[need[0].i].topic:'✓ Revisão em dia';
+ btn.onclick=()=>{if(need.length)openLesson(need[0].i,true)};
+}
 function map(){
- stats();
+ stats();diagnosis();
  $('en-levels').replaceChildren();
  levels.forEach((lv,j)=>{
   const sec=document.createElement('section');sec.className='en-level';
@@ -233,6 +261,13 @@ function exportCSV(){
   }
  }
 for(const h of state.history){rows.push(['Histórico',h.lesson,lessons[h.lesson-1]?.level,lessons[h.lesson-1]?.title,'Sessão',h.mode==='revisao'?'Revisão':'Original','Data',h.when,'Acertos de primeira',h.first,'Dicas',h.hints,'JPs obtidos',h.score]);}
+for(let i=0;i<lessons.length;i++){
+  if(!state.completed[i])continue;
+  const records=Array.from({length:6},(_,j)=>state.answers[qid(i,j)]).filter(Boolean);
+  const first=records.filter(a=>a.firstTry).length;
+  const hints=records.reduce((n,a)=>n+(a.hints||0),0);
+  rows.push(['Diagnóstico',i+1,lessons[i].level,lessons[i].topic,'Acertos de primeira',first+'/6','Dicas usadas',hints,'Orientação',first<5||hints>0?'Revisão recomendada':'Avançar mantendo revisão periódica','','','','']);
+ }
  rows.push(['Síntese','','','','Lições concluídas',all()+'/15','Exercícios concluídos',done()+'/90','JPs acumulados',pts(),'Níveis concluídos',levels.filter((_,i)=>levelDone(i+1)).length,'','']);
  rows.push(['Observação','','','','Aprendizagem progressiva com correção e novas tentativas','O relatório não constitui frequência escolar nem avaliação oficial.','','','','','','','','']);
  rows.push(['Gerado em','','','','Data e hora',new Date().toLocaleString('pt-BR'),'','','','','','','','']);
