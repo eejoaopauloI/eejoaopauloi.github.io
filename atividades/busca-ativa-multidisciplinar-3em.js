@@ -190,36 +190,316 @@ const blocks=[
 /* Tipo: mc = múltipla escolha; disc = discursiva; inv = investigativa.
    Questões e alternativas acompanham o documento original. */
 const tasks=[
- {n:1,b:0,type:'mc',text:'Leia: “A tecnologia pode aproximar pessoas, mas também exige responsabilidade no uso das informações.” A frase apresenta principalmente:',options:['uma reflexão com uma ideia defendida.','uma receita culinária.','uma narrativa fantástica.','uma pergunta direta.'],correct:0,hint:'Observe se o trecho narra acontecimentos, ensina uma receita ou apresenta um ponto de vista.',why:'O enunciado apresenta uma reflexão sobre tecnologia, relações humanas e responsabilidade.'},
- {n:2,b:0,type:'disc',text:'Explique a diferença entre fato e opinião e apresente um exemplo de cada.',hint:'Diferencie o que pode ser verificado do que expressa uma avaliação. Depois escreva dois exemplos identificados.',criteria:'Sua resposta define fato, define opinião e apresenta um exemplo coerente de cada um.'},
- {n:3,b:0,type:'inv',text:'Escolha uma notícia atual sobre educação, ciência ou meio ambiente. Identifique título, fonte, data, fato principal e um elemento que ajude a avaliar a confiabilidade da informação.',hint:'Procure uma notícia com data e veículo identificados. Verifique se cita documentos, pesquisas, entrevistas ou outras evidências.',criteria:'O texto registra título, fonte, data, fato principal e um critério de confiabilidade.'},
- {n:4,b:1,type:'mc',text:'As raízes da equação x² – 5x + 6 = 0 são:',options:['1 e 6','2 e 3','-2 e -3','3 e 5'],correct:1,hint:'Procure dois números cujo produto seja 6 e cuja soma seja 5.',why:'Fatorando, (x − 2)(x − 3) = 0. Logo, as raízes são 2 e 3.'},
- {n:5,b:1,type:'disc',text:'Resolva a equação 2x + 7 = 25 e apresente todas as etapas do cálculo.',hint:'Subtraia 7 dos dois membros, depois divida ambos por 2. Substitua x na equação para conferir.',criteria:'Apresente os passos 2x = 18, x = 9 e a conferência 2 × 9 + 7 = 25.'},
- {n:6,b:1,type:'inv',text:'Pesquise o preço de um mesmo produto em três estabelecimentos. Organize os valores, calcule a média aproximada e determine a diferença entre o maior e o menor preço.',hint:'Registre nome do produto, três estabelecimentos e três preços. Calcule média = soma ÷ 3 e diferença = maior − menor.',criteria:'Inclua produto, três estabelecimentos, preços, média aproximada e diferença entre os extremos.'},
- {n:7,b:1,type:'mc',text:'Uma aplicação de R$ 500,00 teve aumento de 8%. O valor do aumento foi:',options:['R$ 8,00','R$ 20,00','R$ 40,00','R$ 80,00'],correct:2,hint:'8% = 8/100 = 0,08. Multiplique esse valor por 500.',why:'500 × 0,08 = R$ 40,00 de aumento.'},
- {n:8,b:2,type:'mc',text:'Qual alternativa apresenta uma fonte de energia renovável?',options:['Carvão mineral.','Petróleo.','Energia solar.','Gás natural.'],correct:2,hint:'Pense em uma fonte que se renova naturalmente, sem depender da formação de combustíveis fósseis.',why:'A energia solar é renovável. Carvão, petróleo e gás natural são fontes fósseis não renováveis.'},
- {n:9,b:2,type:'disc',text:'Explique uma vantagem e uma possível limitação do uso de fontes de energia renováveis.',hint:'Escolha uma fonte renovável e explique um benefício e uma dificuldade real relacionada ao uso dela.',criteria:'Descreva pelo menos uma vantagem e uma limitação, com explicação coerente.'},
- {n:10,b:2,type:'inv',text:'Pesquise duas fontes de energia utilizadas no Brasil. Para cada uma, indique como é obtida, uma vantagem e um possível impacto ambiental.',hint:'Escolha duas fontes diferentes. Para cada uma, registre obtenção, vantagem e impacto; consulte fontes identificáveis.',criteria:'Apresente duas fontes, obtenção, vantagem e impacto ambiental de cada uma.'},
- {n:11,b:3,type:'mc',text:'A globalização pode ser entendida como um processo que intensifica:',options:['o isolamento entre os países.','as relações econômicas, culturais e tecnológicas entre diferentes lugares.','apenas as atividades agrícolas locais.','a redução das redes de comunicação.'],correct:1,hint:'Considere como países e regiões interagem por comércio, tecnologia, cultura e comunicação.',why:'A globalização está ligada à intensificação de conexões econômicas, culturais e tecnológicas.'},
- {n:12,b:3,type:'disc',text:'Explique como os avanços nos meios de transporte e comunicação influenciam as relações entre diferentes lugares do mundo.',hint:'Fale sobre circulação de pessoas, mercadorias, informações e ideias. Traga um exemplo.',criteria:'Relacione transporte e comunicação à integração de diferentes lugares, com pelo menos um exemplo.'},
- {n:13,b:3,type:'inv',text:'Escolha um produto utilizado por sua família. Pesquise onde é produzido e como chega até o consumidor. Descreva pelo menos três etapas desse percurso.',hint:'Exemplo de etapas: produção da matéria-prima, fabricação, transporte, distribuição, comercialização.',criteria:'Identifique o produto, a região ou local de produção e pelo menos três etapas da cadeia.'},
- {n:14,b:4,type:'mc',text:'Uma característica importante da Revolução Francesa foi:',options:['defesa dos privilégios exclusivos da nobreza.','contestação de estruturas sociais e políticas do Antigo Regime.','rejeição de ideias de liberdade.','fortalecimento absoluto dos privilégios feudais.'],correct:1,hint:'Pense nas mudanças políticas defendidas por grupos que questionaram privilégios no fim do século XVIII.',why:'A Revolução Francesa questionou estruturas sociais e políticas características do Antigo Regime.'},
- {n:15,b:4,type:'disc',text:'Explique por que ideias como liberdade, igualdade e cidadania foram importantes nas transformações políticas da Idade Moderna.',hint:'Explique como essas ideias questionaram privilégios e influenciaram a organização política e os direitos.',criteria:'Relacione liberdade, igualdade e cidadania às mudanças políticas, sem supor que todos receberam os mesmos direitos imediatamente.'},
- {n:16,b:4,type:'inv',text:'Pesquise um acontecimento histórico do século XVIII ou XIX que tenha influenciado a formação do mundo contemporâneo. Registre causas, principais acontecimentos e uma consequência.',hint:'Escolha um acontecimento específico e organize: contexto, causas, eventos principais e consequência.',criteria:'Informe o acontecimento e seu período, causas, acontecimentos principais e pelo menos uma consequência.'},
- {n:17,b:5,type:'mc',text:'A arte moderna e contemporânea caracteriza-se, entre outros aspectos, pela:',options:['existência de uma única forma correta de representação.','experimentação de linguagens, técnicas e formas de expressão.','rejeição de qualquer inovação.','obrigação de representar somente paisagens.'],correct:1,hint:'Arte moderna e contemporânea costuma explorar novas linguagens, materiais e possibilidades expressivas.',why:'A experimentação de técnicas, linguagens e formas é característica importante da produção moderna e contemporânea.'},
- {n:18,b:5,type:'disc',text:'Explique como uma obra de arte pode provocar reflexão sobre um problema social ou ambiental.',hint:'Escolha um tema, como poluição ou desigualdade, e descreva o que a obra mostra e como pode sensibilizar o público.',criteria:'Explique o vínculo entre linguagem artística, tema social ou ambiental e reflexão do público.'},
- {n:19,b:5,type:'inv',text:'Pesquise um artista brasileiro ou mato-grossense. Registre uma obra, sua linguagem artística, o tema abordado e uma interpretação pessoal.',hint:'Registre nome do artista, título de obra, linguagem, tema e interpretação apoiada em características observáveis.',criteria:'Inclua artista, obra, linguagem, tema e interpretação pessoal coerente.'},
- {n:20,b:6,type:'mc',text:'A prática regular de atividade física pode contribuir para:',options:['saúde, bem-estar e qualidade de vida.','substituir completamente o sono.','eliminar a necessidade de alimentação equilibrada.','impedir qualquer ocorrência de cansaço.'],correct:0,hint:'Considere os benefícios de hábitos ativos, sem supor que eles eliminam outras necessidades do corpo.',why:'Atividade física regular contribui para a saúde e o bem-estar, sem substituir descanso e alimentação adequada.'},
- {n:21,b:6,type:'disc',text:'Explique a importância da cooperação, do respeito e da ética nas práticas esportivas.',hint:'Pense em trabalho em equipe, respeito a regras, adversários, diferenças e decisões justas.',criteria:'Explique cooperação, respeito e ética com relação a práticas esportivas.'},
- {n:22,b:6,type:'inv',text:'Escolha uma modalidade esportiva. Pesquise regras básicas, capacidades físicas envolvidas e uma adaptação que permita maior inclusão de participantes.',hint:'Você pode escolher futsal, voleibol, handebol, tênis de mesa ou outra modalidade. No xadrez, distinga habilidades cognitivas das capacidades físicas.',criteria:'Apresente modalidade, regras, capacidades físicas relevantes e uma adaptação inclusiva viável.'},
- {n:23,b:7,type:'mc',text:'Complete corretamente: “If I study, I ____ the test.”',options:['pass','passes','passing','passed'],correct:0,hint:'O sujeito é “I”, que usa a forma básica do verbo no presente simples.',why:'Com o sujeito “I”, a forma correta no presente simples é “pass”. A frase pode expressar uma relação habitual.'},
- {n:24,b:7,type:'disc',text:'Escreva um pequeno parágrafo em inglês (4 a 5 frases) apresentando sua rotina de estudos ou seus planos para o futuro.',hint:'Use frases simples. Ex.: “I study in the morning. I like math. I play volleyball. I want to learn English.” Crie seu texto próprio.',criteria:'Seu parágrafo deve conter quatro ou cinco frases em inglês sobre estudos ou planos.'},
- {n:25,b:7,type:'inv',text:'Escolha uma música, anúncio ou postagem em inglês. Identifique cinco palavras ou expressões, traduza-as e explique como são utilizadas no contexto escolhido.',hint:'Identifique o material consultado; escolha cinco expressões curtas e explique o sentido de cada uma dentro do contexto.',criteria:'Registre a fonte, cinco palavras ou expressões, tradução e explicação contextual.'},
- {n:26,b:8,type:'disc',text:'Explique por que o respeito à diversidade de crenças, culturas e convicções é importante para a construção de uma sociedade democrática.',hint:'Relacione respeito, direitos, diálogo e convivência entre pessoas com diferentes ideias e experiências.',criteria:'Explique como o reconhecimento da diversidade fortalece direitos, convivência e democracia.'},
- {n:27,b:8,type:'inv',text:'Pesquise uma iniciativa, projeto ou ação comunitária que promova solidariedade, respeito ou diálogo. Registre o objetivo e como ela contribui para a comunidade.',hint:'Procure uma ação real. Identifique responsáveis, objetivo, público e contribuição para a comunidade.',criteria:'Descreva uma iniciativa identificável, seu objetivo e sua contribuição comunitária.'},
- {n:28,b:9,type:'mc',text:'Para investigar um problema relacionado às mudanças climáticas, uma abordagem adequada seria:',options:['utilizar apenas opiniões pessoais.','reunir dados científicos, analisar informações e comparar diferentes evidências.','ignorar dados que contradigam uma hipótese.','escolher uma explicação sem investigação.'],correct:1,hint:'A pesquisa científica precisa de observação, dados, comparação e revisão de hipóteses.',why:'Investigar significa reunir dados, analisar diferentes evidências e avaliar explicações à luz dessas informações.'},
- {n:29,b:9,type:'disc',text:'Explique como Matemática, Ciências e Geografia podem trabalhar juntas para analisar o consumo de energia elétrica de uma escola.',hint:'Matemática: quantificar consumo; Ciências: fontes, transformações e impactos; Geografia: distribuição, infraestrutura e uso de recursos.',criteria:'Explique a contribuição articulada das três disciplinas para analisar o consumo elétrico.'},
- {n:30,b:9,type:'inv',text:'Escolha um problema real da escola ou da comunidade (desperdício de água, energia, lixo, desinformação, mobilidade, alimentação, convivência, preservação ambiental etc.). Elabore uma proposta de intervenção. Apresente: problema, dados ou observações, causas, consequências, solução proposta e como três ou mais disciplinas podem contribuir para resolver ou compreender a situação.',hint:'Organize em seis partes: 1. problema; 2. dados/observações; 3. causas; 4. consequências; 5. solução; 6. participação de pelo menos três disciplinas.',criteria:'A proposta apresenta problema real, evidências, causas, consequências, solução viável e contribuição de três ou mais disciplinas.'}
+ {
+  "n": 1,
+  "b": 0,
+  "type": "mc",
+  "text": "Em um texto argumentativo, a tese corresponde:",
+  "options": [
+   "à ideia central que será defendida pelo autor.",
+   "apenas ao título do texto.",
+   "a uma informação sem relação com o tema.",
+   "somente à conclusão."
+  ],
+  "correct": 0,
+  "hint": "Relembre o que o autor pretende defender ao longo do texto.",
+  "why": "A tese é a posição central defendida pelo autor, sustentada por argumentos."
+ },
+ {
+  "n": 2,
+  "b": 0,
+  "type": "disc",
+  "text": "Explique a função dos argumentos em um texto dissertativo-argumentativo e indique duas características de um argumento consistente.",
+  "hint": "Explique como os argumentos sustentam a tese. Considere coerência lógica, informações verificáveis, evidências, pertinência ao tema.",
+  "criteria": "Sua resposta descreve a função de sustentar a tese e identifica duas características justificadas de um argumento consistente."
+ },
+ {
+  "n": 3,
+  "b": 0,
+  "type": "inv",
+  "text": "Escolha uma matéria jornalística sobre um problema social brasileiro. Identifique tese ou ideia central, argumentos utilizados, fonte das informações e possíveis pontos de vista presentes no texto.",
+  "hint": "Selecione uma matéria identificável. Registre título, veículo, data e fonte. Diferencie o fato central de argumentos e interpretações presentes.",
+  "criteria": "Identifique a matéria, ideia central, argumentos, fontes de informações e possíveis pontos de vista, com análise própria."
+ },
+ {
+  "n": 4,
+  "b": 1,
+  "type": "mc",
+  "text": "As soluções da equação x² – 7x + 12 = 0 são:",
+  "options": [
+   "2 e 6",
+   "3 e 4",
+   "-3 e -4",
+   "1 e 12"
+  ],
+  "correct": 1,
+  "hint": "Procure dois números que somados dão 7 e multiplicados dão 12.",
+  "why": "x² − 7x + 12 = (x − 3)(x − 4), logo as raízes são x = 3 e x = 4."
+ },
+ {
+  "n": 5,
+  "b": 1,
+  "type": "disc",
+  "text": "Uma função quadrática é dada por f(x)=x²−6x+5. Determine suas raízes e mostre os cálculos.",
+  "hint": "Encontre x para o qual f(x) = 0. Você pode fatorar ou usar a fórmula resolutiva.",
+  "criteria": "Mostre x² − 6x + 5 = (x − 1)(x − 5) e as raízes x = 1 e x = 5, ou cálculo equivalente correto."
+ },
+ {
+  "n": 6,
+  "b": 1,
+  "type": "inv",
+  "text": "Pesquise dados sobre a população de três municípios de Mato Grosso. Calcule a diferença entre o município mais populoso e o menos populoso e organize os dados em uma tabela.",
+  "hint": "Escolha três municípios e use dados comparáveis do mesmo ano, preferencialmente IBGE. Apresente tabela com município, população e ano. Subtraia menor população da maior.",
+  "criteria": "Inclua três municípios, populações com ano e fonte, tabela e diferença correta entre maior e menor."
+ },
+ {
+  "n": 7,
+  "b": 1,
+  "type": "mc",
+  "text": "Uma aplicação de R$ 2.000,00 apresentou rendimento de 5% no período. O rendimento foi de:",
+  "options": [
+   "R$ 50,00",
+   "R$ 100,00",
+   "R$ 150,00",
+   "R$ 200,00"
+  ],
+  "correct": 1,
+  "hint": "Transforme 5% em 0,05 e multiplique por 2.000.",
+  "why": "5% de R$ 2.000,00 corresponde a 2.000 × 0,05 = R$ 100,00."
+ },
+ {
+  "n": 8,
+  "b": 2,
+  "type": "mc",
+  "text": "A potência elétrica de um aparelho pode ser calculada pela relação:",
+  "options": [
+   "P = U·i",
+   "P = m·g",
+   "P = d/t",
+   "P = F/d"
+  ],
+  "correct": 0,
+  "hint": "Lembre-se da relação entre tensão elétrica, corrente elétrica e potência.",
+  "why": "Potência elétrica é P = U × i, em que U é a tensão e i é a corrente elétrica."
+ },
+ {
+  "n": 9,
+  "b": 2,
+  "type": "disc",
+  "text": "Explique a relação entre potência elétrica, energia consumida e tempo de funcionamento de um aparelho.",
+  "hint": "Use E = P × t e explique por que a mesma potência ligada por mais horas consome mais energia.",
+  "criteria": "Relacione potência, energia e tempo; explique E = P × t e o uso de unidades compatíveis."
+ },
+ {
+  "n": 10,
+  "b": 2,
+  "type": "inv",
+  "text": "Escolha três aparelhos elétricos de sua casa. Registre a potência indicada em cada um e estime quais consomem mais energia considerando o tempo de uso diário. Explique sua conclusão.",
+  "hint": "Registre potência em W e tempo em horas. Converta W para kW e calcule kWh/dia; destaque que maior potência nem sempre indica maior consumo diário.",
+  "criteria": "Apresente três aparelhos, potência, tempo diário estimado, comparação de consumo e justificativa."
+ },
+ {
+  "n": 11,
+  "b": 3,
+  "type": "mc",
+  "text": "Uma característica de uma reação de oxidação-redução é a ocorrência de:",
+  "options": [
+   "transferência de elétrons.",
+   "ausência total de transformação.",
+   "apenas mudança de estado físico.",
+   "somente dissolução."
+  ],
+  "correct": 0,
+  "hint": "Oxidar e reduzir envolvem perda e ganho de elétrons.",
+  "why": "Reações de oxirredução envolvem transferência de elétrons ou mudanças nos números de oxidação."
+ },
+ {
+  "n": 12,
+  "b": 3,
+  "type": "disc",
+  "text": "Explique, de forma geral, o que significa oxidar e reduzir uma espécie química em uma reação de oxirredução.",
+  "hint": "Oxidação: perda de elétrons; redução: ganho. As duas transformações ocorrem em conjunto na reação.",
+  "criteria": "Explique corretamente a perda de elétrons na oxidação e ganho na redução."
+ },
+ {
+  "n": 13,
+  "b": 3,
+  "type": "inv",
+  "text": "Pesquise um exemplo de reação química presente no cotidiano (combustão, corrosão, pilha, fermentação etc.). Identifique os materiais envolvidos, a transformação observada e uma aplicação prática.",
+  "hint": "Selecione uma reação; registre reagentes, produtos ou transformações observáveis, e uma aplicação. Não realize experimentos perigosos.",
+  "criteria": "Inclua reação cotidiana, materiais, transformação e aplicação prática com referência identificada."
+ },
+ {
+  "n": 14,
+  "b": 4,
+  "type": "mc",
+  "text": "A seleção natural está relacionada à ideia de que:",
+  "options": [
+   "indivíduos com características vantajosas podem ter maior sucesso reprodutivo em determinado ambiente.",
+   "todos os indivíduos de uma população são geneticamente idênticos.",
+   "os seres vivos não sofrem mudanças ao longo das gerações.",
+   "apenas os organismos mais fortes sobrevivem em qualquer ambiente."
+  ],
+  "correct": 0,
+  "hint": "Considere adaptações que dependem do ambiente e influenciam o sucesso reprodutivo.",
+  "why": "Em um ambiente específico, características hereditárias vantajosas podem favorecer a sobrevivência e a reprodução."
+ },
+ {
+  "n": 15,
+  "b": 4,
+  "type": "disc",
+  "text": "Explique como mutações e variabilidade genética podem contribuir para a evolução das populações.",
+  "hint": "Mutações produzem novas variantes e, com recombinação, ajudam a criar diversidade sobre a qual a seleção pode atuar.",
+  "criteria": "Relacione variação genética hereditária, mutações e mudanças na frequência de características ao longo de gerações."
+ },
+ {
+  "n": 16,
+  "b": 4,
+  "type": "inv",
+  "text": "Pesquise uma espécie encontrada em Mato Grosso que apresente alguma adaptação ao ambiente em que vive. Descreva a adaptação e explique como ela pode favorecer a sobrevivência da espécie.",
+  "hint": "Escolha uma espécie real com ocorrência documentada no estado. Registre habitat, característica e sua função ambiental, citando fonte.",
+  "criteria": "Apresente espécie de Mato Grosso, ambiente, adaptação e explicação fundamentada de sua vantagem."
+ },
+ {
+  "n": 17,
+  "b": 5,
+  "type": "mc",
+  "text": "A industrialização e as transformações sociais dos séculos XIX e XX contribuíram para:",
+  "options": [
+   "mudanças nas relações de trabalho, urbanização e organização social.",
+   "desaparecimento das cidades.",
+   "fim das tecnologias de produção.",
+   "redução das relações econômicas internacionais."
+  ],
+  "correct": 0,
+  "hint": "Pense no crescimento das fábricas e das cidades e nas transformações das relações trabalhistas.",
+  "why": "A industrialização influenciou o trabalho, a urbanização, a economia e a organização da sociedade."
+ },
+ {
+  "n": 18,
+  "b": 5,
+  "type": "disc",
+  "text": "Explique como as transformações políticas e econômicas do mundo contemporâneo influenciaram as relações de trabalho e a vida urbana.",
+  "hint": "Analise industrialização, expansão de cidades, novos empregos, organizações de trabalhadores e desigualdades.",
+  "criteria": "Relacione mudanças políticas ou econômicas a condições de trabalho e vida nas cidades."
+ },
+ {
+  "n": 19,
+  "b": 5,
+  "type": "inv",
+  "text": "Escolha um acontecimento histórico brasileiro do século XX. Pesquise causas, principais acontecimentos, consequências e diferentes interpretações sobre o período.",
+  "hint": "Escolha um fato delimitado. Identifique causas, cronologia, efeitos e contraste interpretações fundamentadas em fontes.",
+  "criteria": "Apresente acontecimento brasileiro do século XX, causas, eventos, consequências e diferentes interpretações com fontes."
+ },
+ {
+  "n": 20,
+  "b": 6,
+  "type": "mc",
+  "text": "A globalização econômica caracteriza-se, entre outros aspectos, pela:",
+  "options": [
+   "intensificação dos fluxos de mercadorias, capitais, informações e serviços.",
+   "eliminação das redes internacionais.",
+   "redução das relações comerciais.",
+   "ausência de circulação de informações."
+  ],
+  "correct": 0,
+  "hint": "Considere redes de comércio, capital, serviços e comunicação entre regiões.",
+  "why": "A globalização amplia e intensifica fluxos econômicos e informacionais entre diferentes lugares."
+ },
+ {
+  "n": 21,
+  "b": 6,
+  "type": "disc",
+  "text": "Analise uma consequência positiva e uma consequência negativa da globalização para países e populações.",
+  "hint": "Considere acesso a mercados, tecnologias e informação, mas também desigualdade, precarização, dependência e impactos ambientais.",
+  "criteria": "Explique uma consequência positiva e outra negativa, com justificativa de seus efeitos."
+ },
+ {
+  "n": 22,
+  "b": 6,
+  "type": "inv",
+  "text": "Escolha um produto consumido em sua comunidade. Investigue sua cadeia produtiva, identificando origem da matéria-prima, local de produção, transporte, comercialização e possíveis impactos ambientais.",
+  "hint": "Organize etapas do percurso do produto: origem → produção → transporte → comércio → impacto socioambiental.",
+  "criteria": "Inclua produto, origem, produção, transporte, comercialização e impactos ambientais, com fonte."
+ },
+ {
+  "n": 23,
+  "b": 7,
+  "type": "mc",
+  "text": "O pensamento crítico caracteriza-se por:",
+  "options": [
+   "analisar ideias, questionar argumentos e buscar justificativas.",
+   "aceitar qualquer afirmação sem reflexão.",
+   "rejeitar todo tipo de conhecimento.",
+   "basear decisões apenas em opiniões pessoais."
+  ],
+  "correct": 0,
+  "hint": "O pensamento crítico investiga as razões apresentadas e avalia sua consistência.",
+  "why": "Pensar criticamente envolve analisar ideias, questionar argumentos e buscar justificativas."
+ },
+ {
+  "n": 24,
+  "b": 7,
+  "type": "disc",
+  "text": "Explique a relação entre liberdade, responsabilidade e tomada de decisões na vida em sociedade.",
+  "hint": "Explique que nossas escolhas têm impactos e devem considerar direitos, consequências e responsabilidades.",
+  "criteria": "Relacione autonomia das decisões, responsabilidade por consequências e convivência social."
+ },
+ {
+  "n": 25,
+  "b": 7,
+  "type": "inv",
+  "text": "Escolha um dilema ético relacionado ao uso das redes sociais, inteligência artificial, privacidade ou tecnologia. Apresente diferentes posições e defenda uma delas com argumentos.",
+  "hint": "Descreva a situação, pelo menos duas posições, seus argumentos e sua conclusão fundamentada.",
+  "criteria": "Apresente dilema atual, diferentes posições e argumento consistente para uma posição escolhida."
+ },
+ {
+  "n": 26,
+  "b": 8,
+  "type": "disc",
+  "text": "Explique como desigualdade social, acesso à educação e mercado de trabalho podem estar relacionados na sociedade brasileira.",
+  "hint": "Considere oportunidades de estudo, qualidade da educação, acesso a empregos e reprodução das desigualdades.",
+  "criteria": "Relacione os três fatores e explique como podem influenciar oportunidades sociais."
+ },
+ {
+  "n": 27,
+  "b": 8,
+  "type": "inv",
+  "text": "Pesquise um indicador social brasileiro (renda, escolaridade, desemprego, saneamento ou outro). Apresente dois dados, indique a fonte e explique o que esses dados revelam sobre a sociedade.",
+  "hint": "Escolha indicador e fonte identificada, como IBGE. Registre dois dados com ano e população ou região, faça comparação e interpretação.",
+  "criteria": "Inclua indicador, dois dados comparáveis, anos, fonte e interpretação fundamentada."
+ },
+ {
+  "n": 28,
+  "b": 9,
+  "type": "mc",
+  "text": "Na frase “If people reduce waste, they will help the environment”, a estrutura expressa principalmente:",
+  "options": [
+   "uma condição e sua consequência.",
+   "uma ação concluída no passado.",
+   "uma ordem direta.",
+   "uma descrição de pessoa."
+  ],
+  "correct": 0,
+  "hint": "A oração com 'If' apresenta uma condição; 'will' aponta consequência provável.",
+  "why": "A frase usa uma estrutura condicional: se as pessoas reduzirem resíduos, ajudarão o meio ambiente."
+ },
+ {
+  "n": 29,
+  "b": 9,
+  "type": "disc",
+  "text": "Escreva um pequeno texto em inglês (5 a 6 frases) sobre seus planos para o futuro acadêmico ou profissional.",
+  "hint": "Use cinco ou seis frases próprias: I want to..., I plan to..., I will..., I hope to... Revise verbo, sujeito e coerência.",
+  "criteria": "Produza cinco a seis frases em inglês com informações sobre planos acadêmicos ou profissionais."
+ },
+ {
+  "n": 30,
+  "b": 9,
+  "type": "inv",
+  "text": "Escolha um problema contemporâneo que afete sua escola, comunidade ou região (desigualdade, desinformação, mudanças climáticas, energia, resíduos, saúde coletiva, tecnologia etc.). Produza uma proposta de intervenção fundamentada em dados. Apresente: problema, causas, consequências, evidências, solução, recursos necessários e como pelo menos quatro áreas do conhecimento podem contribuir para a proposta.",
+  "hint": "Planeje: problema → causas → consequências → evidências/dados → solução viável → recursos necessários → contribuições explícitas de quatro áreas ou disciplinas.",
+  "criteria": "Apresente problema real, dados, causas, consequências, solução viável, recursos e participação fundamentada de pelo menos quatro áreas do conhecimento."
+ }
 ];
 if(tasks.length!==30||blocks.length!==10||tasks.some((t,i)=>t.n!==i+1||t.b!==blocks.findIndex(b=>t.n>=b.from&&t.n<=b.to)))throw Error('Configuração inconsistente');
 const store='jp_busca_ativa_multi_3em_b1_v1';
