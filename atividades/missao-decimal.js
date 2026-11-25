@@ -43,6 +43,8 @@ const fresh=()=>({level:0,step:0,review:false,completed:{},records:{},best:{},hi
 let state=fresh();
 try{const old=JSON.parse(localStorage.getItem(storageKey)||'null');if(old&&old.records&&old.completed)state={...fresh(),...old};}catch(e){}
 let intro=true,finishedMarker='',hintUsed=0,tries=0,previousWrong=[];
+const inProgress={};
+const track=()=>{inProgress[key(state.level,state.step)]={tries,hintUsed,previousWrong:[...previousWrong]};};
 const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(state));}catch(e){$('dec-export-status').textContent='O salvamento local não está disponível. Baixe seu relatório para guardar os resultados.';}};
 const key=(i,j,review=state.review)=>i+'-'+j+(review?'~r':'');
 const totalDone=()=>Object.keys(state.records).filter(k=>!k.includes('~r')&&state.records[k]?.done).length;
@@ -98,7 +100,8 @@ $('dec-answer').value=r?.done?fmt(r.answer):'';
 $('dec-answer').disabled=Boolean(r?.done);$('dec-check').disabled=Boolean(r?.done);
 $('dec-hint').disabled=Boolean(r?.done);$('dec-next').disabled=!r?.done;
 $('dec-next').textContent=n===9?'Concluir esta fase →':'Próximo desafio →';
-tries=r?.done?r.tries:0;hintUsed=r?.done?r.hints:0;previousWrong=[];
+const pending=inProgress[key(state.level,n)]||{tries:0,hintUsed:0,previousWrong:[]};
+tries=r?.done?r.tries:pending.tries;hintUsed=r?.done?r.hints:pending.hintUsed;previousWrong=r?.done?[]:[...pending.previousWrong];
 feedback(r?.done?'✅ Resposta registrada! '+q.solution:'Calcule com calma. Confira a posição da vírgula antes de responder.',Boolean(r?.done));
 }
 function feedback(msg,good){const f=$('dec-feedback');f.textContent=msg;f.className='dec-feedback'+(good?' good':'');}
@@ -111,9 +114,9 @@ const value=Number(raw);tries++;
 if(Math.abs(value-q.answer)<0.000001){
 const earned=tries===1?(hintUsed?8:10):Math.max(4,8-(tries-2)*2-(hintUsed?1:0));
 state.records[k]={done:true,answer:value,expected:q.answer,tries,hints:hintUsed,points:earned,wrong:previousWrong,when:new Date().toISOString()};
-save();render();feedback('✅ Correto! +'+earned+' JPs nesta resposta.\n'+q.solution,true);stats();diagnostics();
+delete inProgress[k];save();render();feedback('✅ Correto! +'+earned+' JPs nesta resposta.\n'+q.solution,true);stats();diagnostics();
 }else{
-previousWrong.push(value);
+previousWrong.push(value);track();
 feedback('🔎 Ainda não. Confira a conta e a vírgula; tente novamente. '+(tries>=2?'Dica: '+levels[state.level].hint:''),false);
 }}
 function finish(){
@@ -150,7 +153,7 @@ $('dec-start').addEventListener('click',()=>{let next=levels.findIndex((_,i)=>!s
 $('dec-begin').addEventListener('click',()=>{intro=false;render();});
 $('dec-check').addEventListener('click',check);
 $('dec-answer').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check();}});
-$('dec-hint').addEventListener('click',()=>{hintUsed++;feedback('💡 Dica '+hintUsed+': '+levels[state.level].hint,false);});
+$('dec-hint').addEventListener('click',()=>{hintUsed++;track();feedback('💡 Dica '+hintUsed+': '+levels[state.level].hint,false);});
 $('dec-reteach').addEventListener('click',()=>{intro=true;render();});
 $('dec-next').addEventListener('click',()=>{if(!state.records[key(state.level,state.step)]?.done)return;state.step++;intro=false;save();render();});
 $('dec-back').addEventListener('click',()=>{map();show('dec-map');});
