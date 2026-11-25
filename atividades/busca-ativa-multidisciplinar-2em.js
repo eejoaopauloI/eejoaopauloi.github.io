@@ -29,7 +29,7 @@ const complete=()=>missions.filter(m=>state.answers[m.n]?.complete).length;
 const station=n=>stationInfo.findIndex(x=>n>=x.from&&n<=x.to);
 const go=id=>$(id).scrollIntoView({block:'start',behavior:'smooth'});
 function screen(name){
- ['md-start','md-progress-area','md-lesson','md-question-card','md-finish'].forEach(id=>$(id).hidden=true);
+ ['md-start','md-progress-area','md-lesson','md-question-card','md-application','md-finish'].forEach(id=>$(id).hidden=true);
  if(name==='start'){$('md-start').hidden=false;return}
  $('md-progress-area').hidden=false;
  $('md-'+name).hidden=false;
@@ -59,7 +59,9 @@ function renderLesson(){
  screen('lesson');
  $('md-lesson-kicker').textContent='MINIAULA '+m.n+' / 23 · '+group.icon+' '+group.label.toUpperCase();
  $('md-lesson-title').textContent=m.subject+': entenda o conceito';
- $('md-lesson-text').textContent=m.lesson;
+ $('md-lesson-text').textContent=m.lesson+' '+(window.JP2EMAprofundamento?.[m.n-1]?.depth||'');
+ $('md-deep-method').textContent=window.JP2EMAprofundamento?.[m.n-1]?.method||m.hint;
+ $('md-deep-mistake').textContent=window.JP2EMAprofundamento?.[m.n-1]?.misconception||'Reveja o conceito antes de responder.';
  $('md-lesson-example').textContent=m.example;
  $('md-lesson-tip').textContent=m.hint;
  $('md-lesson-check').textContent=miniChecks[m.n-1][0];
@@ -94,15 +96,15 @@ function renderQuestion(){
  const m=item(),group=stationInfo[station(m.n)],done=Boolean(state.answers[m.n]?.complete);
  screen('question-card');
  $('md-question-subject').textContent=group.icon+' '+group.label.toUpperCase()+' · '+m.subject.toUpperCase();
- $('md-question-type').textContent='MÚLTIPLA ESCOLHA';
- $('md-question-title').textContent='Questão '+m.n+' de 23';
+ $('md-question-type').textContent='QUESTÃO INSTITUCIONAL · 1ª ETAPA';
+ $('md-question-title').textContent='Tema '+m.n+' de 23 · Etapa 1 de 2';
  $('md-question-context').textContent='📘 Para pensar: '+m.lesson;
  $('md-question-text').textContent=m.text;
  $('md-question-options').replaceChildren();
  $('md-written').hidden=true;
  $('md-question-submit').hidden=true;
  $('md-question-next').disabled=!done;
- $('md-question-next').textContent=m.n===23?'Concluir a jornada →':m.n===group.to?'Ir ao próximo circuito →':'Próxima questão →';
+ $('md-question-next').textContent='Aplicar em uma nova situação →';
  const opts=shuffled(m);
  opts.forEach((option,i)=>{
   const b=document.createElement('button');b.type='button';b.className='md-choice';
@@ -138,7 +140,11 @@ function exportCSV(final=false){
   const a=state.answers[m.n];if(!a?.complete)continue;
   rows.push(['Resposta',m.n,stationInfo[station(m.n)].label,m.subject,m.text,a.choice,m.options[m.correct],a.tries,a.hints,'Concluída',m.lesson]);
  }
- rows.push(['SÍNTESE','','','','Questões concluídas',complete()+' / 23','Corretas ao final',complete(),'Acertos na primeira tentativa',missions.filter(m=>state.answers[m.n]?.tries===1).length,'']);
+ const applied=window.JP2EMDesafios?.results?.()||{};
+ const extras=window.JP2EMAprofundamento||[];
+ for(const a of extras){const result=applied[a.n];if(!result?.complete)continue;rows.push(['APLICAÇÃO',a.n,stationInfo[station(a.n)].label,missions[a.n-1].subject,a.question,result.selected,a.options[a.correct],result.tries,result.hints,'Concluída',a.reason]);}
+ rows.push(['SÍNTESE','','','','Questões institucionais concluídas',complete()+' / 23','Aplicações concluídas',Object.values(applied).filter(x=>x.complete).length+' / 23','Acertos na primeira tentativa (institucionais)',missions.filter(m=>state.answers[m.n]?.tries===1).length,'']);
+ rows.push(['SÍNTESE APLICAÇÃO','','','','Acertos na primeira tentativa (aplicações)',Object.values(applied).filter(x=>x.complete&&x.tries===1).length,'Questões totais resolvidas',complete()+Object.values(applied).filter(x=>x.complete).length,'','','']);
  rows.push(['CRITÉRIO','','','','Respostas corrigidas com devolutivas e tentativas adicionais','Não equivale a nota ou frequência oficial','','','','','']);
  rows.push(['IDENTIFICAÇÃO','','','','Nome (opcional)',$('md-student')?.value.trim()||'','Turma (opcional)',$('md-class')?.value.trim()||'','','','']);
  if(window.JPVisibilidade?.snapshot){
@@ -160,11 +166,14 @@ $('md-download-final').addEventListener('click',()=>exportCSV(true));
 function finish(){
  screen('finish');hud();
  const first=missions.filter(m=>state.answers[m.n]?.tries===1).length;
- $('md-finish-text').textContent='Você concluiu '+complete()+' das 23 questões multidisciplinares. Acertou '+first+' questão(ões) na primeira tentativa e usou as orientações para revisar os demais conceitos. Baixe o relatório, que registra suas tentativas e conteúdos abordados.';
+ const extra=Object.values(window.JP2EMDesafios?.results?.()||{});
+ const applied=extra.filter(x=>x.complete).length;
+ const firstApplication=extra.filter(x=>x.complete&&x.tries===1).length;
+ $('md-finish-text').textContent='Você concluiu '+complete()+' das 23 questões institucionais e '+applied+' dos 23 desafios de aplicação: '+(complete()+applied)+' atividades resolvidas. Acertos na primeira tentativa: '+first+' nas questões originais e '+firstApplication+' nas aplicações. Baixe o relatório com as duas etapas e as estratégias trabalhadas.';
  go('md-finish');
 }
 $('md-restart').addEventListener('click',()=>{
  if(!confirm('Recomeçar as 23 questões e apagar o progresso deste navegador? Baixe o relatório antes, se desejar preservar as respostas.'))return;
- state=fresh();reviewOnly=false;save();show();window.scrollTo({top:0,behavior:'smooth'});
+ state=fresh();reviewOnly=false;window.JP2EMDesafios?.reset?.();save();show();window.scrollTo({top:0,behavior:'smooth'});
 });
 show();
