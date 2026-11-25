@@ -10,7 +10,8 @@ const ids=[
  ['detetives-texto','🔎 Detetives do Texto','atividades/detetives-texto.html'],
  ['versos-em-movimento','✍️ Versos em Movimento','atividades/versos-em-movimento.html'],
  ['busca-ativa-multidisciplinar','🌎 Missão Conexões · 9º ano','atividades/busca-ativa-multidisciplinar.html'],
- ['busca-ativa-multidisciplinar-3em','🎓 Missão Conexões · Ensino Médio','atividades/busca-ativa-multidisciplinar-3em.html']
+ ['busca-ativa-multidisciplinar-3em','🎓 Missão Conexões · Ensino Médio','atividades/busca-ativa-multidisciplinar-3em.html'],
+ ['busca-ativa-multidisciplinar-2em','🧭 Saberes em Conexão · 2º EM','atividades/busca-ativa-multidisciplinar-2em.html']
 ];
 function rows(result){
  const body=$('ac-rows');body.replaceChildren();
