@@ -21,11 +21,12 @@ try{
  const saved=JSON.parse(localStorage.getItem(key)||'null');
  if(saved&&typeof saved==='object'&&saved.answers&&saved.completed&&saved.tries&&saved.best){
   state={...defaults(),...saved,active:Math.min(14,Math.max(0,Number(saved.active)||0)),step:Math.min(6,Math.max(0,Number(saved.step)||0))};
+  review=Boolean(saved.reviewMode);
  }
 }catch(e){}
-const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch(e){$('en-report-status').textContent='Não foi possível salvar no navegador. Baixe um relatório para preservar os resultados.'}};
+const save=()=>{try{state.reviewMode=review;localStorage.setItem(key,JSON.stringify(state))}catch(e){$('en-report-status').textContent='Não foi possível salvar no navegador. Baixe um relatório para preservar os resultados.'}};
 const qid=(i,s)=>i+'-'+s;
-const keyNow=()=>qid(state.active,state.step);
+const keyNow=()=>qid(state.active,state.step)+(review?'~revision':'');
 const lesson=()=>lessons[state.active];
 const all=Object.keys(state.completed).filter(k=>state.completed[k]).length;
 const done=()=>Object.values(state.answers).filter(a=>a?.done).length;
@@ -70,7 +71,8 @@ function map(){
    const h=document.createElement('h4');h.textContent=(i+1)+'. '+l.title;
    const note=document.createElement('p');note.textContent=l.goal;
    const score=document.createElement('span');score.className='en-pill';
-   score.textContent=state.completed[i]?'✓ Concluída · '+(state.best[i]||0)+' JPs':allowed(i)?'Desbloqueada':'🔒 Conclua a anterior';
+   const first=Array.from({length:6},(_,j)=>state.answers[qid(i,j)]).filter(a=>a?.firstTry).length;
+   score.textContent=state.completed[i]?'✓ Concluída · '+(state.best[i]||0)+' JPs'+(first<4?' · Revisão recomendada':''):allowed(i)?'Desbloqueada':'🔒 Conclua a anterior';
    const b=document.createElement('button');b.className='en-btn'+(state.completed[i]?' secondary':'');b.type='button';
    b.textContent=state.completed[i]?'↶ Revisar lição':allowed(i)?'Começar →':'🔒 Bloqueada';b.disabled=!allowed(i);
    b.addEventListener('click',()=>openLesson(i,Boolean(state.completed[i])));
@@ -82,12 +84,11 @@ function map(){
 function openLesson(i,again=false){
  if(!allowed(i))return;
  state.active=i;state.started=true;review=again;
+ state.step=0;
  if(again){
-  // Reinicia questões para revisão, mas conserva melhor desempenho e desbloqueio.
-  for(let j=0;j<6;j++){delete state.answers[qid(i,j)];delete state.tries[qid(i,j)];delete state.hints[qid(i,j)]}
-  state.step=0;
+  // Revisão independente: preserva todas as respostas originais, conquistas e JPs.
+  for(let j=0;j<6;j++){delete state.answers[qid(i,j)+'~revision'];delete state.tries[qid(i,j)+'~revision'];delete state.hints[qid(i,j)+'~revision']}
  }else{
-  state.step=0;
   while(state.step<6&&state.answers[qid(i,state.step)]?.done)state.step++;
  }
  intro=true;save();showLesson();
@@ -95,7 +96,7 @@ function openLesson(i,again=false){
 function showLesson(){
  $('en-map').hidden=true;$('en-complete').hidden=true;$('en-play').hidden=false;
  const l=lesson();
- $('en-lesson-meta').textContent='Nível '+l.level+' · Lição '+(state.active+1)+' de 15';
+ $('en-lesson-meta').textContent='Nível '+l.level+' · Lição '+(state.active+1)+' de 15'+(review?' · revisão':'');
  $('en-lesson-title').textContent=l.title;
  $('en-lesson-goal').textContent=l.goal;
  $('en-vocab').replaceChildren();
@@ -107,7 +108,7 @@ function showLesson(){
   b.addEventListener('click',()=>speak(en));
   card.append(t,b);$('en-vocab').append(card);
  }
- $('en-example').textContent=l.pattern;$('en-example-pt').textContent=l.translation;$('en-tip').textContent='💡 '+l.tip;
+ $('en-example').textContent=l.pattern;$('en-example-pt').textContent=l.translation;$('en-tip').textContent='💡 '+l.tip+' '+(l.deepNote||'')+' ⚠️ Erro comum: '+(l.misconception||'');
  renderStep();
  visible('en-play');
 }
@@ -169,17 +170,15 @@ function eq(a,b){
  return norm(a)===norm(b);
 }
 function makeExercises(l){
- const meaning=l.vocab[0];
  return [
- {mode:'mc',label:'VOCABULÁRIO',prompt:'O que significa "'+meaning[0]+'"?',options:shuffleUnique([meaning[1],...l.vocab.slice(1).map(x=>x[1])]),answer:meaning[1],explanation:'"'+meaning[0]+'" significa "'+meaning[1]+'".'},
- {mode:'audio',label:'ESCUTA E COMPREENSÃO',prompt:'Ouça a frase e escolha seu significado em português.',audio:l.listen,options:[l.listenPt,...[l.translation,...l.vocab.map(x=>x[1]),'uma frase sobre outro assunto'].filter(x=>!eq(x,l.listenPt)).slice(0,3)],answer:l.listenPt,explanation:'A expressão "'+l.listen+'" corresponde a "'+l.listenPt+'".'},
+ {mode:'mc',label:'VOCABULÁRIO EM CONTEXTO',prompt:l.choice[0],options:[...l.choice[1]],answer:l.choice[1][l.choice[2]],explanation:'A alternativa correta é "'+l.choice[1][l.choice[2]]+'". '+l.tip},
+ {mode:'audio',label:'ESCUTA E COMPREENSÃO',prompt:'Ouça a frase e escolha seu significado em português.',audio:l.listen,options:[l.listenPt,...l.audioDistractors],answer:l.listenPt,explanation:'A expressão "'+l.listen+'" corresponde a "'+l.listenPt+'".'},
  {mode:'mc',label:'COMPLETE A FRASE',prompt:l.fill[0],options:l.fill[1],answer:l.fill[1][l.fill[2]],explanation:'A opção correta completa a frase respeitando a estrutura estudada: '+l.tip},
  {mode:'order',label:'ORGANIZE A FRASE',prompt:'Organize as palavras para dizer em inglês: '+l.order[0],answer:l.order[1],explanation:'A ordem adequada é: '+l.order[1]+'.'},
  {mode:'type',label:'ESCRITA',prompt:l.type[0],answer:l.type[1],explanation:'A escrita esperada é: '+l.type[1]+'.'},
  {mode:'mc',label:'LEITURA E INTERPRETAÇÃO',prompt:l.reading[0],options:l.reading[1],answer:l.reading[1][l.reading[2]],explanation:'A resposta é sustentada pelas informações da frase apresentada.'}
- ].map(q=>{if(q.options){q.options=[...new Set(q.options)];q.correct=q.options.indexOf(q.answer)}return q});
+ ].map(q=>{if(q.options){q.options=[...new Set(q.options)];q.correct=q.options.indexOf(q.answer);if(q.correct<0||q.options.length<3)throw Error('Opções inválidas: '+l.title)}return q});
 }
-function shuffleUnique(a){return a}
 function renderBank(){
  const picked=$('en-answerbank'),pool=$('en-wordbank');picked.replaceChildren();pool.replaceChildren();
  for(const x of ordered){const b=document.createElement('button');b.className='en-chip selected';b.type='button';b.textContent=x.text;b.disabled=Boolean(state.answers[keyNow()]?.done);b.setAttribute('aria-label','Remover '+x.text+' da frase');b.addEventListener('click',()=>{ordered.splice(ordered.indexOf(x),1);bank.push(x);renderBank()});picked.append(b)}
@@ -200,17 +199,17 @@ function evaluate(correct,response,q,onWrong){
 function showFeedback(msg,good){const box=$('en-feedback');box.className='en-feedback'+(good?' good':'');box.textContent=msg}
 function finishLesson(){
  const index=state.active;
- const answers=Array.from({length:6},(_,i)=>state.answers[qid(index,i)]);
+ const answers=Array.from({length:6},(_,i)=>state.answers[qid(index,i)+(review?'~revision':'')]);
  if(answers.some(a=>!a?.done))return;
  const first=answers.filter(a=>a.firstTry).length;
  const hints=answers.reduce((sum,a)=>sum+(a.hints||0),0);
  const score=Math.max(40,Math.min(100,40+first*10-hints*2));
  state.completed[index]=true;state.best[index]=Math.max(state.best[index]||0,score);
- state.history.push({lesson:index+1,when:new Date().toISOString(),first,score,hints});
+ state.history.push({lesson:index+1,when:new Date().toISOString(),first,score,hints,mode:review?'revisao':'original'});
  if(state.history.length>100)state.history=state.history.slice(-100);
  state.step=6;save();
  $('en-play').hidden=true;$('en-complete').hidden=false;$('en-map').hidden=true;
- $('en-complete-message').textContent='Lição "'+lesson().title+'" concluída. Você acertou '+first+' dos 6 exercícios na primeira tentativa. Melhor resultado: '+state.best[index]+' JPs nesta lição. Continue no próximo tema ou revise quando quiser.';
+ $('en-complete-message').textContent=(review?'Revisão finalizada. ':'Lição concluída. ')+'Você acertou '+first+' dos 6 exercícios na primeira tentativa. Melhor resultado: '+state.best[index]+' JPs nesta lição. Seus registros anteriores foram preservados.';
  map();visible('en-complete');
 }
 function next(){
@@ -233,6 +232,7 @@ function exportCSV(){
    rows.push(['Resposta',i+1,l.level,l.title,j+1,q.label,q.prompt,a.response,q.answer,a.tries,a.firstTry?'Sim':'Não',a.hints,state.best[i]||0,'Concluída']);
   }
  }
+for(const h of state.history){rows.push(['Histórico',h.lesson,lessons[h.lesson-1]?.level,lessons[h.lesson-1]?.title,'Sessão',h.mode==='revisao'?'Revisão':'Original','Data',h.when,'Acertos de primeira',h.first,'Dicas',h.hints,'JPs obtidos',h.score]);}
  rows.push(['Síntese','','','','Lições concluídas',all()+'/15','Exercícios concluídos',done()+'/90','JPs acumulados',pts(),'Níveis concluídos',levels.filter((_,i)=>levelDone(i+1)).length,'','']);
  rows.push(['Observação','','','','Aprendizagem progressiva com correção e novas tentativas','O relatório não constitui frequência escolar nem avaliação oficial.','','','','','','','','']);
  rows.push(['Gerado em','','','','Data e hora',new Date().toLocaleString('pt-BR'),'','','','','','','','']);
