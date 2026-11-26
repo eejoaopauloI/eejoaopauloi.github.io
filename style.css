@@ -765,3 +765,26 @@ body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-
  body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .brand-logo-eti[src$="logos-institucionais.webp"]{width:88px}
  body.learning-home:not(.curriculum-page):not(.pv-page) .learn-logo-strip .learn-logo-heading strong{font-size:clamp(15px,4.4vw,21px)}
 }
+
+/* JP 2026: camada transversal de acessibilidade, sem alterar a identidade visual */
+:where(a,button,input,select,textarea,[tabindex]):focus-visible{
+ outline:3px solid #b98023!important;
+ outline-offset:3px!important;
+}
+:where(button,a,input,select){touch-action:manipulation}
+:where(input,select,textarea){max-width:100%}
+:where(.learn-btn,.dec-btn,.ja-btn,.btn){min-height:44px}
+@media(prefers-reduced-motion:reduce){
+ *,*::before,*::after{
+  animation-duration:.01ms!important;
+  animation-iteration-count:1!important;
+  transition-duration:.01ms!important;
+  scroll-behavior:auto!important;
+ }
+}
+@media(forced-colors:active){
+ :where(a,button,input,select,textarea):focus-visible{outline:2px solid Highlight!important}
+}
+@media print{
+ .learn-top,.learn-header .menu,.ja-actions{print-color-adjust:economy}
+}
