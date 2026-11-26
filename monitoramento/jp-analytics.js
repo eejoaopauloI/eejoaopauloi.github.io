@@ -56,14 +56,14 @@ const url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'})),
 message('Relatório interno gerado. Armazene-o somente em pasta institucional com acesso restrito.');
 };
 const downloadCSV=(name,rows)=>{
- const text='\\uFEFF'+rows.map(r=>r.map(csvCell).join(';')).join('\\r\\n');
+ const text='\uFEFF'+rows.map(r=>r.map(csvCell).join(';')).join('\r\n');
  const url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));
  const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
 };
 const parseInput=txt=>{
- const lines=txt.replace(/^\\uFEFF/,'').trim().split(/\\r?\\n/).filter(x=>x.trim());
+ const lines=txt.replace(/^\uFEFF/,'').trim().split(/\r?\n/).filter(x=>x.trim());
  const split=line=>{const out=[];let cell='',quoted=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(quoted&&line[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(ch===';'&&!quoted){out.push(cell.trim());cell='';}else cell+=ch;}out.push(cell.trim());return out;};
- const header=split(lines.shift()||'').map(s=>s.toLowerCase().normalize('NFD').replace(/[\\u0300-\\u036f]/g,''));
+ const header=split(lines.shift()||'').map(s=>s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,''));
  if(header.join(';')!=='matricula;nome;turma')throw Error('O CSV deve ter as colunas matricula;nome;turma, nessa ordem.');
  const students=lines.map(split).map(r=>({matricula:String(r[0]||'').trim(),name:String(r[1]||'').trim(),class_name:String(r[2]||'').trim()}));
  if(students.some(s=>!/^[0-9]{7}$/.test(s.matricula)||s.name.length<2||!s.class_name))throw Error('Existem matrículas, nomes ou turmas inválidos.');
@@ -80,7 +80,7 @@ const callFunction=async(name,payload)=>{
 $('ja-change-form').onsubmit=async e=>{
  e.preventDefault();const p=$('ja-new-password').value,c=$('ja-new-confirm').value,status=$('ja-change-status');
  if(p!==c){status.textContent='As senhas não são iguais.';return;}
- if(p.length<12||!/[A-Z]/.test(p)||!/[a-z]/.test(p)||!/[0-9]/.test(p)||!/[!@#$%*?]/.test(p)||/\\s/.test(p)){status.textContent='Inclua ao menos 12 caracteres, letras maiúsculas e minúsculas, número e símbolo (!@#$%*?).';return;}
+ if(p.length<12||!/[A-Z]/.test(p)||!/[a-z]/.test(p)||!/[0-9]/.test(p)||!/[!@#$%*?]/.test(p)||/\s/.test(p)){status.textContent='Inclua ao menos 12 caracteres, letras maiúsculas e minúsculas, número e símbolo (!@#$%*?).';return;}
  status.textContent='Atualizando a senha com segurança...';
  try{await callFunction('jp-change-student-password',{password:p});$('ja-new-password').value='';$('ja-new-confirm').value='';logout();$('ja-login-status').textContent='Senha pessoal criada! Entre novamente com sua matrícula e a senha nova.';}
  catch(error){status.textContent=error.message;}
