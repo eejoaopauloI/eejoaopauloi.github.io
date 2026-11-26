@@ -52,11 +52,12 @@ const tasks=[
  {n:30,b:9,type:'inv',text:'Escolha um problema real da escola ou da comunidade (desperdício de água, energia, lixo, desinformação, mobilidade, alimentação, convivência, preservação ambiental etc.). Elabore uma proposta de intervenção. Apresente: problema, dados ou observações, causas, consequências, solução proposta e como três ou mais disciplinas podem contribuir para resolver ou compreender a situação.',hint:'Organize em seis partes: 1. problema; 2. dados/observações; 3. causas; 4. consequências; 5. solução; 6. participação de pelo menos três disciplinas.',criteria:'A proposta apresenta problema real, evidências, causas, consequências, solução viável e contribuição de três ou mais disciplinas.'}
 ];
 if(tasks.length!==30||blocks.length!==10||tasks.some((t,i)=>t.n!==i+1||t.b!==blocks.findIndex(b=>t.n>=b.from&&t.n<=b.to)))throw Error('Configuração inconsistente');
-const store='jp_busca_ativa_multi_9ano_b1_v1';
+const store=window.JPTrilha?.progressKey('jp_busca_ativa_multi_9ano_b1_v1')||'jp_busca_ativa_multi_9ano_b1_v1';
+const localStore=window.JPTrilha?.progressStorage()||sessionStorage;
 const fresh=()=>({index:0,started:false,seen:{},answers:{},attempts:{},hints:{},drafts:{},confirmed:{},startedAt:new Date().toISOString()});
 let state=fresh(),lessonMode=false,reviewMode=false,reviewReturn=null,ready=false;
-try{const old=JSON.parse(localStorage.getItem(store)||'null');if(old&&Number.isInteger(old.index)&&old.index>=0&&old.index<=30&&old.answers&&old.seen&&old.drafts){state={...fresh(),...old};state.index=Math.min(30,Math.max(0,state.index))}}catch(error){}
-const save=()=>{try{localStorage.setItem(store,JSON.stringify(state));$('md-start-status').textContent='Progresso salvo neste navegador.'}catch(e){$('md-start-status').textContent='Salvamento indisponível. Baixe o relatório parcial para não perder o trabalho.'}};
+try{const old=JSON.parse(localStore.getItem(store)||'null');if(old&&Number.isInteger(old.index)&&old.index>=0&&old.index<=30&&old.answers&&old.seen&&old.drafts){state={...fresh(),...old};state.index=Math.min(30,Math.max(0,state.index))}}catch(error){}
+const save=()=>{try{localStore.setItem(store,JSON.stringify(state));$('md-start-status').textContent='Progresso salvo neste navegador.'}catch(e){$('md-start-status').textContent='Salvamento indisponível. Baixe o relatório parcial para não perder o trabalho.'}};
 function hideAll(){for(const id of ['md-start','md-progress-area','md-lesson','md-question-card','md-finish'])$(id).hidden=true}
 const scroll=id=>$(id).scrollIntoView({block:'start',behavior:'smooth'});
 function current(){return tasks[Math.min(state.index,29)]}
