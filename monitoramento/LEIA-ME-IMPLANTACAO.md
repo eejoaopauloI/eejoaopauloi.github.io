@@ -48,3 +48,18 @@ A ausência de Supabase não impede o uso das trilhas existentes.
 - Teste funcional completo com conta piloto e fluxo de cadastro ainda **pendente**. Não importar os 216 estudantes nem enviar credenciais antes dos testes e autorização de proteção de dados.
 - As funções de backend estão implantadas, mas o usuário deve testar na página publicada antes da distribuição.
 - Recomendação: habilitar proteção contra senhas comprometidas em Auth > Security; revisar avisos de segurança de funções `SECURITY DEFINER`.
+
+## Integração multidisciplinar — 26/11/2026
+
+- `monitoramento/jp-trilhas.js`: conector autenticado central, valida identidade da sessão, registra visitas e transmite resultados sem coletar nome digitado, redações, senhas ou outros dados adicionais.
+- Banco: `jp_submit_learning` aceita explicitamente identificadores de 16 atividades, com pontuação agregada **0–100 JPs por atividade** e resultados `verified=false` até a coordenação conferir.
+- Páginas conectadas: Inteiros (Desafios e Laboratório), Circuito da Tabuada, Palavras Vivas, Detetives do Texto, Versos em Movimento, Geometria/Áreas na Malha, Proporção e Escala, Cartografia/Escalas, JP Inglês, Balança das Equações e quatro percursos multidisciplinares de Busca Ativa (9º, 3º EM, 2º EM e 8º).
+- `jp-pontos.js`: ao solicitar comprovante com login escolar e atividade concluída, envia os JPs ao painel. Sem login, mantém o fluxo de comprovante CSV por código, que **não** é integrado automaticamente.
+- Inglês (15 lições) e Escalas (5 níveis): sincronizam avanço e JPs normalizados quando concluem uma lição/nível.
+- Balança: botão específico após concluir 40 missões.
+- Busca Ativa multidisciplinar: registra a conclusão e a quantidade de atividades realizadas com **0 JPs provisórios**, pois produções textuais e intervenções exigem correção docente. Não interpretar zero como nota, insucesso ou ausência de aprendizagem.
+- Missão Decimal: mantém transmissão própria; os 500 pontos internos equivalem, para o ranking central, a até 100 JPs.
+- Uso de Chromebooks compartilhados: armazenamento local segregado por identidade nas trilhas de Escalas, Inglês, Balança e Busca Ativa; visitantes sem sessão usam armazenamento temporário. Histórico antigo anônimo não é incorporado automaticamente à conta nova.
+- Rankings só exibem apelidos autorizados e registros validados; nomes reais ficam na área interna.
+- **Testes pendentes:** login e troca de senha em navegador real, envio de cada trilha com uma conta piloto, conferência de relatório no JP Analytics e validação/revogação. Verificações estáticas de código não substituem esses testes.
+- **Não criar resultados fictícios com contas de estudantes reais.** Antes de um piloto, combinar com a coordenação como identificar/remover dados de teste.
