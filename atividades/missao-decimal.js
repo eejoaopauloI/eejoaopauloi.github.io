@@ -38,14 +38,27 @@ const t=tasks[i];a=t[1];b=t[2];operation=t[3];ans=t[4];context=t[0];solution='Op
 ans=Number(ans.toFixed(4));
 return {stage,index:i,operation,a,b,answer:ans,prompt:stage===4?context:'Quanto é '+fmt(a)+' '+operation+' '+fmt(b)+'?',context:stage===4?'Escreva somente o valor numérico, sem unidade.':'Você pode usar papel e lápis para organizar as casas decimais.',solution};
 }));
-const storageKey='jp_missao_decimal_v1';
+// Dados locais segregados por usuário autenticado; sessões sem login são temporárias.
+const activeStudentId=()=>{
+ try{
+  const stored=JSON.parse(sessionStorage.getItem('jp_analytics_session_v1')||'null');
+  const jwt=String(stored?.access_token||'').split('.');
+  if(jwt.length!==3)return '';
+  const payload=JSON.parse(atob(jwt[1].replace(/-/g,'+').replace(/_/g,'/')));
+  if(!payload.sub||!Number.isFinite(payload.exp)||payload.exp*1000<=Date.now())return '';
+  return /^[0-9a-f-]{36}$/i.test(payload.sub)?payload.sub:'';
+ }catch(e){return '';}
+};
+const studentId=activeStudentId();
+const storageKey=studentId?'jp_missao_decimal_usuario_'+studentId:'jp_missao_decimal_sessao';
+const localStore=studentId?localStorage:sessionStorage;
 const fresh=()=>({level:0,step:0,review:false,completed:{},records:{},best:{},history:[]});
 let state=fresh();
-try{const old=JSON.parse(localStorage.getItem(storageKey)||'null');if(old&&old.records&&old.completed)state={...fresh(),...old};}catch(e){}
+try{const old=JSON.parse(localStore.getItem(storageKey)||'null');if(old&&old.records&&old.completed)state={...fresh(),...old};}catch(e){}
 let intro=true,finishedMarker='',hintUsed=0,tries=0,previousWrong=[];
 const inProgress={};
 const track=()=>{inProgress[key(state.level,state.step)]={tries,hintUsed,previousWrong:[...previousWrong]};};
-const save=()=>{try{localStorage.setItem(storageKey,JSON.stringify(state));}catch(e){$('dec-export-status').textContent='O salvamento local não está disponível. Baixe seu relatório para guardar os resultados.';}};
+const save=()=>{try{localStore.setItem(storageKey,JSON.stringify(state));}catch(e){$('dec-export-status').textContent='O salvamento local não está disponível. Baixe seu relatório para guardar os resultados.';}};
 const key=(i,j,review=state.review)=>i+'-'+j+(review?'~r':'');
 const totalDone=()=>Object.keys(state.records).filter(k=>!k.includes('~r')&&state.records[k]?.done).length;
 const points=()=>Object.values(state.best).reduce((a,b)=>a+(+b||0),0);
