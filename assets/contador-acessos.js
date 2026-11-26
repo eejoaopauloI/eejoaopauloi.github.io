@@ -20,7 +20,7 @@
  };
  const names=Object.fromEntries(Object.values(items).map(([id,name])=>[id,name]));
  const config=window.JPAcessosConfig||{};
- const enabled=/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(config.url||'')&&/^(sb_publishable_|eyJ)/.test(config.key||'');
+ const enabled=config.enableAnonymousCounter===true&&/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/i.test(config.url||'')&&/^(sb_publishable_|eyJ)/.test(config.key||'');
  const base=(config.url||'').replace(/\/$/,'');
  const key=config.key||'';
  const path=location.pathname.split('/').pop().toLowerCase();
