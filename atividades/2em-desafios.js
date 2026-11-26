@@ -3,13 +3,14 @@
  const data=window.JP2EMAprofundamento;
  if(!Array.isArray(data)||data.length!==23)return;
  const $=id=>document.getElementById(id);
- const key='jp_busca_ativa_2em_aplicacoes_v2';
+ const key=window.JPTrilha?.progressKey('jp_busca_ativa_2em_aplicacoes_v2')||'jp_busca_ativa_2em_aplicacoes_v2';
+const localStore=window.JPTrilha?.progressStorage()||sessionStorage;
  let results={};
  try{
-  const parsed=JSON.parse(localStorage.getItem(key)||'{}');
+  const parsed=JSON.parse(localStore.getItem(key)||'{}');
   if(parsed&&typeof parsed==='object'&&!Array.isArray(parsed))results=parsed;
  }catch(e){}
- const save=()=>{try{localStorage.setItem(key,JSON.stringify(results))}catch(e){}};
+ const save=()=>{try{localStore.setItem(key,JSON.stringify(results))}catch(e){}};
  let bypass=false;
  let previewing=false;
  const count=()=>Object.values(results).filter(x=>x?.complete).length;
@@ -91,7 +92,7 @@
  });
  window.JP2EMDesafios={
   results:()=>JSON.parse(JSON.stringify(results)),
-  reset:()=>{results={};try{localStorage.removeItem(key)}catch(e){}}
+  reset:()=>{results={};try{localStore.removeItem(key)}catch(e){}}
  };
  updateProgress();
 })();
