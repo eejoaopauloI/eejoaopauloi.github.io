@@ -7,16 +7,17 @@ const data=window.JPEscalaDados;
 if(!data||data.levels?.length!==5||data.levels.some(l=>l.items?.length!==5)){
  document.getElementById('sc-report-status').textContent='Não foi possível carregar os conteúdos desta trilha. Atualize a página.';return;
 }
-const key='jp_trilha_escalas_'+data.kind+'_v1';
+const key=window.JPTrilha?.progressKey('jp_trilha_escalas_'+data.kind+'_v1')||'jp_trilha_escalas_'+data.kind+'_v1';
+const localStore=window.JPTrilha?.progressStorage()||sessionStorage;
 const fresh=()=>({active:0,step:0,started:false,review:false,completed:{},scores:{},answers:{},attempts:{},hints:{},history:[],createdAt:new Date().toISOString()});
 let state=fresh(),intro=true,justFinished='';
 try{
- const saved=JSON.parse(localStorage.getItem(key)||'null');
+ const saved=JSON.parse(localStore.getItem(key)||'null');
  if(saved&&typeof saved==='object'&&saved.completed&&saved.answers&&saved.scores){
   state={...fresh(),...saved,active:Math.min(4,Math.max(0,Number(saved.active)||0)),step:Math.min(5,Math.max(0,Number(saved.step)||0))};
  }
 }catch(e){}
-const save=()=>{try{localStorage.setItem(key,JSON.stringify(state))}catch(e){$('sc-report-status').textContent='Salvamento local indisponível. Baixe um relatório parcial para preservar suas respostas.'}};
+const save=()=>{try{localStore.setItem(key,JSON.stringify(state))}catch(e){$('sc-report-status').textContent='Salvamento local indisponível. Baixe um relatório parcial para preservar suas respostas.'}};
 const lesson=()=>data.levels[state.active];
 const task=()=>lesson().items[state.step];
 const id=(i,j)=>i+'-'+j+(state.review?'~revisao':'');
