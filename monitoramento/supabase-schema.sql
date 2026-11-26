@@ -169,3 +169,14 @@ grant execute on function public.jp_admin_verify(uuid,boolean) to authenticated;
 -- insert into public.jp_students(user_id,full_name,class_name,public_alias,public_opt_in)
 -- values ('UUID_DA_CONTA_DO_ESTUDANTE','Nome completo','7º A','JP-0001',false);
 -- Altere public_opt_in para true SOMENTE após a autorização institucional.
+
+-- Segurança adicional: Supabase pode manter grants próprios em anon, além de PUBLIC.
+-- Somente o ranking pseudonimizado pode ser executado anonimamente.
+revoke execute on function public.jp_admin_overview() from anon;
+revoke execute on function public.jp_admin_verify(uuid,boolean) from anon;
+revoke execute on function public.jp_is_admin() from anon;
+revoke execute on function public.jp_log_visit(text) from anon;
+revoke execute on function public.jp_my_profile() from anon;
+revoke execute on function public.jp_submit_learning(text,integer,integer,integer,integer,integer) from anon;
+revoke execute on function public.jp_public_ranking() from anon;
+grant execute on function public.jp_public_ranking() to anon;
