@@ -698,6 +698,7 @@ function finish(){
  const objekt=tasks.filter(t=>t.type==='mc');
  const first=objekt.filter(t=>state.answers[t.n]?.tries===1).length;
  $('md-finish-text').textContent='Você registrou '+answeredCount()+' das 30 atividades, incluindo respostas de múltipla escolha, discursivas e investigativas. Das '+objekt.length+' questões objetivas, '+first+' foram acertadas na primeira tentativa. As produções escritas, a pesquisa e o desafio de intervenção aguardam apreciação docente.';
+ if(window.JPTrilha?.hasSession())window.JPTrilha.submit({score:0,solved:answeredCount(),total:30});
  scroll('md-finish');
 }
 $('md-restart').addEventListener('click',()=>{
