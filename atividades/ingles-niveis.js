@@ -236,6 +236,7 @@ function finishLesson(){
  state.history.push({lesson:index+1,when:new Date().toISOString(),first,score,hints,mode:review?'revisao':'original'});
  if(state.history.length>100)state.history=state.history.slice(-100);
  state.step=6;save();
+ if(window.JPTrilha?.hasSession())window.JPTrilha.submit({activity:'ingles-niveis',score:Math.min(100,Math.round(pts()/15)),solved:all()*6,total:90,hints:Object.values(state.hints).reduce((n,v)=>n+(Number(v)||0),0)});
  $('en-play').hidden=true;$('en-complete').hidden=false;$('en-map').hidden=true;
  $('en-complete-message').textContent=(review?'Revisão finalizada. ':'Lição concluída. ')+'Você acertou '+first+' dos 6 exercícios na primeira tentativa. Melhor resultado: '+state.best[index]+' JPs nesta lição. Seus registros anteriores foram preservados.';
  map();visible('en-complete');
