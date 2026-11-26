@@ -24,11 +24,16 @@ function exportar(args){
  const activity=args&&args.atividade;
  if(!activities[activity]){alert('Atividade não cadastrada no sistema JPs.');return false}
  if(!args.concluida){alert('Conclua a atividade antes de emitir o comprovante de JPs.');return false}
+ const value=Math.max(0,Math.min(100,Math.round(Number(args.jps)||0)));
+ // Com login escolar, o envio autenticado substitui a identificação por código manual.
+ if(window.JPTrilha?.hasSession()){
+  window.JPTrilha.submit({activity,score:value,solved:1,total:1});
+  return true;
+ }
  const raw=prompt('Digite seu CÓDIGO ESCOLAR DE PARTICIPAÇÃO (4 a 18 caracteres, letras ou números). Solicite o código ao professor. Não informe seu nome completo.');
  if(raw===null)return false;
  const code=normal(raw);
  if(!validCode(code)){alert('Código inválido. Use de 4 a 18 letras, números, hífen ou sublinhado, sem espaços.');return false}
- const value=Math.max(0,Math.min(100,Math.round(Number(args.jps)||0)));
  const attempt=(Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,10)).toUpperCase();
  const datetime=new Date().toISOString();
  const row=['JP_PONTOS_V1',code,activity,activities[activity],value,'SIM',datetime,attempt];
