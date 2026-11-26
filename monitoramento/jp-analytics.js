@@ -9,7 +9,7 @@ const message=t=>$('ja-status').textContent=t;
 const show=id=>['ja-setup','ja-login','ja-student','ja-admin','ja-change-password'].forEach(n=>$(n).hidden=n!==id);
 const getToken=()=>{try{return JSON.parse(sessionStorage.getItem(sessionKey)||'null')?.access_token||''}catch(e){return ''}};
 const putToken=t=>{try{sessionStorage.setItem(sessionKey,JSON.stringify({access_token:t}))}catch(e){}};
-function logout(){try{sessionStorage.removeItem(sessionKey)}catch(e){}token='';data=null;show('ja-login');message('Sessão encerrada neste navegador.');}
+async function logout(){const old=token;try{sessionStorage.removeItem(sessionKey)}catch(e){}token='';data=null;show('ja-login');message('Sessão encerrada neste navegador.');if(old&&ready){try{await fetch(base+'/auth/v1/logout',{method:'POST',headers:{apikey:pubKey,Authorization:'Bearer '+old},cache:'no-store'});}catch(e){/* Sessão local já encerrada. */}}}
 async function request(path,method='POST',body={},authenticated=true){
  const headers={apikey:pubKey,'Content-Type':'application/json'};
  if(authenticated)headers.Authorization='Bearer '+token;
@@ -20,6 +20,35 @@ async function request(path,method='POST',body={},authenticated=true){
 }
 async function rpc(name,payload={}){return request('/rest/v1/rpc/'+name,'POST',payload);}
 const row=(values,body)=>{const tr=document.createElement('tr');values.forEach(v=>{const td=document.createElement('td');td.textContent=String(v??'—');tr.append(td)});body.append(tr);return tr;};
+function renderClassDiagnostics(){
+ const tbody=$('ja-class-diagnostics');tbody.replaceChildren();
+ if(!data)return;
+ const classes=new Map();
+ for(const s of data.students_detail||[]){
+  const turma=s.class_name;
+  if(!classes.has(turma))classes.set(turma,{enrolled:0,active:0,jps:0});
+  const stat=classes.get(turma);if(s.active===false)continue;
+  stat.enrolled++;
+  if(Number(s.accesses)>0||(data.activities||[]).some(a=>a.user_id===s.user_id))stat.active++;
+  stat.jps+=Number(s.verified_jps)||0;
+ }
+ [...classes.entries()].sort((a,b)=>a[0].localeCompare(b[0],'pt-BR',{numeric:true})).forEach(([turma,v])=>{
+  row([turma,v.enrolled,v.active,v.enrolled?Math.round(100*v.active/v.enrolled)+'%':'—',v.jps],tbody);
+ });
+}
+async function renderMyLearning(){
+ try{
+  const mine=await rpc('jp_my_learning');
+  $('ja-my-points').textContent=mine?.total_jps??0;
+  $('ja-my-done').textContent=mine?.completed_activities??0;
+  $('ja-my-verified').textContent=mine?.verified_activities??0;
+  const body=$('ja-my-activities');body.replaceChildren();
+  for(const item of mine.activities||[]){
+   row([item.activity==='missao-decimal'?'Missão Decimal':item.activity,item.score+' JPs',item.solved+'/'+item.total,item.verified?'Validado':'Pendente'],body);
+  }
+  $('ja-my-tip').textContent=(mine?.completed_activities||0)?'Continue aprendendo e revise seus erros. Sua pontuação será atualizada após validação da escola.':'Comece pela Missão Decimal: resolva os desafios, confira suas respostas e envie seu progresso ao final.';
+ }catch(e){$('ja-my-tip').textContent='Não foi possível obter o seu histórico agora. Tente acessar novamente mais tarde.';}
+}
 function renderInternalRanking(){
  const body=$('ja-ranking-rows'),summary=$('ja-ranking-summary'),turma=$('ja-ranking-class').value;
  body.replaceChildren();
@@ -56,7 +85,7 @@ const sb=$('ja-student-rows'),lb=$('ja-learning-rows'),db=$('ja-daily-rows');sb.
  td.append(btn);tr.append(td);
 });
 (data.daily_views||[]).forEach(d=>row([d.visit_day,d.views,d.students],db));
-renderInternalRanking();
+renderInternalRanking();renderClassDiagnostics();
 message('Painel atualizado. Nomes e resultados individuais acessíveis somente nesta sessão institucional.');
 }
 async function refresh(){data=await rpc('jp_admin_overview');render();}
@@ -65,7 +94,7 @@ try{
  const profile=await rpc('jp_my_profile');
  if(profile?.role==='admin'){show('ja-admin');await refresh();}
  else if(profile?.role==='student'&&profile.must_change_password){show('ja-change-password');message('Antes de iniciar, cadastre sua senha pessoal.');}
- else if(profile?.role==='student'){show('ja-student');$('ja-my-name').textContent='Estudante: '+profile.name+' · '+profile.class_name+' · Apelido: '+profile.alias;message('Conta de estudante autenticada.');}
+ else if(profile?.role==='student'){show('ja-student');$('ja-my-name').textContent='Estudante: '+profile.name+' · '+profile.class_name+' · Apelido: '+profile.alias;message('Conta de estudante autenticada.');await renderMyLearning();}
  else{logout();message('Conta não cadastrada para uso do JP Analytics. Solicite o vínculo à escola.');}
 }catch(e){logout();message('Não foi possível validar o acesso. '+e.message);}
 }
