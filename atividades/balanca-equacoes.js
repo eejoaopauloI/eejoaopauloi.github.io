@@ -213,6 +213,7 @@ function finish(){
  $('eq-end').scrollIntoView({block:'start',behavior:'smooth'});
 }
 $('eq-report').addEventListener('click',()=>report(false));
+$('eq-sync').addEventListener('click',()=>{if(done<40){$('eq-export-status').textContent='Conclua a atividade antes de enviar.';return;}window.JPTrilha?.submit({activity:'balanca-equacoes',score:score,solved:done,total:40,extraAttempts:attempts,hints});});
 $('eq-partial-report').addEventListener('click',()=>report(true));
 $('eq-again').addEventListener('click',()=>{
  if(!confirm('Recomeçar as 40 missões? Baixe o relatório antes para preservar os resultados.'))return;
