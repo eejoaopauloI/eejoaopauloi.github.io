@@ -34,7 +34,8 @@ for(let i=0;i<8;i++){const [a,b,d,c,x]=values[i];cases.push({a,b,d,c,x,context:s
 if(cases.length!==40||cases.some(q=>q.a*q.x+q.b!==q.d*q.x+q.c))throw Error('Falha ao preparar equações');
 const stageNames=['Equilíbrio','Caixas iguais','Duas etapas','Dois pratos','Desafios reais'];
 let index=0,score=0,done=0,history=[],attempts=0,hints=0,pointsThis=0,solved=false,firstSolve=true,log=[],state=null;
-const storeKey='jp_balanca_equacoes_progress_v1';
+const storeKey=window.JPTrilha?.progressKey('jp_balanca_equacoes_progress_v1')||'jp_balanca_equacoes_progress_v1';
+const localStore=window.JPTrilha?.progressStorage()||sessionStorage;
 function clone(q){return {a:q.a,b:q.b,d:q.d,c:q.c,x:q.x}}
 function expression(a,b){
  if(a===0)return String(b);
@@ -71,7 +72,7 @@ function hud(){
  [...$('eq-map').children].forEach((el,i)=>el.className=i<level?'done':i===level?'current':'');
 }
 function save(){
- try{localStorage.setItem(storeKey,JSON.stringify({index,score,done,history,attempts,hints,solved,firstSolve,log,state}))}catch(e){}
+ try{localStore.setItem(storeKey,JSON.stringify({index,score,done,history,attempts,hints,solved,firstSolve,log,state}))}catch(e){}
 }
 function feedbackHints(){
  if(state.d>0)return 'Há caixas x dos dois lados. Retire a mesma quantidade de caixas azuis de ambos os pratos.';
@@ -220,7 +221,7 @@ $('eq-again').addEventListener('click',()=>{
 });
 function restore(){
  try{
-  const data=JSON.parse(localStorage.getItem(storeKey)||'null');
+  const data=JSON.parse(localStore.getItem(storeKey)||'null');
   if(!data||!Number.isInteger(data.index)||data.index<0||data.index>40||!Number.isInteger(data.done)||data.done!==data.index+(data.solved&&data.index<40?1:0))return false;
   if(!Array.isArray(data.log)||data.log.length!==data.done||!Number.isFinite(data.score)||data.score<0||data.score>100)return false;
   if(data.index===40&&data.score<20)return false;
