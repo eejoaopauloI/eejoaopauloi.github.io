@@ -45,6 +45,15 @@
    return {ok:r.ok,reason:r.ok?'ok':'rejected'};
   }catch(e){return {ok:false,reason:'offline'};}
  };
+ const sessionIdentity=()=>{
+  try{
+   const jwt=access();if(!jwt)return '';
+   const p=JSON.parse(atob(jwt.split('.')[1].replace(/-/g,'+').replace(/_/g,'/')));
+   return /^[0-9a-f-]{36}$/i.test(p.sub||'')?p.sub:'';
+  }catch(e){return '';}
+ };
+ const progressStorage=()=>sessionIdentity()?localStorage:sessionStorage;
+ const progressKey=original=>String(original)+'_'+(sessionIdentity()||'guest_session');
  const visited=new Set();
  async function visit(slug=activity){
   if(!allowed.has(slug)||visited.has(slug))return false;
@@ -66,6 +75,6 @@
   else notice('O resultado ficou neste dispositivo. Não foi possível sincronizar agora; procure a coordenação ou tente novamente.');
   return result;
  }
- window.JPTrilha={activity,visit,submit,notice,hasSession:()=>enabled&&!!access()};
+ window.JPTrilha={activity,visit,submit,notice,hasSession:()=>enabled&&!!access(),progressStorage,progressKey};
  if(activity&&enabled&&access())visit(activity);
 })();
