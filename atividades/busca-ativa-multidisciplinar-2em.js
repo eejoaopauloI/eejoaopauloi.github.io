@@ -16,14 +16,15 @@ const stationInfo=[
  {label:'Estratégias de aprendizagem',from:17,to:20,icon:'🎯'},
  {label:'Textos, problemas e futuro',from:21,to:23,icon:'🚀'}
 ];
-const key='jp_busca_ativa_2em_23_v1';
+const key=window.JPTrilha?.progressKey('jp_busca_ativa_2em_23_v1')||'jp_busca_ativa_2em_23_v1';
+const localStore=window.JPTrilha?.progressStorage()||sessionStorage;
 const fresh=()=>({index:0,started:false,answers:{},tries:{},hints:{},openedLessons:{},startedAt:new Date().toISOString()});
 let state=fresh(),reviewOnly=false;
 try{
- const data=JSON.parse(localStorage.getItem(key)||'null');
+ const data=JSON.parse(localStore.getItem(key)||'null');
  if(data&&Number.isInteger(data.index)&&data.index>=0&&data.index<=23&&data.answers&&data.tries&&data.openedLessons)state={...fresh(),...data};
 }catch(error){}
-const save=()=>{try{localStorage.setItem(key,JSON.stringify(state));$('md-start-status').textContent='Progresso salvo neste navegador.'}catch(e){$('md-start-status').textContent='Salvamento indisponível. Baixe um relatório parcial antes de sair.'}};
+const save=()=>{try{localStore.setItem(key,JSON.stringify(state));$('md-start-status').textContent='Progresso salvo neste navegador.'}catch(e){$('md-start-status').textContent='Salvamento indisponível. Baixe um relatório parcial antes de sair.'}};
 const item=()=>missions[Math.min(state.index,22)];
 const complete=()=>missions.filter(m=>state.answers[m.n]?.complete).length;
 const station=n=>stationInfo.findIndex(x=>n>=x.from&&n<=x.to);
