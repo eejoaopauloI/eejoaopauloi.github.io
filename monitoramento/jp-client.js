@@ -16,7 +16,7 @@ async function rpc(name,payload){
 }
 const activity='missao-decimal';
 window.JPMonitorClient={ready,hasSession:()=>ready&&Boolean(token()),submit:async d=>rpc('jp_submit_learning',{
- p_activity:activity,p_score:d.score,p_solved:d.solved,p_total:d.total,
+ p_activity:activity,p_score:Math.max(0,Math.min(100,Math.round(Number(d.score||0)/5))),p_solved:d.solved,p_total:d.total,
  p_extra_attempts:d.extraAttempts||0,p_hints:d.hints||0
 })};
 if(ready&&token())rpc('jp_log_visit',{p_activity:activity});
