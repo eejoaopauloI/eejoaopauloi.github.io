@@ -14,17 +14,18 @@ const levels=[
  {title:'No tempo certo',label:'Agora, ontem e amanhã',icon:'⏰'},
  {title:'Conectando ideias',label:'Leitura, meio ambiente e futuro',icon:'🚀'}
 ];
-const key='jp_ingles_missao_english_v1';
+const key=window.JPTrilha?.progressKey('jp_ingles_missao_english_v1')||'jp_ingles_missao_english_v1';
+const localStore=window.JPTrilha?.progressStorage()||sessionStorage;
 const defaults=()=>({active:0,step:0,started:false,completed:{},best:{},answers:{},tries:{},hints:{},history:[],createdAt:new Date().toISOString()});
 let state=defaults(),intro=true,ordered=[],bank=[],review=false;
 try{
- const saved=JSON.parse(localStorage.getItem(key)||'null');
+ const saved=JSON.parse(localStore.getItem(key)||'null');
  if(saved&&typeof saved==='object'&&saved.answers&&saved.completed&&saved.tries&&saved.best){
   state={...defaults(),...saved,active:Math.min(14,Math.max(0,Number(saved.active)||0)),step:Math.min(6,Math.max(0,Number(saved.step)||0))};
   review=Boolean(saved.reviewMode);
  }
 }catch(e){}
-const save=()=>{try{state.reviewMode=review;localStorage.setItem(key,JSON.stringify(state))}catch(e){$('en-report-status').textContent='Não foi possível salvar no navegador. Baixe um relatório para preservar os resultados.'}};
+const save=()=>{try{state.reviewMode=review;localStore.setItem(key,JSON.stringify(state))}catch(e){$('en-report-status').textContent='Não foi possível salvar no navegador. Baixe um relatório para preservar os resultados.'}};
 const qid=(i,s)=>i+'-'+s;
 const keyNow=()=>qid(state.active,state.step)+(review?'~revision':'');
 const lesson=()=>lessons[state.active];
