@@ -133,6 +133,16 @@ $('dec-finish-copy').textContent='Você resolveu as 10 atividades de '+levels[i]
 $('dec-continue').textContent=i===4?'Ver minhas conquistas →':'Avançar para a próxima fase →';
 map();show('dec-finish');
 }
+async function syncProgress(){
+ const client=window.JPMonitorClient;
+ if(!client?.hasSession()){ $('dec-sync-status').textContent='Para enviar resultados, entre primeiro na Minha Área com a conta cadastrada pela escola.';return; }
+ const recs=[];
+ for(let i=0;i<5;i++)for(let k=0;k<10;k++){const r=state.records[key(i,k,false)];if(r?.done)recs.push(r);}
+ if(!recs.length){$('dec-sync-status').textContent='Ainda não há desafios concluídos para enviar.';return;}
+ $('dec-sync-status').textContent='Enviando progresso autenticado...';
+ const result=await client.submit({score:points(),solved:recs.length,total:50,extraAttempts:recs.reduce((n,r)=>n+r.tries-1,0),hints:recs.reduce((n,r)=>n+r.hints,0)});
+ $('dec-sync-status').textContent=result.ok?'Progresso recebido para conferência pedagógica. A classificação pública só muda após validação.':'Não foi possível enviar o progresso. Verifique a sessão e a conexão. Seu histórico local foi preservado.';
+}
 function exportCSV(){
 const rows=[['Fase','Operação','Questão','Enunciado','Resposta','Resposta esperada','Tentativas','Dicas','Acerto primeira sem dica','JPs','Data']];
 for(let i=0;i<5;i++)for(let j=0;j<10;j++){
@@ -157,6 +167,7 @@ $('dec-hint').addEventListener('click',()=>{hintUsed++;track();feedback('💡 Di
 $('dec-reteach').addEventListener('click',()=>{intro=true;render();});
 $('dec-next').addEventListener('click',()=>{if(!state.records[key(state.level,state.step)]?.done)return;state.step++;intro=false;save();render();});
 $('dec-back').addEventListener('click',()=>{map();show('dec-map');});
+$('dec-sync').addEventListener('click',syncProgress);
 $('dec-partial').addEventListener('click',exportCSV);$('dec-export').addEventListener('click',exportCSV);
 $('dec-continue').addEventListener('click',()=>state.level===4?show('dec-map'):open(state.level+1,false));
 $('dec-replay').addEventListener('click',()=>open(state.level,true));
