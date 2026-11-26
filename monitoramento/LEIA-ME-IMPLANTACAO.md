@@ -36,3 +36,15 @@ A ausência de Supabase não impede o uso das trilhas existentes.
 - Pontuações vindas do navegador podem ser adulteradas; conferência humana é exigida antes de aprovar e divulgar qualquer pontuação.
 - Ainda não há conta de usuário, banco ou informação real carregada por esta instalação.
 - A rotina de importação de estudantes em lote e fluxo de consentimento institucional ainda precisam ser desenvolvidos.
+
+## Atualização — autenticação por matrícula (26/11/2026)
+- Planilha de origem conferida localmente: 216 matrículas distintas de 7 algarismos, 9 turmas.
+- O CSV de importação é **privado** e contém só `matricula;nome;turma`. Nunca fazer commit desse arquivo em repositório público.
+- O aluno entra com `e` + 7 dígitos (por exemplo `e1234567`). O servidor cria o identificador interno de autenticação sem expor e-mail real de aluno.
+- A função `jp-provision-students` exige JWT de uma conta constante em `jp_admins`, processa até 20 registros por chamada, gera senhas aleatórias fortes e mantém `public_opt_in=false`.
+- A interface autenticada fornece um CSV sensível de credenciais **apenas no ato da importação**. Guardar em dispositivo institucional restrito e distribuir individualmente.
+- A função `jp-change-student-password` altera a senha via sessão autenticada e só depois marca `must_change_password=false`.
+- `jp_log_visit` e `jp_submit_learning` recusam estudantes ainda obrigados a trocar senha.
+- Teste funcional completo com conta piloto e fluxo de cadastro ainda **pendente**. Não importar os 216 estudantes nem enviar credenciais antes dos testes e autorização de proteção de dados.
+- As funções de backend estão implantadas, mas o usuário deve testar na página publicada antes da distribuição.
+- Recomendação: habilitar proteção contra senhas comprometidas em Auth > Security; revisar avisos de segurança de funções `SECURITY DEFINER`.
