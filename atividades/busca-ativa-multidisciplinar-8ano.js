@@ -13,14 +13,15 @@ const stationInfo=[
 {label:'Sociedade, linguagens e convivência',from:9,to:12,icon:'🌍'},
 {label:'Comunicação, Matemática e natureza',from:13,to:16,icon:'🧠'}
 ];
-const key='jp_busca_ativa_8ano_16_v1';
+const key=window.JPTrilha?.progressKey('jp_busca_ativa_8ano_16_v1')||'jp_busca_ativa_8ano_16_v1';
+const localStore=window.JPTrilha?.progressStorage()||sessionStorage;
 const fresh=()=>({index:0,started:false,answers:{},tries:{},hints:{},openedLessons:{},startedAt:new Date().toISOString()});
 let state=fresh(),reviewOnly=false;
 try{
- const data=JSON.parse(localStorage.getItem(key)||'null');
+ const data=JSON.parse(localStore.getItem(key)||'null');
  if(data&&Number.isInteger(data.index)&&data.index>=0&&data.index<=16&&data.answers&&data.tries&&data.openedLessons)state={...fresh(),...data};
 }catch(error){}
-const save=()=>{try{localStorage.setItem(key,JSON.stringify(state));$('md-start-status').textContent='Progresso salvo neste navegador.'}catch(e){$('md-start-status').textContent='Salvamento indisponível. Baixe um relatório parcial antes de sair.'}};
+const save=()=>{try{localStore.setItem(key,JSON.stringify(state));$('md-start-status').textContent='Progresso salvo neste navegador.'}catch(e){$('md-start-status').textContent='Salvamento indisponível. Baixe um relatório parcial antes de sair.'}};
 const item=()=>missions[Math.min(state.index,22)];
 const complete=()=>missions.filter(m=>state.answers[m.n]?.complete).length;
 const station=n=>stationInfo.findIndex(x=>n>=x.from&&n<=x.to);
