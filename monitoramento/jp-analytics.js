@@ -20,6 +20,27 @@ async function request(path,method='POST',body={},authenticated=true){
 }
 async function rpc(name,payload={}){return request('/rest/v1/rpc/'+name,'POST',payload);}
 const row=(values,body)=>{const tr=document.createElement('tr');values.forEach(v=>{const td=document.createElement('td');td.textContent=String(v??'—');tr.append(td)});body.append(tr);return tr;};
+function renderInternalRanking(){
+ const body=$('ja-ranking-rows'),summary=$('ja-ranking-summary'),turma=$('ja-ranking-class').value;
+ body.replaceChildren();
+ if(!data){summary.textContent='Dados não carregados.';return;}
+ const studentList=(data.students_detail||[]).filter(s=>s.active!==false);
+ const validated=(data.activities||[]).filter(a=>a.verified);
+ const byId=new Map();
+ for(const entry of validated){
+  const key=entry.user_id;
+  byId.set(key,(byId.get(key)||0)+1);
+ }
+ const participants=studentList.filter(s=>Number(s.verified_jps)>0&&(!turma||s.class_name===turma));
+ participants.sort((a,b)=>Number(b.verified_jps)-Number(a.verified_jps)||(byId.get(b.user_id)||0)-(byId.get(a.user_id)||0)||String(a.full_name).localeCompare(String(b.full_name),'pt-BR'));
+ summary.textContent=(turma?'Turma '+turma:'Todas as turmas')+' · '+participants.length+' estudante(s) com pontuação validada. Empates em pontos e trilhas exigem revisão institucional.';
+ if(!participants.length){
+  const empty=document.createElement('tr'),cell=document.createElement('td');
+  cell.colSpan=5;cell.textContent='Nenhuma pontuação validada nesta classificação.';empty.append(cell);body.append(empty);return;
+ }
+ participants.forEach((s,i)=>row([i+1+'º',s.full_name,s.class_name,s.verified_jps+' JPs',byId.get(s.user_id)||0],body));
+}
+$('ja-ranking-class').addEventListener('change',renderInternalRanking);
 function render(){
 if(!data)return;
 $('ja-students').textContent=data.students??0;$('ja-views').textContent=data.views??0;
@@ -35,6 +56,7 @@ const sb=$('ja-student-rows'),lb=$('ja-learning-rows'),db=$('ja-daily-rows');sb.
  td.append(btn);tr.append(td);
 });
 (data.daily_views||[]).forEach(d=>row([d.visit_day,d.views,d.students],db));
+renderInternalRanking();
 message('Painel atualizado. Nomes e resultados individuais acessíveis somente nesta sessão institucional.');
 }
 async function refresh(){data=await rpc('jp_admin_overview');render();}
