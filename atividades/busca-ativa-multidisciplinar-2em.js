@@ -170,6 +170,7 @@ function finish(){
  const applied=extra.filter(x=>x.complete).length;
  const firstApplication=extra.filter(x=>x.complete&&x.tries===1).length;
  $('md-finish-text').textContent='Você concluiu '+complete()+' das 23 questões institucionais e '+applied+' dos 23 desafios de aplicação: '+(complete()+applied)+' atividades resolvidas. Acertos na primeira tentativa: '+first+' nas questões originais e '+firstApplication+' nas aplicações. Baixe o relatório com as duas etapas e as estratégias trabalhadas.';
+ if(window.JPTrilha?.hasSession())window.JPTrilha.submit({score:0,solved:complete()+applied,total:46});
  go('md-finish');
 }
 $('md-restart').addEventListener('click',()=>{
