@@ -99,6 +99,7 @@ const l=levels[state.level],n=state.step;
 $('dec-phase').textContent='FASE '+(state.level+1)+' DE 5 · '+l.title+(state.review?' · REVISÃO':'');
 $('dec-number').textContent=n>=10?'10/10 concluídos':'DESAFIO '+(n+1)+' DE 10';
 $('dec-progress-fill').style.width=(Math.min(n,10)*10)+'%';
+$('dec-progress').setAttribute('aria-valuenow',String(Math.min(n,10)));
 $('dec-lesson').hidden=!intro;
 $('dec-question-box').hidden=intro||n>=10;
 $('dec-lesson-title').textContent=l.icon+' '+l.title;
