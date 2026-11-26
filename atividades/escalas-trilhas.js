@@ -183,6 +183,7 @@ function finishLevel(){
   state.history.push({level:state.active+1,mode:state.review?'revisao':'original',first,hints,score,when:new Date().toISOString()});
   state.history=state.history.slice(-100);
   justFinished=tag;save();
+  if(window.JPTrilha?.hasSession())window.JPTrilha.submit({activity:window.JPTrilha.activity,score:Math.min(100,Math.round(points()/5)),solved:completedTasks(),total:25,hints:Object.values(state.hints).reduce((n,v)=>n+(Number(v)||0),0)});
  }
  $('sc-play').hidden=true;$('sc-map').hidden=true;$('sc-finished').hidden=false;
  const last=state.history[state.history.length-1];
