@@ -163,7 +163,7 @@ function exportCSV(final=false){
 }
 $('md-progress-btn').addEventListener('click',()=>exportCSV(false));
 $('md-export-now').addEventListener('click',()=>exportCSV(false));
-$('md-download-final').addEventListener('click',()=>exportCSV(true));
+$('md-download-final').addEventListener('click',()=>{exportCSV(true);if(window.JPTrilha?.hasSession()){const applications=Object.values(window.JP2EMDesafios?.results?.()||{}).filter(x=>x.complete).length;window.JPTrilha.submit({score:0,solved:complete()+applications,total:46});}});
 function finish(){
  screen('finish');hud();
  const first=missions.filter(m=>state.answers[m.n]?.tries===1).length;
