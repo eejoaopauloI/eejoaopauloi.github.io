@@ -16,7 +16,7 @@ const missions = [
  {title:'01 / Faça a receita',prompt:'Use as colheres para colocar 2 partes de amarelo e 1 parte de azul na bancada.',colors:['yellow','blue'],ref:[2,1],goal:[2,1],hint:'Cada toque em + acrescenta uma colher da cor daquela linha.',win:'Você preparou 3 partes. A razão amarelo : azul é 2 : 1 e a razão azul : total é 1 : 3.'},
  {title:'02 / Dobre sem mudar o tom',prompt:'Agora o painel precisa de 6 partes desse mesmo verde. Quanto vai de cada tinta?',colors:['yellow','blue'],ref:[2,1],goal:[4,2],hint:'Para fazer 6 partes a partir de 3, faça dois grupos completos de 2 de amarelo e 1 de azul.',win:'Você dobrou as duas cores: 2 virou 4 e 1 virou 2. A quantidade mudou, mas a proporção e o tom da simulação ficaram iguais.'},
  {title:'03 / Compare uma cor com o todo',prompt:'Você preparou 4 partes de amarelo e 2 de azul. Na ordem azul : total da mistura, qual é a razão sem simplificar?',choices:['2 : 4','2 : 6','4 : 6'],correct:1,hint:'O total inclui as duas tintas: some 4 e 2. O primeiro número da razão é só o azul.',win:'São 2 partes de azul em 6 no total: 2 : 6. Isso equivale a 1 : 3. Já 2 : 4 compara azul com amarelo, e não com o total.'},
- {title:'04 / Descubra a receita que não funciona',prompt:'Uma dupla passou de 2 de amarelo e 1 de azul para 3 de amarelo e 2 de azul. A cor fica igual na simulação?',choices:['Sim, porque acrescentou uma colher de cada.','Não, porque agora as quantidades de amarelo e azul ficaram iguais.','Não, porque a quantidade de amarelo deixou de ser o dobro da de azul.'],correct:2,hint:'Na receita original, para cada colher de azul, há duas de amarelo. Com 2 de azul, seriam necessárias 4 de amarelo.',win:'Adicionar 1 a cada cor não conserva a relação. Para manter esse tom, as duas quantidades precisam ser multiplicadas pelo mesmo número.'},
+ {title:'04 / Descubra a receita que não funciona',prompt:'Um estudante passou de 2 de amarelo e 1 de azul para 3 de amarelo e 2 de azul. A cor fica igual na simulação?',choices:['Sim, porque acrescentou uma colher de cada.','Não, porque agora as quantidades de amarelo e azul ficaram iguais.','Não, porque a quantidade de amarelo deixou de ser o dobro da de azul.'],correct:2,hint:'Na receita original, para cada colher de azul, há duas de amarelo. Com 2 de azul, seriam necessárias 4 de amarelo.',win:'Adicionar 1 a cada cor não conserva a relação. Para manter esse tom, as duas quantidades precisam ser multiplicadas pelo mesmo número.'},
  {title:'05 / Cumpra a encomenda do mural',prompt:'Prepare 12 partes de tinta sem mudar o verde da receita original. Use o mesmo tamanho de colher.',colors:['yellow','blue'],ref:[2,1],goal:[8,4],hint:'A receita tem 3 partes. Quantas vezes um grupo de 3 cabe em 12? Use esse fator nas duas cores.',win:'São 8 partes de amarelo e 4 de azul. Você fez 4 grupos de 3 e manteve a razão 2 : 1.'}
 ];
 const color = (keys, amounts) => {
@@ -30,7 +30,7 @@ function swatch(node, value){
  node.style.backgroundColor = value;
  node.classList.toggle('empty',!value);
 }
-let current=0, mix=[0,0], passed=false, controls=[];
+let current=0, mix=[0,0], passed=false, controls=[], authored=null;
 function updateMix(){
  const m=missions[current], total=mix[0]+mix[1];
  swatch($('mix'), color(m.colors,mix));
@@ -105,7 +105,7 @@ $('next').addEventListener('click',()=>{
  if(current<missions.length-1){current++;show(true);return;}
  $('autoria').hidden=false;$('next').hidden=true;$('create-title').focus();
 });
-$('restart').addEventListener('click',()=>{current=0;$('autoria').hidden=true;$('author-card').hidden=true;$('author-feedback').textContent='';$('author-form').reset();setPairLabel();show(true);});
+$('restart').addEventListener('click',()=>{current=0;$('autoria').hidden=true;$('author-card').hidden=true;$('art-work').hidden=true;authored=null;$('author-feedback').textContent='';$('author-form').reset();setPairLabel();show(true);});
 function setPairLabel(){ $('second-label').textContent='Partes de '+paints[$('author-pair').value.split('-')[1]].name; }
 $('author-pair').addEventListener('change',setPairLabel);
 $('author-form').addEventListener('submit',e=>{
@@ -118,8 +118,30 @@ $('author-form').addEventListener('submit',e=>{
  $('card-color').style.backgroundColor=color(pair,[aa,bb]);
  $('card-task').textContent='Receita: '+recipe(pair,[aa,bb])+'. A turma precisa de '+((aa+bb)*k)+' partes desse mesmo tom. Quantas partes de cada tinta são necessárias? Qual é a razão da segunda cor para o total?';
  $('card-key').textContent=recipe(pair,[aa*k,bb*k])+'. Multiplique as duas quantidades por '+k+'. '+paints[pair[1]].name[0].toUpperCase()+paints[pair[1]].name.slice(1)+' : total = '+bb*k+' : '+(aa+bb)*k+'.';
- $('card-details').open=false;$('author-card').hidden=false;
- $('author-feedback').textContent='Cartão pronto! Mostre a pergunta à outra dupla antes de abrir o gabarito.';
+ authored={aa,bb,k}; $('card-details').open=false;$('author-card').hidden=false;
+ $('self-form').reset();$('self-status').textContent='';
+ $('self-label').textContent=paints[pair[1]].name[0].toUpperCase()+paints[pair[1]].name.slice(1)+' na nova receita';
+ $('art-work').hidden=true;$('art-work').style.setProperty('--art-tone',color(pair,[aa,bb]));$('art-status').textContent='';
+ for(const shape of document.querySelectorAll('.art-shape'))shape.setAttribute('aria-pressed','false');
+ $('author-feedback').textContent='Cartão pronto. Resolva o seu desafio e confira o cálculo antes de pintar.';
+ $('self-a').focus();
 });
+$('self-form').addEventListener('submit',e=>{
+ e.preventDefault();if(!authored)return;
+ const {aa,bb,k}=authored,a=Number($('self-a').value),b=Number($('self-b').value);
+ if(a===aa*k&&b===bb*k){
+  $('self-status').textContent='✓ Você multiplicou as duas partes por '+k+' e manteve o tom. Agora pinte sua composição.';
+  $('art-work').hidden=false;
+ }else{
+  $('self-status').textContent=(a+b===(aa+bb)*k?'O total está certo, mas as partes precisam manter a mesma proporção. ':'O total ainda não é o do cartão. ')+'Multiplique cada quantidade original por '+k+' e tente de novo.';
+ }
+});
+for(const shape of document.querySelectorAll('.art-shape')){
+ shape.addEventListener('click',()=>{
+  shape.setAttribute('aria-pressed',String(shape.getAttribute('aria-pressed')!=='true'));
+  const n=document.querySelectorAll('.art-shape[aria-pressed="true"]').length;
+  $('art-status').textContent=n?'✓ '+n+(n===1?' forma pintada.':' formas pintadas.')+' Sua atividade está concluída.':'Escolha uma forma para pintar.';
+ });
+}
 $('game-ui').hidden=false;show(false);
 })();

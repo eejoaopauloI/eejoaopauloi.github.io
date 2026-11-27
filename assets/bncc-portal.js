@@ -17,13 +17,13 @@ const catalog=[
    "Cartão-desafio · Elaborar um problema",
    "A",
    "EF06MA15",
-   "Criar uma receita em partes desiguais e propor a outra dupla que descubra as quantidades mantendo a proporção."
+   "Criar uma receita em partes desiguais, resolver o próprio desafio de ampliação e conferir o cálculo."
   ],
   [
-   "Experimento de pintura · Mistura e aplicação dos tons",
+   "Composição digital · Mistura e aplicação dos tons",
    "C",
    "EF69AR05",
-   "Experimentar e comparar misturas de guache e aplicar um tom em produção visual. O recorte é pintura."
+   "Experimentar e comparar cores simuladas e aplicar o tom em uma composição digital. O recorte é experimentação visual."
   ]
  ]
 },

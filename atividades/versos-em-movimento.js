@@ -109,7 +109,7 @@ function writeStage(){
  $('vm-options').replaceChildren();$('vm-editor-pane').hidden=false;
  $('vm-next').disabled=false;$('vm-next').textContent='Registrar produção e concluir →';
  $('vm-save').hidden=false;
- setMsg('A produção é uma atividade de participação e será avaliada pelo professor. Os 40 JPs de participação dependem de validação institucional.');
+ setMsg('Escreva individualmente e marque os três critérios de revisão. Você pode registrar e concluir agora. A análise do poema e a confirmação dos 40 JPs de participação podem ocorrer depois.');
  update();
 }
 function poemOK(){
@@ -159,7 +159,7 @@ function csv(){
  lines.push(['Resumo','3 poemas / 12 desafios','','JPs provisórios','','','',points]);
  lines.push(...JPVisibilidade.csvRows(8));
  JPPontos.saveCSV('jp-busca-ativa-literatura-poesia-contemporanea-'+new Date().toISOString().slice(0,10)+'.csv',lines);
- $('vm-status').textContent='Relatório e poema exportados. Entregue ao professor de Literatura para apreciação.';
+ $('vm-status').textContent='Relatório e poema exportados. Guarde o arquivo ou encaminhe pelo canal indicado pela escola. Você já concluiu.';
 }
 $('vm-csv').addEventListener('click',csv);
 $('vm-certificate').addEventListener('click',()=>{

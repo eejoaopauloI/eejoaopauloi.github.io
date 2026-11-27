@@ -122,7 +122,7 @@ function renderQuestion(){
  $('md-question-subject').textContent=b.icon+' '+b.name.toUpperCase()+' · BLOCO '+(t.b+1)+'/10';
  $('md-question-type').textContent=t.type==='mc'?'MÚLTIPLA ESCOLHA':t.type==='inv'?'INVESTIGATIVA':'DISCURSIVA';
  $('md-question-title').textContent='Missão '+t.n+' de 30';
- $('md-question-context').textContent=b.tip;
+ $('md-question-context').textContent=b.tip+(t.type==='inv'?' Você pode fazer tudo aqui: abra a ficha da questão e use o cenário ou os dados dela para responder aos mesmos itens. Pesquisa externa é opcional.':'');
  $('md-question-text').textContent=t.text;
  $('md-question-options').replaceChildren();
  $('md-written').hidden=t.type==='mc';
@@ -136,6 +136,7 @@ function renderQuestion(){
  $('md-source-url').value=state.drafts[t.n]?.reference||state.answers[t.n]?.reference||'';
  $('md-response-count').textContent=$('md-response').value.length+' caracteres registrados';
  const recorded=state.answers[t.n]?.complete;
+ showSoloFicha(t,recorded);
  if(recorded){
   $('md-question-next').disabled=false;
   $('md-question-submit').disabled=true;
@@ -152,6 +153,17 @@ function renderQuestion(){
  if(t.type!=='mc'&&state.confirmed[t.n]&&!recorded){$('md-question-submit').textContent='Confirmar registro da resposta';message('🔎 Confira: '+t.criteria+' Depois confirme o registro.',false)}
  scroll('md-question-card');
 }
+const soloFicha = {"3":["Notícia simulada: Feira divulga monitoramento da água","Boletim Escolar (texto simulado), 12/09/2026: estudantes apresentaram na feira da escola os resultados de seis medições de consumo de água. A reportagem diz que consultou a planilha da equipe e conversou com a coordenação. O texto não informa em quais dias as medições foram feitas."],"6":["Pesquisa de preços: caderno de 96 folhas","Preços fictícios para fins didáticos: Loja A, R$ 12,90; Loja B, R$ 14,50; Loja C, R$ 11,60. Os três preços são do mesmo modelo, no mesmo dia, para pagamento à vista."],"10":["Duas fontes da matriz elétrica brasileira","Hidrelétrica: o fluxo da água movimenta turbinas; em operação, não depende da queima de combustível; barragens podem alagar áreas. Eólica: o vento movimenta as pás; a fonte é renovável; a instalação pode afetar aves se feita em locais inadequados."],"13":["O caminho da farinha de mandioca","Exemplo de cadeia: colheita de mandioca em uma propriedade de Mato Grosso; processamento em uma casa de farinha; embalagem; transporte por estrada; venda no comércio local."],"16":["Revolução Industrial e trabalho","A primeira Revolução Industrial começou na Grã-Bretanha na segunda metade do século XVIII. Carvão, investimentos em máquinas e mercados ajudaram a impulsioná-la. Máquinas e fábricas mudaram a produção têxtil, concentrando o trabalho nas cidades; as relações de trabalho também se transformaram."],"19":["Tarsila do Amaral: Operários (1933)","A pintura a óleo reúne muitos rostos diferentes em primeiro plano e chaminés ao fundo. Observe no texto descritivo a repetição e a disposição dos rostos e a presença das fábricas. Que leitura sobre diversidade e trabalho industrial essa organização sugere?"],"22":["Futsal: regras e participação","Cada equipe joga com até cinco atletas na quadra, incluindo o goleiro. Jogadores de linha não podem usar as mãos para controlar a bola. Arrancadas e mudanças de direção pedem agilidade e coordenação. Pense como adaptar espaço, bola ou tempo para ampliar a participação."],"25":["Anúncio original em inglês: School Art Fair","School Art Fair. Bring your favorite drawing. Meet local artists. Make a colorful poster. Free entry for students. Everyone is welcome!"],"27":["Iniciativa comunitária simulada: Biblioteca de Trocas","Em um caso didático, voluntários organizam uma estante de livros em um centro comunitário. Qualquer morador pode pegar um livro e pode doá-lo depois, mas a doação não é exigida. O objetivo é ampliar o acesso à leitura e criar um espaço de encontro."],"30":["Caso escolar simulado: desperdício de água","Em cinco intervalos, três torneiras ficaram pingando. No mesmo teste de um minuto, uma delas encheu um copo de 100 mL. A escola não tinha um canal simples para avisar sobre vazamentos. Use o cenário para propor uma intervenção no papel, sem precisar aplicá-la."]};
+function showSoloFicha(t,recorded){
+ const entry=t.type==='inv'?soloFicha[t.n]:null, box=$('jp-source-card');
+ box.hidden=!entry;box.open=false;$('jp-source-use').disabled=!!recorded;
+ if(entry){$('jp-source-title').textContent=entry[0];$('jp-source-body').textContent=entry[1];}
+}
+$('jp-source-use').addEventListener('click',()=>{
+ const t=current(),e=soloFicha[t.n];if(!e||t.type!=='inv'||state.answers[t.n]?.complete)return;
+ const field=$('md-source-title');field.value='Ficha do Portal JP: '+e[0];field.dispatchEvent(new Event('input'));
+ $('md-response').focus();
+});
 function message(text,good){
  $('md-question-feedback').textContent=text;
  $('md-question-feedback').className='md-feedback'+(good?'':' warn');
@@ -184,8 +196,8 @@ $('md-question-submit').addEventListener('click',()=>{
  const t=current();if(t.type==='mc'||state.answers[t.n]?.complete)return;
  const text=$('md-response').value.trim(),source=$('md-source-title').value.trim(),reference=$('md-source-url').value.trim();
  const min=t.n===30?250:t.type==='inv'?95:55;
- if(textLength(text)<min){message('✍️ Desenvolva um pouco mais a resposta: escreva pelo menos '+min+' caracteres de conteúdo. A qualidade do texto será avaliada pelo professor.',false);$('md-response').focus();return}
- if(t.type==='inv'&&source.length<5){message('🔎 Registre a identificação da fonte consultada. Se usou observação direta, entrevista ou pesquisa presencial, descreva isso no campo de fonte.',false);$('md-source-title').focus();return}
+ if(textLength(text)<min){message('✍️ Desenvolva um pouco mais a resposta: escreva pelo menos '+min+' caracteres de conteúdo. Use os critérios da tela para revisar; você pode concluir sem esperar correção.',false);$('md-response').focus();return}
+ if(t.type==='inv'&&source.length<5){message('🔎 Informe a fonte lida ou use o botão da ficha para preenchê-la.',false);$('md-source-title').focus();return}
  if(!state.confirmed[t.n]){
   state.confirmed[t.n]=true;saveDraft();save();
   $('md-question-submit').textContent='Confirmar registro da resposta';
@@ -194,7 +206,7 @@ $('md-question-submit').addEventListener('click',()=>{
  }
  state.answers[t.n]={type:t.type,complete:true,text,source,reference,criteria:t.criteria,hints:state.hints[t.n]||0};
  delete state.drafts[t.n];delete state.confirmed[t.n];save();
- message('✅ Resposta registrada para apreciação docente. Lembre-se de baixar o relatório.',true);
+ message('✅ Resposta registrada. Você já pode avançar. A devolutiva da escola pode vir depois.',true);
  $('md-question-submit').disabled=true;$('md-question-submit').textContent='Resposta registrada';
  $('md-question-next').disabled=false;updateHud();
 });
@@ -248,7 +260,7 @@ function finish(){
  hideAll();updateHud();$('md-finish').hidden=false;
  const objekt=tasks.filter(t=>t.type==='mc');
  const first=objekt.filter(t=>state.answers[t.n]?.tries===1).length;
- $('md-finish-text').textContent='Você registrou '+answeredCount()+' das 30 atividades, incluindo respostas de múltipla escolha, discursivas e investigativas. Das '+objekt.length+' questões objetivas, '+first+' foram acertadas na primeira tentativa. As produções escritas, a pesquisa e o desafio de intervenção aguardam apreciação docente.';
+ $('md-finish-text').textContent='Você registrou '+answeredCount()+' das 30 atividades, incluindo respostas de múltipla escolha, discursivas e investigativas. Das '+objekt.length+' questões objetivas, '+first+' foram acertadas na primeira tentativa. As produções escritas foram registradas. Elas podem receber devolutiva depois.';
  if(window.JPTrilha?.hasSession())window.JPTrilha.submit({score:0,solved:answeredCount(),total:30});
  scroll('md-finish');
 }

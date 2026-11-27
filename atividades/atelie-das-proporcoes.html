@@ -4,11 +4,11 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#173d3a"><meta name="description" content="Laboratório de proporção para o 6º ano: misture tintas por partes, compare receitas e crie uma paleta.">
 <title>Ateliê das Proporções · Portal JP</title>
-<link rel="stylesheet" href="../assets/atelie-proporcoes.css">
+<link rel="stylesheet" href="../assets/atelie-proporcoes.css?v=solo2026">
 <link rel="stylesheet" href="../assets/bncc-portal.css?v=1">
-<script defer src="../assets/bncc-portal.js?v=atelie1"></script>
-<script defer src="../assets/atelie-proporcoes.js"></script>
-</head>
+<script defer src="../assets/bncc-portal.js?v=solo2026"></script>
+<script defer src="../assets/atelie-proporcoes.js?v=solo2026"></script>
+<link rel="stylesheet" href="../assets/autonomia-jp.css?v=1"></head>
 <body>
 <a class="skip" href="#principal">Ir para a atividade</a>
 <header class="hero"><div class="wrap">
@@ -20,13 +20,13 @@
 <div class="hero-art" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div></div>
 </div></header>
 <main class="wrap" id="principal">
-<details class="jpbncc-in-activity" data-jp-bncc="atelie-das-proporcoes"><summary>Habilidades da BNCC nesta atividade</summary><p class="jpbncc-fallback"><a href="../habilidades-bncc.html?atividade=atelie-das-proporcoes">EF06MA15 · Matemática e EF69AR05 · Arte: consulte o mapa</a></p></details>
+<details class="jpbncc-in-activity" data-jp-bncc="atelie-das-proporcoes"><summary>Habilidades da BNCC nesta atividade</summary><p class="jpbncc-fallback"><a href="../habilidades-bncc.html?atividade=atelie-das-proporcoes">EF06MA15 · Matemática e EF69AR05 · Arte: consulte o mapa</a></p></details><aside class="jp-autonomia" aria-label="Como fazer esta atividade"><strong>Atividade individual</strong><p>Leia o exemplo ou a miniaula quando houver, responda no seu ritmo e use as pistas e devolutivas da página para revisar. Você não precisa esperar pelo professor da disciplina para começar ou avançar.</p></aside>
 <section class="card primer" aria-labelledby="ideia">
 <div><p class="kicker">ANTES DE MISTURAR</p><h2 id="ideia">Uma parte é uma medida igual</h2><p>Imagine que cada parte é uma colher do mesmo tamanho. Na receita <strong>2 : 1</strong>, usamos <strong>2 partes de amarelo para 1 de azul</strong>. No total, são <strong>3 partes</strong>.</p></div>
 <div class="example"><div class="tileline" aria-hidden="true"><span class="tile yellow">AM</span><span class="tile yellow">AM</span><span class="tile blue">AZ</span></div><p><strong>Amarelo : azul</strong> = 2 : 1<br><strong>Azul : mistura toda</strong> = 1 : 3</p></div>
 </section>
 <section class="card game" id="missoes" aria-labelledby="mission-title">
-<noscript><p>Ative o JavaScript para jogar ou experimente a receita 2 : 1 com guache. Desafio: prepare 12 partes mantendo esse tom. Quantas partes serão de cada cor?</p></noscript>
+<noscript><p>Ative o JavaScript para jogar. Se não puder, imagine colheres iguais: a receita tem 2 de amarelo e 1 de azul. Calcule como preparar 12 partes mantendo o tom.</p><details><summary>Conferir meu cálculo</summary><p>São 4 grupos de 3 partes: 8 de amarelo e 4 de azul.</p></details></noscript>
 <div id="game-ui" hidden>
 <div class="step"><span id="step-label"></span><progress id="progress" max="5" value="0" aria-label="Missões concluídas"></progress></div>
 <h2 id="mission-title" tabindex="-1"></h2><p id="prompt"></p>
@@ -44,8 +44,8 @@
 </div>
 </section>
 <section class="card final" id="autoria" aria-labelledby="create-title" hidden>
-<p class="kicker">MISSÃO BÔNUS · CRIAÇÃO EM DUPLA</p><h2 id="create-title" tabindex="-1">Crie um problema para outra dupla</h2>
-<p>Escolha duas tintas e invente uma cor usando quantidades diferentes. O ateliê monta um cartão com a sua receita e uma quantidade maior para outra dupla calcular. Se quiser, prepare o tom de verdade e use-o no seu desenho ou no painel da turma.</p>
+<p class="kicker">MISSÃO FINAL · CRIAÇÃO INDIVIDUAL</p><h2 id="create-title" tabindex="-1">Crie e resolva seu próprio desafio</h2>
+<p>Escolha duas tintas e invente uma cor usando quantidades diferentes. O ateliê monta um cartão com sua receita e uma quantidade maior. Faça o cálculo, confira sua resposta e aplique o tom em uma composição na tela. Não é preciso usar tinta nem imprimir.</p>
 <form id="author-form"><div class="author-grid">
 <label>Nome da cor <input id="color-name" maxlength="36" placeholder="Ex.: Verde da quadra" required></label>
 <label>Par de tintas <select id="author-pair"><option value="yellow-blue">Amarelo + azul</option><option value="yellow-red">Amarelo + vermelho</option></select></label>
@@ -54,12 +54,13 @@
 <label>Repetir a receita <select id="repeat"><option value="2">2 vezes</option><option value="3">3 vezes</option><option value="4">4 vezes</option></select></label>
 </div><div class="actions"><button type="submit">Gerar cartão-desafio</button><button id="restart" type="button" class="secondary">Jogar de novo</button></div>
 <p id="author-feedback" role="status"></p></form>
-<div id="author-card" class="example" hidden><h3 id="card-title"></h3><div class="paint" id="card-color" aria-hidden="true"></div><p id="card-task"></p><details id="card-details"><summary>Conferir gabarito</summary><p id="card-key"></p></details></div>
+<div id="author-card" class="example" hidden><h3 id="card-title"></h3><div class="paint" id="card-color" aria-hidden="true"></div><p id="card-task"></p><form id="self-form"><div class="author-grid"><label>Amarelo na nova receita <input id="self-a" type="number" inputmode="numeric" min="1" max="24" required></label><label><span id="self-label">Azul na nova receita</span><input id="self-b" type="number" inputmode="numeric" min="1" max="24" required></label></div><div class="actions"><button type="submit">Conferir meu cálculo</button></div><p id="self-status" role="status"></p></form><details id="card-details"><summary>Conferir gabarito</summary><p id="card-key"></p></details></div>
+<div id="art-work" class="example" hidden><h3>Use a cor na sua composição</h3><p>Toque em uma ou mais formas para pintar. Toque de novo para apagar. Veja como o mesmo tom fica em posições diferentes.</p><div class="art-grid" aria-label="Composição digital"><button type="button" class="art-shape art-circle" aria-label="Pintar círculo" aria-pressed="false">Círculo</button><button type="button" class="art-shape art-square" aria-label="Pintar quadrado" aria-pressed="false">Quadrado</button><button type="button" class="art-shape art-arch" aria-label="Pintar arco" aria-pressed="false">Arco</button></div><p id="art-status" role="status"></p></div>
 </section>
-<details class="card teacher"><summary>Guia rápido para o professor</summary>
-<p><strong>Tempo sugerido:</strong> 20 a 30 min no jogo + 15 min de Arte. Separe guache, colheres ou copinhos iguais e papel. A simulação indica como o tom varia, mas a mistura real depende do pigmento e não é uma previsão exata da cor da tinta.</p>
-<p><strong>Experimento:</strong> prepare 2 colheres de amarelo e 1 de azul. Em outro recipiente, faça 4 de amarelo e 2 de azul. Compare com 3 de amarelo e 2 de azul. Peça que cada dupla registre a razão entre as cores e entre o azul e o total.</p>
-<p><strong>Evidência de aprendizagem:</strong> o estudante divide 12 partes em 8 de amarelo e 4 de azul, explica por que acrescentar a mesma quantidade a cada cor não conserva necessariamente o tom e elabora um novo problema com gabarito. Em Arte, compare as misturas e aplique uma delas na composição do painel.</p>
+<details class="card teacher"><summary>Guia para quem acompanha a turma</summary>
+<p><strong>Tempo sugerido:</strong> 25 a 40 minutos. Basta abrir a página em um aparelho por estudante. As instruções, as pistas, a conferência e a composição de Arte estão na tela.</p>
+<p><strong>O que observar:</strong> cada estudante conclui as cinco missões, elabora e resolve o próprio problema e compara a razão entre as partes com a razão entre uma parte e o total. O regente pode retomar depois a diferença entre adicionar e multiplicar as duas quantidades.</p>
+<p>A tinta da tela é uma simulação. Não é preciso guache, outro material nem conhecer a técnica de pintura para fazer a atividade.</p>
 <p><a href="../habilidades-bncc.html?atividade=atelie-das-proporcoes">Ver alinhamento no Mapa de Habilidades BNCC</a></p></details>
 </main><footer class="wrap">EE João Paulo I · Paranaíta–MT · Portal JP</footer>
 </body></html>

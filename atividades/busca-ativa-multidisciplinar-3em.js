@@ -572,7 +572,7 @@ function renderQuestion(){
  $('md-question-subject').textContent=b.icon+' '+b.name.toUpperCase()+' · BLOCO '+(t.b+1)+'/10';
  $('md-question-type').textContent=t.type==='mc'?'MÚLTIPLA ESCOLHA':t.type==='inv'?'INVESTIGATIVA':'DISCURSIVA';
  $('md-question-title').textContent='Missão '+t.n+' de 30';
- $('md-question-context').textContent=b.tip;
+ $('md-question-context').textContent=b.tip+(t.type==='inv'?' Você pode fazer tudo aqui: abra a ficha da questão e use o cenário ou os dados dela para responder aos mesmos itens. Pesquisa externa é opcional.':'');
  $('md-question-text').textContent=t.text;
  $('md-question-options').replaceChildren();
  $('md-written').hidden=t.type==='mc';
@@ -586,6 +586,7 @@ function renderQuestion(){
  $('md-source-url').value=state.drafts[t.n]?.reference||state.answers[t.n]?.reference||'';
  $('md-response-count').textContent=$('md-response').value.length+' caracteres registrados';
  const recorded=state.answers[t.n]?.complete;
+ showSoloFicha(t,recorded);
  if(recorded){
   $('md-question-next').disabled=false;
   $('md-question-submit').disabled=true;
@@ -602,6 +603,17 @@ function renderQuestion(){
  if(t.type!=='mc'&&state.confirmed[t.n]&&!recorded){$('md-question-submit').textContent='Confirmar registro da resposta';message('🔎 Confira: '+t.criteria+' Depois confirme o registro.',false)}
  scroll('md-question-card');
 }
+const soloFicha = {"3":["Matéria simulada: Computadores chegam, mas a conexão falha","Jornal Escolar (simulação), 18/08/2026. A matéria defende que disponibilizar aparelhos não basta se a conexão é instável. Em quatro aulas observadas, duas foram interrompidas, segundo o diário de classe. Uma estudante sugere arquivos para uso offline; a direção considera ampliar a cobertura da rede. A amostra não representa todas as turmas."],"6":["População de três municípios fictícios","Tabela didática, ano simulado 2026: Município A (MT), 18.400 habitantes; Município B (MT), 32.100; Município C (MT), 24.750. Use esta base simulada para organizar a tabela e comparar os valores, ou escolha dados reais de três municípios do mesmo ano."],"10":["Três aparelhos de uma casa fictícia","Chuveiro: 5.500 W, 0,20 h por dia; ventilador: 100 W, 8 h por dia; televisor: 120 W, 4 h por dia. Compare (potência em W ÷ 1.000) × horas de uso."],"13":["Ferrugem em uma bicicleta","Em contato com oxigênio e umidade, o ferro pode formar ferrugem. Essa transformação se percebe pela camada avermelhada no metal. Pintura protetora ajuda a separar o ferro do ar e da água. Analise a descrição; não é preciso fazer experimento."],"16":["Tuiuiú no Pantanal","O tuiuiú ocorre no Pantanal, inclusive na porção de Mato Grosso. Ele usa suas pernas longas para caminhar em águas rasas, mantendo o corpo acima da água enquanto procura alimento com o bico."],"19":["Movimento de 1930 no Brasil","O rompimento entre grupos políticos estaduais e o resultado contestado da eleição presidencial de 1930 ajudaram a desencadear o movimento que depôs Washington Luís e levou Getúlio Vargas ao poder. Uma leitura destaca a ruptura da ordem política da Primeira República; outra observa a continuidade da influência de parte das elites na nova administração."],"22":["Cadeia didática do óleo de soja","A soja é cultivada em Mato Grosso, transportada da fazenda à unidade de processamento, prensada ou processada industrialmente e o óleo refinado é levado ao comércio. No cenário didático, compare impactos potenciais do uso do solo, do consumo de energia e do transporte."],"25":["Dilema fictício: IA na comissão de estudantes","Uma comissão quer usar IA para agrupar críticas enviadas por estudantes. Um lado defende rapidez e organização; outro alerta que nomes e relatos pessoais poderiam ser expostos e que situações específicas podem ser interpretadas de forma errada. Defenda uma posição e explique quais cuidados seriam necessários."],"27":["Indicador de saneamento: base brasileira simulada","Em dois municípios brasileiros fictícios, em 2026, a rede de esgoto atende 72% dos domicílios no Município A e 46% no Município B. O indicador usa a mesma definição nos dois lugares. Esses percentuais são simulados e não devem ser apresentados como estatística oficial."],"30":["Caso escolar simulado: desperdício no refeitório","Em cinco dias, uma escola registrou 18 kg de sobras de alimentos; 11 kg foram registrados em dias de cardápio menos conhecido. Alguns estudantes disseram que não podiam escolher o tamanho da porção. Proponha uma resposta no papel, fundamente o plano nesse cenário e indique recursos e contribuições de quatro áreas."]};
+function showSoloFicha(t,recorded){
+ const entry=t.type==='inv'?soloFicha[t.n]:null, box=$('jp-source-card');
+ box.hidden=!entry;box.open=false;$('jp-source-use').disabled=!!recorded;
+ if(entry){$('jp-source-title').textContent=entry[0];$('jp-source-body').textContent=entry[1];}
+}
+$('jp-source-use').addEventListener('click',()=>{
+ const t=current(),e=soloFicha[t.n];if(!e||t.type!=='inv'||state.answers[t.n]?.complete)return;
+ const field=$('md-source-title');field.value='Ficha do Portal JP: '+e[0];field.dispatchEvent(new Event('input'));
+ $('md-response').focus();
+});
 function message(text,good){
  $('md-question-feedback').textContent=text;
  $('md-question-feedback').className='md-feedback'+(good?'':' warn');
@@ -634,8 +646,8 @@ $('md-question-submit').addEventListener('click',()=>{
  const t=current();if(t.type==='mc'||state.answers[t.n]?.complete)return;
  const text=$('md-response').value.trim(),source=$('md-source-title').value.trim(),reference=$('md-source-url').value.trim();
  const min=t.n===30?250:t.type==='inv'?95:55;
- if(textLength(text)<min){message('✍️ Desenvolva um pouco mais a resposta: escreva pelo menos '+min+' caracteres de conteúdo. A qualidade do texto será avaliada pelo professor.',false);$('md-response').focus();return}
- if(t.type==='inv'&&source.length<5){message('🔎 Registre a identificação da fonte consultada. Se usou observação direta, entrevista ou pesquisa presencial, descreva isso no campo de fonte.',false);$('md-source-title').focus();return}
+ if(textLength(text)<min){message('✍️ Desenvolva um pouco mais a resposta: escreva pelo menos '+min+' caracteres de conteúdo. Use os critérios da tela para revisar; você pode concluir sem esperar correção.',false);$('md-response').focus();return}
+ if(t.type==='inv'&&source.length<5){message('🔎 Informe a fonte lida ou use o botão da ficha para preenchê-la.',false);$('md-source-title').focus();return}
  if(!state.confirmed[t.n]){
   state.confirmed[t.n]=true;saveDraft();save();
   $('md-question-submit').textContent='Confirmar registro da resposta';
@@ -644,7 +656,7 @@ $('md-question-submit').addEventListener('click',()=>{
  }
  state.answers[t.n]={type:t.type,complete:true,text,source,reference,criteria:t.criteria,hints:state.hints[t.n]||0};
  delete state.drafts[t.n];delete state.confirmed[t.n];save();
- message('✅ Resposta registrada para apreciação docente. Lembre-se de baixar o relatório.',true);
+ message('✅ Resposta registrada. Você já pode avançar. A devolutiva da escola pode vir depois.',true);
  $('md-question-submit').disabled=true;$('md-question-submit').textContent='Resposta registrada';
  $('md-question-next').disabled=false;updateHud();
 });
@@ -698,7 +710,7 @@ function finish(){
  hideAll();updateHud();$('md-finish').hidden=false;
  const objekt=tasks.filter(t=>t.type==='mc');
  const first=objekt.filter(t=>state.answers[t.n]?.tries===1).length;
- $('md-finish-text').textContent='Você registrou '+answeredCount()+' das 30 atividades, incluindo respostas de múltipla escolha, discursivas e investigativas. Das '+objekt.length+' questões objetivas, '+first+' foram acertadas na primeira tentativa. As produções escritas, a pesquisa e o desafio de intervenção aguardam apreciação docente.';
+ $('md-finish-text').textContent='Você registrou '+answeredCount()+' das 30 atividades, incluindo respostas de múltipla escolha, discursivas e investigativas. Das '+objekt.length+' questões objetivas, '+first+' foram acertadas na primeira tentativa. As produções escritas foram registradas. Elas podem receber devolutiva depois.';
  if(window.JPTrilha?.hasSession())window.JPTrilha.submit({score:0,solved:answeredCount(),total:30});
  scroll('md-finish');
 }
