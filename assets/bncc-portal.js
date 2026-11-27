@@ -1,6 +1,32 @@
 /* Mapeamento pedagógico editorial — Portal JP. Textos em linguagem própria, não transcrições da BNCC. */
 (()=>{'use strict';
 const catalog=[
+{
+ "id": "atelie-das-proporcoes",
+ "title": "Ateliê das Proporções",
+ "area": "Matemática e Arte",
+ "route": "Recomposição",
+ "rows": [
+  [
+   "Missões 1 a 5 · Razões entre partes e entre parte e todo",
+   "A",
+   "EF06MA15",
+   "Medir duas tintas, repartir a quantidade total em partes desiguais e comparar receitas por relações aditivas e multiplicativas."
+  ],
+  [
+   "Cartão-desafio · Elaborar um problema",
+   "A",
+   "EF06MA15",
+   "Criar uma receita em partes desiguais e propor a outra dupla que descubra as quantidades mantendo a proporção."
+  ],
+  [
+   "Experimento de pintura · Mistura e aplicação dos tons",
+   "C",
+   "EF69AR05",
+   "Experimentar e comparar misturas de guache e aplicar um tom em produção visual. O recorte é pintura."
+  ]
+ ]
+},
  {
   "id": "ponto-de-partida",
   "title": "Ponto de Partida",
