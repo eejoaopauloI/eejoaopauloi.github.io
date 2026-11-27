@@ -118,6 +118,12 @@ function poemOK(){
  const checks=[1,2,3].every(i=>$('vm-check-'+i).checked);
  return {text,lines,checks,valid:lines.length>=6&&lines.length<=14&&text.length>=110&&checks};
 }
+let reportState=null;
+const reportStore=window.JPTrilha?.progressStorage()||sessionStorage;
+const reportKey=window.JPTrilha?.progressKey('jp_busca_poesia_relatorio')||'jp_busca_poesia_relatorio';
+try{const prev=JSON.parse(reportStore.getItem(reportKey)||'null');if(prev?.finishedAt)reportState=prev;}catch(e){}
+const report=window.JPBuscaRelatorio?.create('poesia-contemporanea-ba',()=>reportState,()=>{if(reportState)reportStore.setItem(reportKey,JSON.stringify(reportState));},(msg,retry)=>{$('vm-report-status').textContent=msg;$('vm-report-sync').hidden=!retry;});
+$('vm-report-sync').addEventListener('click',()=>report?.sync());
 function finish(){
  const p=poemOK();
  if(!p.valid){
@@ -125,12 +131,13 @@ function finish(){
   return;
  }
  poemSubmitted=true;points+=40;
+ report?.end({solved:13,total:13,objective:12,first:entries.filter(e=>e.errors===0).length,written:1,hints:entries.filter(e=>e.hint==='Sim').length});report?.sync();
  $('vm-work').hidden=true;$('vm-final').hidden=false;update();
  $('vm-summary').textContent='Você retomou os conteúdos de Literatura, interpretou 3 poemas, respondeu a 12 desafios e registrou uma criação autoral. Pontuação provisória: '+points+' de 100 JPs, incluindo 40 JPs de participação na produção que precisam ser confirmados pelo professor.';
  $('vm-final').scrollIntoView({behavior:'smooth',block:'start'});
 }
 $('vm-next').addEventListener('click',()=>{
- if(idx===-1){idx=0;render();return}
+ if(idx===-1){reportState=report?.start();idx=0;render();return}
  if(idx<12){if(!answered)return;idx++;render();return}
  if(!poemSubmitted)finish();
 });
@@ -152,6 +159,7 @@ $('vm-save').addEventListener('click',()=>{
 });
 function csv(){
  const lines=[['Tipo','Etapa','Poema','Habilidade','Resposta correta','Erros','Pista','JPs']];
+ if(report)lines.push(...report.rows(done+(poemSubmitted?1:0),poemSubmitted));
  for(const e of entries)lines.push(['Questão',e.question,e.poem,e.skill,e.right,e.errors,e.hint,e.jps]);
  lines.push(['Produção literária','Oficina','Poema autoral','Produção e revisão','Participação pendente de validação docente','','',40]);
  const txt=$('vm-editor').value.trim().replace(/\r?\n/g,' / ');
@@ -168,6 +176,7 @@ $('vm-certificate').addEventListener('click',()=>{
 });
 $('vm-restart').addEventListener('click',()=>{
  if(!confirm('Deseja reiniciar a atividade? Baixe o relatório antes, se precisar preservar o poema.'))return;
+ report?.clear();reportState=null;try{reportStore.removeItem(reportKey);}catch(e){}
  idx=-1;stage=attempts=points=done=0;answered=usedHint=poemSubmitted=false;entries=[];
  $('vm-editor').value='';[1,2,3].forEach(i=>$('vm-check-'+i).checked=false);
  $('vm-work').hidden=false;$('vm-final').hidden=true;$('vm-save').hidden=true;render();window.scrollTo({top:0,behavior:'smooth'});

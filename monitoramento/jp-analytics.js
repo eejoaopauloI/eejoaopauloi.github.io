@@ -9,7 +9,7 @@ const message=t=>$('ja-status').textContent=t;
 const show=id=>['ja-setup','ja-login','ja-student','ja-admin','ja-change-password'].forEach(n=>$(n).hidden=n!==id);
 const getToken=()=>{try{return JSON.parse(sessionStorage.getItem(sessionKey)||'null')?.access_token||''}catch(e){return ''}};
 const putToken=t=>{try{sessionStorage.setItem(sessionKey,JSON.stringify({access_token:t}))}catch(e){}};
-async function logout(){const old=token;try{sessionStorage.removeItem(sessionKey)}catch(e){}token='';data=null;show('ja-login');message('Sessão encerrada neste navegador.');if(old&&ready){try{await fetch(base+'/auth/v1/logout',{method:'POST',headers:{apikey:pubKey,Authorization:'Bearer '+old},cache:'no-store'});}catch(e){/* Sessão local já encerrada. */}}}
+async function logout(){const old=token;try{sessionStorage.removeItem(sessionKey)}catch(e){}token='';data=null;Object.values(buscaPanels).forEach(p=>p.clear());show('ja-login');message('Sessão encerrada neste navegador.');if(old&&ready){try{await fetch(base+'/auth/v1/logout',{method:'POST',headers:{apikey:pubKey,Authorization:'Bearer '+old},cache:'no-store'});}catch(e){/* Sessão local já encerrada. */}}}
 async function request(path,method='POST',body={},authenticated=true){
  const headers={apikey:pubKey,'Content-Type':'application/json'};
  if(authenticated)headers.Authorization='Bearer '+token;
@@ -92,9 +92,9 @@ async function refresh(){data=await rpc('jp_admin_overview');render();}
 async function identify(){
 try{
  const profile=await rpc('jp_my_profile');
- if(profile?.role==='admin'){show('ja-admin');await refresh();}
+ if(profile?.role==='admin'){show('ja-admin');buscaPanels.admin.load();await refresh();}
  else if(profile?.role==='student'&&profile.must_change_password){show('ja-change-password');message('Antes de iniciar, cadastre sua senha pessoal.');}
- else if(profile?.role==='student'){show('ja-student');$('ja-my-name').textContent='Estudante: '+profile.name+' · '+profile.class_name+' · Apelido: '+profile.alias;message('Conta de estudante autenticada.');await renderMyLearning();}
+ else if(profile?.role==='student'){show('ja-student');$('ja-my-name').textContent='Estudante: '+profile.name+' · '+profile.class_name+' · Apelido: '+profile.alias;message('Conta de estudante autenticada.');buscaPanels.student.load();await renderMyLearning();}
  else{logout();message('Conta não cadastrada para uso do JP Analytics. Solicite o vínculo à escola.');}
 }catch(e){logout();message('Não foi possível validar o acesso. '+e.message);}
 }
@@ -111,6 +111,62 @@ const downloadCSV=(name,rows)=>{
  const url=URL.createObjectURL(new Blob([text],{type:'text/csv;charset=utf-8'}));
  const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),5000);
 };
+const buscaNames={"busca-ativa-multidisciplinar-8ano":"8º ano · Multidisciplinar","busca-ativa-multidisciplinar":"9º ano · Multidisciplinar","busca-ativa-multidisciplinar-2em":"2ª série EM · Multidisciplinar","busca-ativa-multidisciplinar-3em":"3ª série EM · Multidisciplinar","poesia-contemporanea-ba":"3ª série EM · Poesia Contemporânea"};
+const buscaDate=new Intl.DateTimeFormat('pt-BR',{timeZone:'America/Cuiaba',dateStyle:'short',timeStyle:'medium'});
+const baDate=v=>buscaDate.format(new Date(v)).replace(',','');
+function baDuration(seconds){const s=Number(seconds)||0;return [Math.floor(s/3600),Math.floor(s/60)%60,s%60].map(x=>String(x).padStart(2,'0')).join(':');}
+const buscaPanels={};
+function buscaPanel(kind){
+ const prefix='ja-ba-'+kind+'-', $b=s=>$(prefix+s), admin=kind==='admin';
+ const message=t=>$b('status').textContent=t;
+ let displayed=[],params=null,last=null,serial=0,busy=false;
+ function filters(){return {p_activity:$b('activity').value||null,p_class:admin?$b('class').value.trim()||null:null,p_from:$b('from').value||null,p_to:$b('to').value||null};}
+ function values(r){return [buscaNames[r.activity]||r.activity,baDate(r.started_at),baDate(r.finished_at),baDuration(r.duration_seconds),r.solved+'/'+r.total,r.first_try+'/'+r.objective_solved,r.written];}
+ async function page(q,c){return await rpc('jp_list_busca_reports',{...q,...(c?{p_before:c.finished_at,p_before_user:c.user_id,p_before_id:c.attempt_id}:{})})||[];}
+ function paint(){
+  $b('rows').replaceChildren();
+  for(const r of displayed)row([...(admin?[r.student,r.class_name]:[]),...values(r)],$b('rows'));
+  $b('csv').disabled=!displayed.length;
+  $b('more').hidden=!last;
+  message(displayed.length?displayed.length+' relatório(s) exibido(s). O CSV inclui todos os resultados correspondentes à última consulta.':'Nenhuma conclusão sincronizada para esses filtros.');
+ }
+ async function load(more=false){
+  if(more&&!last)return;
+  const id=++serial, q=more?params:filters();
+  if(!more){displayed=[];last=null;params=q;$b('rows').replaceChildren();$b('csv').disabled=true;$b('more').hidden=true;}
+  if(q.p_from&&q.p_to&&q.p_from>q.p_to){message('A data final deve ser igual ou posterior à inicial.');return;}
+  message('Carregando relatórios…');$b('more').disabled=true;
+  try{
+   const result=await page(q,more?last:null);if(id!==serial)return;
+   displayed.push(...result);last=result.length===100?result.at(-1):null;paint();
+  }catch(e){if(id===serial)message('Não foi possível carregar os relatórios. Tente consultar novamente.');}
+  finally{if(id===serial)$b('more').disabled=false;}
+ }
+ async function exportAll(){
+  if(!displayed.length||busy)return;
+  const q={...params},id=serial,session=token;
+  busy=true;$b('csv').disabled=true;message('Preparando o CSV da consulta…');
+  try{
+   const header=[...(admin?['Estudante','Turma']:[]),'Atividade','Data de início (MT)','Horário de início (MT)','Data de conclusão (MT)','Horário de conclusão (MT)','Duração com a página visível (hh:mm:ss)','Duração (segundos)','Etapas concluídas','Total de etapas','Objetivas resolvidas','Acertos na primeira tentativa','Produções escritas registradas','Dicas','Sincronizado em (MT)'];
+   const all=[header];let c=null;
+   do{
+    const batch=await page(q,c);if(id!==serial||session!==token)return;
+    for(const r of batch){
+     const cells=[...(admin?[r.student,r.class_name]:[]),buscaNames[r.activity]||r.activity,...baDate(r.started_at).split(' '),...baDate(r.finished_at).split(' '),baDuration(r.duration_seconds),r.duration_seconds,r.solved,r.total,r.objective_solved,r.first_try,r.written,r.hints,baDate(r.received_at)];
+     all.push(cells.map(v=>{const text=String(v??'').replace(/[\r\n]/g,' ').trim();return /^[=+@\t-]/.test(text)?"'"+text:text;}));
+    }
+    c=batch.length===100?batch.at(-1):null;
+   }while(c);
+   downloadCSV('JP-Busca-Ativa-'+(admin?'coordenacao':'meu-desempenho')+'-'+new Date().toISOString().slice(0,10)+'.csv',all);
+   message('CSV baixado com '+(all.length-1)+' relatório(s).');
+  }catch(e){if(id===serial)message('Não foi possível baixar o CSV. Tente novamente.');}
+  finally{busy=false;$b('csv').disabled=!displayed.length;}
+ }
+ $b('form').addEventListener('submit',e=>{e.preventDefault();load();});
+ $b('more').addEventListener('click',()=>load(true));$b('csv').addEventListener('click',exportAll);
+ return {load,clear:()=>{serial++;displayed=[];params=null;last=null;$b('rows').replaceChildren();$b('csv').disabled=true;$b('more').hidden=true;for(const f of ['activity','class','from','to'])if($b(f))$b(f).value='';message('');}};
+}
+buscaPanels.student=buscaPanel('student');buscaPanels.admin=buscaPanel('admin');
 const parseInput=txt=>{
  const lines=txt.replace(/^\uFEFF/,'').trim().split(/\r?\n/).filter(x=>x.trim());
  const split=line=>{const out=[];let cell='',quoted=false;for(let i=0;i<line.length;i++){const ch=line[i];if(ch==='"'){if(quoted&&line[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(ch===';'&&!quoted){out.push(cell.trim());cell='';}else cell+=ch;}out.push(cell.trim());return out;};

@@ -24,6 +24,9 @@ try{
  const data=JSON.parse(localStore.getItem(key)||'null');
  if(data&&Number.isInteger(data.index)&&data.index>=0&&data.index<=23&&data.answers&&data.tries&&data.openedLessons)state={...fresh(),...data};
 }catch(error){}
+const report=window.JPBuscaRelatorio?.create('busca-ativa-multidisciplinar-2em',()=>state.report,()=>localStore.setItem(store,JSON.stringify(state)),(msg,retry)=>{$('md-report-status').textContent=msg;$('md-report-sync').hidden=!retry;});
+$('md-report-sync').addEventListener('click',()=>report?.sync());
+if(state.started&&state.report)report?.resume();
 const save=()=>{try{localStore.setItem(key,JSON.stringify(state));$('md-start-status').textContent='Progresso salvo neste navegador.'}catch(e){$('md-start-status').textContent='Salvamento indisponível. Baixe um relatório parcial antes de sair.'}};
 const item=()=>missions[Math.min(state.index,22)];
 const complete=()=>missions.filter(m=>state.answers[m.n]?.complete).length;
@@ -134,7 +137,7 @@ $('md-question-hint').addEventListener('click',()=>{
 });
 $('md-question-revise').addEventListener('click',()=>{if(state.index>=23)return;reviewOnly=true;renderLesson()});
 $('md-question-next').addEventListener('click',()=>{if(state.index>=23||!state.answers[item().n]?.complete)return;state.index++;save();show()});
-$('md-start-btn').addEventListener('click',()=>{state.started=true;save();show()});
+$('md-start-btn').addEventListener('click',()=>{if(!state.started)state.report=report?.start();state.started=true;save();show()});
 function exportCSV(final=false){
  const rows=[['Tipo','Número','Circuito','Componente','Enunciado','Resposta registrada','Gabarito','Tentativas','Dicas','Situação','Observação pedagógica']];
  for(const m of missions){
@@ -142,6 +145,7 @@ function exportCSV(final=false){
   rows.push(['Resposta',m.n,stationInfo[station(m.n)].label,m.subject,m.text,a.choice,m.options[m.correct],a.tries,a.hints,'Concluída',m.lesson]);
  }
  const applied=window.JP2EMDesafios?.results?.()||{};
+ if(report)rows.push(...report.rows(complete()+Object.values(applied).filter(x=>x.complete).length,!!state.report?.finishedAt||state.index>=23));
  const extras=window.JP2EMAprofundamento||[];
  for(const a of extras){const result=applied[a.n];if(!result?.complete)continue;rows.push(['APLICAÇÃO',a.n,stationInfo[station(a.n)].label,missions[a.n-1].subject,a.question,result.selected,a.options[a.correct],result.tries,result.hints,'Concluída',a.reason]);}
  rows.push(['SÍNTESE','','','','Questões institucionais concluídas',complete()+' / 23','Aplicações concluídas',Object.values(applied).filter(x=>x.complete).length+' / 23','Acertos na primeira tentativa (institucionais)',missions.filter(m=>state.answers[m.n]?.tries===1).length,'']);
@@ -153,17 +157,17 @@ function exportCSV(final=false){
   rows.push(['VISIBILIDADE','','','','Vezes que a página ficou oculta',p.saidas,'Tempo em segundo plano (s)',p.segundos,'','','Ocultar a aba não comprova pesquisa indevida.']);
  }
  rows.push(['RELATÓRIO','','','','Data de geração',new Date().toLocaleString('pt-BR'),'','','','','Sem cadastro ou código de participação']);
- function csv(v){let s=String(v??'').replace(/[\r\n]+/g,' ').trim();if(/^[=+@\t]/.test(s)||/^-(?!\d)/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
+ function csv(v){let s=String(v??'').replace(/[\r\n]+/g,' ').trim();if(/^[=+@\t-]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'}
  const content='\uFEFF'+rows.map(r=>r.map(csv).join(';')).join('\r\n');
  const url=URL.createObjectURL(new Blob([content],{type:'text/csv;charset=utf-8'}));
  const a=document.createElement('a');a.href=url;a.download='JP-busca-ativa-2ano-EM-'+(final?'final':'parcial')+'-'+new Date().toISOString().slice(0,10)+'.csv';
  document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1800);
- $('md-start-status').textContent='Relatório salvo no aparelho. Nenhum resultado foi enviado automaticamente.';
+ $('md-start-status').textContent='Relatório salvo no aparelho. O download, por si só, não envia as respostas à coordenação.';
  $('md-export-feedback').textContent='Arquivo baixado. Entregue ao professor pelo canal orientado pela escola.';
 }
 $('md-progress-btn').addEventListener('click',()=>exportCSV(false));
 $('md-export-now').addEventListener('click',()=>exportCSV(false));
-$('md-download-final').addEventListener('click',()=>{exportCSV(true);if(window.JPTrilha?.hasSession()){const applications=Object.values(window.JP2EMDesafios?.results?.()||{}).filter(x=>x.complete).length;window.JPTrilha.submit({score:0,solved:complete()+applications,total:46});}});
+$('md-download-final').addEventListener('click',()=>{exportCSV(true);report?.sync();});
 function finish(){
  screen('finish');hud();
  const first=missions.filter(m=>state.answers[m.n]?.tries===1).length;
@@ -171,11 +175,11 @@ function finish(){
  const applied=extra.filter(x=>x.complete).length;
  const firstApplication=extra.filter(x=>x.complete&&x.tries===1).length;
  $('md-finish-text').textContent='Você concluiu '+complete()+' das 23 questões institucionais e '+applied+' dos 23 desafios de aplicação: '+(complete()+applied)+' atividades resolvidas. Acertos na primeira tentativa: '+first+' nas questões originais e '+firstApplication+' nas aplicações. Baixe o relatório com as duas etapas e as estratégias trabalhadas.';
- if(window.JPTrilha?.hasSession())window.JPTrilha.submit({score:0,solved:complete()+applied,total:46});
+ if(complete()+applied===46){report?.end({solved:46,total:46,objective:46,first:first+firstApplication,written:0,hints:Object.values(state.hints).reduce((n,x)=>n+(Number(x)||0),0)+extra.reduce((n,x)=>n+(Number(x.hints)||0),0)});report?.sync();}
  go('md-finish');
 }
 $('md-restart').addEventListener('click',()=>{
  if(!confirm('Recomeçar as 23 questões e apagar o progresso deste navegador? Baixe o relatório antes, se desejar preservar as respostas.'))return;
- state=fresh();reviewOnly=false;window.JP2EMDesafios?.reset?.();save();show();window.scrollTo({top:0,behavior:'smooth'});
+ report?.clear();state=fresh();reviewOnly=false;window.JP2EMDesafios?.reset?.();save();show();window.scrollTo({top:0,behavior:'smooth'});
 });
 show();

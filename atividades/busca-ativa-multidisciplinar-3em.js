@@ -507,6 +507,9 @@ const localStore=window.JPTrilha?.progressStorage()||sessionStorage;
 const fresh=()=>({index:0,started:false,seen:{},answers:{},attempts:{},hints:{},drafts:{},confirmed:{},startedAt:new Date().toISOString()});
 let state=fresh(),lessonMode=false,reviewMode=false,reviewReturn=null,ready=false;
 try{const old=JSON.parse(localStore.getItem(store)||'null');if(old&&Number.isInteger(old.index)&&old.index>=0&&old.index<=30&&old.answers&&old.seen&&old.drafts){state={...fresh(),...old};state.index=Math.min(30,Math.max(0,state.index))}}catch(error){}
+const report=window.JPBuscaRelatorio?.create('busca-ativa-multidisciplinar-3em',()=>state.report,()=>localStore.setItem(store,JSON.stringify(state)),(msg,retry)=>{$('md-report-status').textContent=msg;$('md-report-sync').hidden=!retry;});
+$('md-report-sync').addEventListener('click',()=>report?.sync());
+if(state.started&&state.report)report?.resume();
 const save=()=>{try{localStore.setItem(store,JSON.stringify(state));$('md-start-status').textContent='Progresso salvo neste navegador.'}catch(e){$('md-start-status').textContent='Salvamento indisponível. Baixe o relatório parcial para não perder o trabalho.'}};
 function hideAll(){for(const id of ['md-start','md-progress-area','md-lesson','md-question-card','md-finish'])$(id).hidden=true}
 const scroll=id=>$(id).scrollIntoView({block:'start',behavior:'smooth'});
@@ -521,7 +524,7 @@ function updateHud(){
  blocks.forEach((b,i)=>{const span=document.createElement('span');span.textContent=b.icon;span.title=b.name+' · '+b.from+'–'+b.to;span.setAttribute('aria-label',b.name);const total=tasks.filter(t=>t.b===i).length;const count=tasks.filter(t=>t.b===i&&state.answers[t.n]?.complete).length;span.className=count===total?'passed':state.index<30&&current().b===i?'current':'';container.append(span)});
 }
 function start(){
- state.started=true;save();show();
+ if(!state.started)state.report=report?.start();state.started=true;save();show();
 }
 function show(){
  hideAll();
@@ -676,11 +679,12 @@ $('md-question-next').addEventListener('click',()=>{
 $('md-start-btn').addEventListener('click',start);
 function csvEscape(value){
  let s=String(value??'').replace(/[\r\n]+/g,' ').trim();
- if(/^[=+@\t]/.test(s)||/^-(?!\d)/.test(s))s="'"+s;
+ if(/^[=+@\t-]/.test(s))s="'"+s;
  return '"'+s.replace(/"/g,'""')+'"';
 }
 function exportReport(final=false){
  const rows=[['Tipo','Questão','Componente curricular','Modalidade','Enunciado','Resposta ou texto do estudante','Gabarito objetivo','Tentativas objetivas','Dicas','Fonte consultada','Referência complementar','Situação']];
+ if(report)rows.push(...report.rows(answeredCount(),state.index>=30));
  for(const t of tasks){
   const a=state.answers[t.n];
   if(!a||!a.complete)continue;
@@ -711,11 +715,11 @@ function finish(){
  const objekt=tasks.filter(t=>t.type==='mc');
  const first=objekt.filter(t=>state.answers[t.n]?.tries===1).length;
  $('md-finish-text').textContent='Você registrou '+answeredCount()+' das 30 atividades, incluindo respostas de múltipla escolha, discursivas e investigativas. Das '+objekt.length+' questões objetivas, '+first+' foram acertadas na primeira tentativa. As produções escritas foram registradas. Elas podem receber devolutiva depois.';
- if(window.JPTrilha?.hasSession())window.JPTrilha.submit({score:0,solved:answeredCount(),total:30});
+ if(answeredCount()===30){report?.end({solved:30,total:30,objective:objekt.length,first,written:30-objekt.length,hints:Object.values(state.hints).reduce((n,x)=>n+(Number(x)||0),0)});report?.sync();}
  scroll('md-finish');
 }
 $('md-restart').addEventListener('click',()=>{
  if(!confirm('Recomeçar todas as 30 atividades? Baixe seu relatório antes de apagar as respostas deste navegador.'))return;
- state=fresh();reviewMode=false;lessonMode=false;save();show();window.scrollTo({top:0,behavior:'smooth'});
+ report?.clear();state=fresh();reviewMode=false;lessonMode=false;save();show();window.scrollTo({top:0,behavior:'smooth'});
 });
 show();
