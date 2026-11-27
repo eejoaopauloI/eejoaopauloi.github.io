@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Protótipo de trabalho da Coordenação Pedagógica para organizar intervenções e aulas de continuidade.">
+<meta name="robots" content="noindex">
+<title>Coordenação 2027 · Portal JP</title>
+<style>
+:root{color-scheme:light;--ink:#132d43;--muted:#426175;--navy:#073862;--teal:#086963;--line:#c7d9e4;--paper:#fff;--soft:#eef5fa}*{box-sizing:border-box}body{margin:0;background:#f7fafc;color:var(--ink);font:16px/1.55 system-ui,sans-serif}a{color:#075b8e;text-underline-offset:.2em}a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #b75008;outline-offset:3px}header{background:var(--navy);color:white;padding:2.75rem 0}header a{color:white}.wrap{width:min(68rem,100% - 2rem);margin-inline:auto}.eyebrow{letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;font-weight:800}h1,h2,h3{line-height:1.14}h1{font-size:clamp(2rem,6vw,3.6rem);margin:.45rem 0}header p{max-width:52ch;margin:.5rem 0 0}.notice{background:#fff1d5;border-left:.4rem solid #ad580a;padding:.75rem 1rem;margin:1.4rem 0}.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr))}.card{background:white;border:1px solid var(--line);border-radius:.9rem;padding:1.15rem;break-inside:avoid}.card h3{margin:.5rem 0}.tag{display:inline-block;background:#def5f0;color:#064946;padding:.22rem .55rem;border-radius:6px;font-weight:750;font-size:.82rem}.filters{display:flex;flex-wrap:wrap;gap:.8rem;align-items:end;padding:1rem;background:var(--soft);border-radius:.9rem}.filters label{display:block;font-weight:750;margin-bottom:.2rem}.filters select,button{font:inherit;color:inherit;min-height:44px;background:white;border:1px solid #678396;border-radius:.5rem;padding:.42rem .65rem}button{cursor:pointer}.action{display:inline-block;margin:.65rem 0 .25rem;font-weight:700}summary{cursor:pointer;font-weight:750;padding:.45rem 0}section{margin:2rem 0}.steps li{padding:.2rem 0}dt{font-weight:800}dd{margin:0 0 .7rem}.muted{color:var(--muted)}footer{border-top:1px solid var(--line);padding:1.4rem 0;margin-top:2rem}.visually-hidden:not(:focus){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}[hidden]{display:none!important}
+@media print{body{background:white;color:black;font-size:10pt}header{background:white;color:black;padding:.4rem 0}header a,.filters,.screen-only,footer{display:none}.wrap{width:100%}.grid{display:block}.card{margin:0 0 .5rem;border-radius:0}section{margin:1rem 0}.notice{margin:.4rem 0}}
+</style>
+</head>
+<body>
+<a class="visually-hidden" href="#principal">Ir para o conteúdo</a>
+<header><div class="wrap"><a href="index.html">Portal JP</a><p class="eyebrow">EE João Paulo I · Paranaíta–MT</p><h1>Coordenação Pedagógica 2027</h1><p>Organize as intervenções por turma e habilidade e prepare aulas de continuidade alinhadas ao planejamento docente.</p></div></header>
+<main id="principal" class="wrap">
+<p class="notice"><strong>Protótipo:</strong> os roteiros abaixo são exemplos de planejamento, não registros de aulas realizadas. Esta página não coleta nem grava dados de estudantes.</p>
+<section aria-labelledby="rotina"><h2 id="rotina">Do diagnóstico à decisão</h2><ol class="steps"><li><strong>Diagnosticar:</strong> identificar a habilidade e anotar o que as respostas mostram.</li><li><strong>Planejar:</strong> definir com o docente a atividade, o momento de aplicação e a evidência esperada.</li><li><strong>Intervir:</strong> aplicar a trilha e retomar em aula as dificuldades identificadas.</li><li><strong>Reavaliar:</strong> usar uma tarefa equivalente e decidir se a turma precisa de nova intervenção.</li></ol></section>
+<section aria-labelledby="catalogo"><h2 id="catalogo">Roteiros de trabalho</h2>
+<div class="filters"><div><label for="purpose">Finalidade</label><select id="purpose"><option value="todos">Todas</option><option value="recomposicao">Recomposição</option><option value="continuidade">Continuidade da aula</option></select></div>
+<div><label for="subject">Componente</label><select id="subject"><option value="todos">Todos</option><option value="matematica">Matemática</option><option value="geografia">Geografia</option><option value="literatura">Literatura</option></select></div><button type="button" id="print">Imprimir roteiros visíveis</button></div>
+<p class="muted screen-only" id="count" role="status" aria-live="polite">3 roteiros exibidos.</p>
+<div class="grid" id="cards">
+<article class="card" data-purpose="recomposicao" data-subject="matematica"><span class="tag">Recomposição · Matemática</span><h3>Proporcionalidade direta</h3><p>Para uma turma dos Anos Finais com dificuldade em distinguir relações aditivas de multiplicativas.</p>
+<details><summary>Ver roteiro</summary><dl><dt>Antes</dt><dd>Três pacotes iguais contêm juntos 12 coletes. Quantos coletes há em cinco pacotes iguais? Justifique.</dd><dt>Intervenção</dt><dd>Retome a razão constante com uma tabela. Use o nível de proporcionalidade da trilha para praticar.</dd><dt>Depois</dt><dd>Três caixas iguais contêm juntas 15 marcadores. Quantos há em cinco caixas iguais? Justifique.</dd><dt>Evidência</dt><dd>Compare, entre quem realizou as duas tarefas, quantos identificaram e justificaram a quantidade constante por pacote ou caixa. Registre ausências à parte.</dd></dl></details><a class="action" href="atividades/matematica-proporcoes-escala.html">Abrir Missão Proporção e Escala</a></article>
+<article class="card" data-purpose="continuidade" data-subject="geografia"><span class="tag">Continuidade · Geografia</span><h3>Escala e distância real</h3><p>Use somente se leitura de escalas já constar no planejamento da turma e houver ficha validada.</p>
+<details><summary>Ver roteiro</summary><dl><dt>Antes</dt><dd>O docente valida turma, objetivo, trecho da trilha e tempo previsto. A coordenação define quem acompanhará a atividade conforme a organização da escola.</dd><dt>Durante</dt><dd>Retome como ler escala gráfica e peça a resolução comentada de um problema. Sem internet, use o mesmo mapa e a questão em papel.</dd><dt>Devolutiva</dt><dd>Informe ao regente o que foi realizado e a principal dificuldade observada. O regente decide a retomada.</dd></dl></details><a class="action" href="atividades/geografia-escalas.html">Abrir Missão Cartografia</a></article>
+<article class="card" data-purpose="continuidade" data-subject="literatura"><span class="tag">Continuidade · Literatura</span><h3>Leitura de poesia contemporânea</h3><p>Exemplo para a 3ª série do Ensino Médio quando o tema estiver previsto no planejamento.</p>
+<details><summary>Ver roteiro</summary><dl><dt>Antes</dt><dd>Defina com o docente o poema, a pergunta de leitura e a evidência de aprendizagem esperada.</dd><dt>Durante</dt><dd>Solicite que os estudantes sustentem uma interpretação com um trecho do poema. Disponibilize alternativa impressa.</dd><dt>Devolutiva</dt><dd>Devolva ao regente uma síntese das respostas e combine a continuidade da sequência.</dd></dl></details><a class="action" href="atividades/versos-em-movimento.html">Abrir Versos em Movimento</a></article>
+</div><p id="empty" hidden>Não há roteiros de exemplo para esta combinação. Altere um dos filtros.</p></section>
+<section aria-labelledby="registro"><h2 id="registro">O que registrar no acompanhamento</h2><div class="grid">
+<div class="card"><h3>Por intervenção</h3><p>Bimestre, turma, componente, habilidade, evidência inicial, ação aplicada, evidência posterior e próxima decisão. Compare a mesma habilidade e informe quantos estudantes participaram dos dois momentos.</p></div>
+<div class="card"><h3>Por aula de continuidade</h3><p>Turma, data, objetivo previsto, material validado, quem acompanhou, atividade realizada e devolutiva ao regente. Não substitui o diário, a organização institucional da aula nem a mediação docente.</p></div>
+<div class="card"><h3>Para o relato de experiência</h3><p>Reúna exemplos de decisões pedagógicas em diferentes componentes, dados agregados e evidências anonimizadas. Acessos e conclusões mostram uso, não comprovam aprendizagem por si sós.</p></div>
+</div></section>
+</main>
+<footer><div class="wrap"><a href="recomposicao.html">Recomposição por habilidades</a> · <a href="busca-ativa.html">Busca Ativa Escolar</a></div></footer>
+<script>
+'use strict';
+const purpose = document.querySelector('#purpose');
+const subject = document.querySelector('#subject');
+const cards = Array.from(document.querySelectorAll('[data-purpose]'));
+const details = Array.from(document.querySelectorAll('#cards details'));
+const match = (item, p, s) => (p === 'todos' || item.purpose === p) && (s === 'todos' || item.subject === s);
+function refresh(){
+  let n = 0;
+  for (const card of cards) { card.hidden = !match(card.dataset, purpose.value, subject.value); if (!card.hidden) n++; }
+  document.querySelector('#empty').hidden = n !== 0;
+  document.querySelector('#count').textContent = n === 1 ? '1 roteiro exibido.' : n + ' roteiros exibidos.';
+}
+let beforePrint = null;
+window.addEventListener('beforeprint', () => { beforePrint ??= details.map(x => x.open); details.forEach(x=>{x.open=true;}); });
+window.addEventListener('afterprint', () => { if(beforePrint) details.forEach((x,i)=>{x.open=beforePrint[i];}); beforePrint = null; });
+purpose.addEventListener('change', refresh);
+subject.addEventListener('change', refresh);
+document.querySelector('#print').addEventListener('click', () => window.print());
+refresh();
+</script>
+</body></html>
