@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Protótipo de trabalho da Coordenação Pedagógica para organizar intervenções e aulas de continuidade.">
+<title>Coordenação 2027 · Portal JP</title>
+<style>
+:root{color-scheme:light;--ink:#132d43;--muted:#426175;--navy:#073862;--teal:#086963;--line:#c7d9e4;--paper:#fff;--soft:#eef5fa}*{box-sizing:border-box}body{margin:0;background:#f7fafc;color:var(--ink);font:16px/1.55 system-ui,sans-serif}a{color:#075b8e;text-underline-offset:.2em}a:focus-visible,button:focus-visible,select:focus-visible,summary:focus-visible{outline:3px solid #b75008;outline-offset:3px}header{background:var(--navy);color:white;padding:2.75rem 0}header a{color:white}.wrap{width:min(68rem,100% - 2rem);margin-inline:auto}.eyebrow{letter-spacing:.12em;text-transform:uppercase;font-size:.78rem;font-weight:800}h1,h2,h3{line-height:1.14}h1{font-size:clamp(2rem,6vw,3.6rem);margin:.45rem 0}header p{max-width:52ch;margin:.5rem 0 0}.notice{background:#fff1d5;border-left:.4rem solid #ad580a;padding:.75rem 1rem;margin:1.4rem 0}.grid{display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(min(100%,18rem),1fr))}.card{background:white;border:1px solid var(--line);border-radius:.9rem;padding:1.15rem;break-inside:avoid}.card h3{margin:.5rem 0}.tag{display:inline-block;background:#def5f0;color:#064946;padding:.22rem .55rem;border-radius:6px;font-weight:750;font-size:.82rem}.filters{display:flex;flex-wrap:wrap;gap:.8rem;align-items:end;padding:1rem;background:var(--soft);border-radius:.9rem}.filters label{display:block;font-weight:750;margin-bottom:.2rem}.filters select,button{font:inherit;color:inherit;min-height:44px;background:white;border:1px solid #678396;border-radius:.5rem;padding:.42rem .65rem}button{cursor:pointer}.action{display:inline-block;margin:.65rem 0 .25rem;font-weight:700}summary{cursor:pointer;font-weight:750;padding:.45rem 0}section{margin:2rem 0}.steps li{padding:.2rem 0}dt{font-weight:800}dd{margin:0 0 .7rem}.muted{color:var(--muted)}footer{border-top:1px solid var(--line);padding:1.4rem 0;margin-top:2rem}.visually-hidden:not(:focus){position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}[hidden]{display:none!important}
+@media print{body{background:white;color:black;font-size:10pt}header{background:white;color:black;padding:.4rem 0}header a,.filters,.screen-only,footer{display:none}.wrap{width:100%}.grid{display:block}.card{margin:0 0 .5rem;border-radius:0}section{margin:1rem 0}.notice{margin:.4rem 0}}
+
+.tools{scroll-margin:1rem}.tool-form{margin-top:1rem}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:.9rem}.fields label{display:block;font-weight:700}.fields input,.fields select,.fields textarea{display:block;width:100%;min-height:44px;font:inherit;color:var(--ink);border:1px solid #718b9c;border-radius:.5rem;padding:.5rem .65rem;background:#fff;margin-top:.2rem}.fields textarea{min-height:5.4rem;resize:vertical}.fields input:focus-visible,.fields textarea:focus-visible{outline:3px solid #b75008;outline-offset:3px}.wide{grid-column:1/-1}.toolbar{display:flex;gap:.55rem;flex-wrap:wrap;margin-top:.9rem}.primary{background:var(--navy);border-color:var(--navy);color:white;font-weight:750}.record{margin:.65rem 0;overflow-wrap:anywhere}.record dl,.print-record dl{display:grid;grid-template-columns:minmax(8rem,1fr) 2fr;gap:.3rem .9rem}.record dd,.print-record dd{white-space:pre-wrap;margin:0}.record dt,.print-record dt{overflow-wrap:anywhere}.metrics{display:flex;gap:.65rem;flex-wrap:wrap;margin:.8rem 0}.metrics span{background:#e3f4f2;color:#064946;border-radius:.55rem;padding:.48rem .65rem}.error{color:#981d13;font-weight:700}#print-record{display:none}.screen-links{display:flex;gap:1rem;flex-wrap:wrap;margin:.8rem 0}
+@media(max-width:430px){.record dl,.print-record dl{grid-template-columns:1fr}.record dd,.print-record dd{margin-bottom:.45rem}}
+@media print{#instrumentos,#historico,.screen-links{display:none!important}body.single-print header,body.single-print main,body.single-print footer,body.single-print .visually-hidden{display:none!important}body.single-print #print-record{display:block;overflow-wrap:anywhere}}
+</style>
+</head>
+<body>
+<a class="visually-hidden" href="#principal">Ir para o conteúdo</a>
+<header><div class="wrap"><a href="index.html">Portal JP</a><p class="eyebrow">EE João Paulo I · Paranaíta–MT</p><h1>Coordenação Pedagógica 2027</h1><p>Organize as intervenções por turma e habilidade e prepare aulas de continuidade alinhadas ao planejamento docente.</p></div></header>
+<main id="principal" class="wrap">
+<p class="notice"><strong>Ferramenta de trabalho da coordenação.</strong> Cadastre apenas informações pedagógicas da turma, sem identificar estudantes. O salvamento é local e não é uma área autenticada.</p>
+<nav class="screen-links" aria-label="Atalhos da coordenação"><a href="#instrumentos">Preencher instrumento</a><a href="#historico">Consultar registros</a><a href="#catalogo">Ver roteiros de exemplo</a></nav>
+<section class="tools" id="instrumentos" aria-labelledby="instrumentos-titulo">
+<h2 id="instrumentos-titulo">Instrumentos da coordenação</h2>
+<p>Preencha um registro por turma e ação. Nos exemplos abaixo, nenhuma aula foi aplicada ou validada.</p>
+<noscript><p class="error">Ative o JavaScript para preencher, consultar e exportar os registros neste navegador.</p></noscript>
+<div class="filters"><div><label for="instrument">Instrumento</label><select id="instrument"><option value="intervencao">Registro de intervenção</option><option value="continuidade">Ficha de aula de continuidade</option></select></div></div>
+<form id="record-form" class="tool-form card" autocomplete="off"><h3 id="form-heading">Registro de intervenção</h3><p class="muted">Use dados da turma e evidências agregadas. Não escreva nomes, matrículas, notas individuais ou informações de saúde.</p><div id="fields" class="fields"></div><div class="toolbar"><button type="submit" class="primary" id="save-record">Salvar neste navegador</button><button type="button" id="reset-record">Limpar formulário</button></div><p id="form-status" role="status" aria-live="polite"></p></form>
+</section>
+<section class="tools" id="historico" aria-labelledby="historico-titulo"><h2 id="historico-titulo">Acompanhamento local</h2>
+<p>Os registros ficam somente neste perfil do navegador. Não são sincronizados com outros dispositivos, com o JP Analytics ou com o diário oficial. Exporte uma cópia e guarde-a em local institucional autorizado. Evite usar um perfil de navegador compartilhado.</p>
+<div class="filters"><div><label for="filter-kind">Instrumento</label><select id="filter-kind"><option value="">Todos</option><option value="intervencao">Intervenção</option><option value="continuidade">Continuidade</option></select></div><div><label for="filter-period">Bimestre</label><select id="filter-period"><option value="">Todos</option><option value="1">1º</option><option value="2">2º</option><option value="3">3º</option><option value="4">4º</option></select></div><div><label for="filter-class">Turma</label><select id="filter-class"><option value="">Todas</option></select></div><div><label for="filter-subject">Componente</label><select id="filter-subject"><option value="">Todos</option></select></div></div>
+<div class="metrics" id="metrics" aria-live="polite"></div><div class="toolbar"><button type="button" id="export-csv">Baixar CSV dos registros exibidos</button></div><p id="list-status" role="status"></p><div id="records"></div></section>
+<section aria-labelledby="rotina"><h2 id="rotina">Do diagnóstico à decisão</h2><ol class="steps"><li><strong>Diagnosticar:</strong> identificar a habilidade e anotar o que as respostas mostram.</li><li><strong>Planejar:</strong> definir com o docente a atividade, o momento de aplicação e a evidência esperada.</li><li><strong>Intervir:</strong> aplicar a trilha e retomar em aula as dificuldades identificadas.</li><li><strong>Reavaliar:</strong> usar uma tarefa equivalente e decidir se a turma precisa de nova intervenção.</li></ol></section>
+<section aria-labelledby="catalogo"><h2 id="catalogo">Roteiros de trabalho</h2>
+<div class="filters"><div><label for="purpose">Finalidade</label><select id="purpose"><option value="todos">Todas</option><option value="recomposicao">Recomposição</option><option value="continuidade">Continuidade da aula</option></select></div>
+<div><label for="subject">Componente</label><select id="subject"><option value="todos">Todos</option><option value="matematica">Matemática</option><option value="geografia">Geografia</option><option value="literatura">Literatura</option></select></div><button type="button" id="print">Imprimir roteiros visíveis</button></div>
+<p class="muted screen-only" id="count" role="status" aria-live="polite">3 roteiros exibidos.</p>
+<div class="grid" id="cards">
+<article class="card" data-purpose="recomposicao" data-subject="matematica"><span class="tag">Recomposição · Matemática</span><h3>Proporcionalidade direta</h3><p>Para uma turma dos Anos Finais com dificuldade em distinguir relações aditivas de multiplicativas.</p>
+<details><summary>Ver roteiro</summary><dl><dt>Antes</dt><dd>Três pacotes iguais contêm juntos 12 coletes. Quantos coletes há em cinco pacotes iguais? Justifique.</dd><dt>Intervenção</dt><dd>Retome a razão constante com uma tabela. Use o nível de proporcionalidade da trilha para praticar.</dd><dt>Depois</dt><dd>Três caixas iguais contêm juntas 15 marcadores. Quantos há em cinco caixas iguais? Justifique.</dd><dt>Evidência</dt><dd>Compare, entre quem realizou as duas tarefas, quantos identificaram e justificaram a quantidade constante por pacote ou caixa. Registre ausências à parte.</dd></dl></details><a class="action" href="atividades/matematica-proporcoes-escala.html">Abrir Missão Proporção e Escala</a></article>
+<article class="card" data-purpose="continuidade" data-subject="geografia"><span class="tag">Continuidade · Geografia</span><h3>Escala e distância real</h3><p>Use somente se leitura de escalas já constar no planejamento da turma e houver ficha validada.</p>
+<details><summary>Ver roteiro</summary><dl><dt>Antes</dt><dd>O docente valida turma, objetivo, trecho da trilha e tempo previsto. A coordenação define quem acompanhará a atividade conforme a organização da escola.</dd><dt>Durante</dt><dd>Retome como ler escala gráfica e peça a resolução comentada de um problema. Sem internet, use o mesmo mapa e a questão em papel.</dd><dt>Devolutiva</dt><dd>Informe ao regente o que foi realizado e a principal dificuldade observada. O regente decide a retomada.</dd></dl></details><a class="action" href="atividades/geografia-escalas.html">Abrir Missão Cartografia</a></article>
+<article class="card" data-purpose="continuidade" data-subject="literatura"><span class="tag">Continuidade · Literatura</span><h3>Leitura de poesia contemporânea</h3><p>Exemplo para a 3ª série do Ensino Médio quando o tema estiver previsto no planejamento.</p>
+<details><summary>Ver roteiro</summary><dl><dt>Antes</dt><dd>Defina com o docente o poema, a pergunta de leitura e a evidência de aprendizagem esperada.</dd><dt>Durante</dt><dd>Solicite que os estudantes sustentem uma interpretação com um trecho do poema. Disponibilize alternativa impressa.</dd><dt>Devolutiva</dt><dd>Devolva ao regente uma síntese das respostas e combine a continuidade da sequência.</dd></dl></details><a class="action" href="atividades/versos-em-movimento.html">Abrir Versos em Movimento</a></article>
+</div><p id="empty" hidden>Não há roteiros de exemplo para esta combinação. Altere um dos filtros.</p></section>
+<section aria-labelledby="registro"><h2 id="registro">O que registrar no acompanhamento</h2><div class="grid">
+<div class="card"><h3>Por intervenção</h3><p>Bimestre, turma, componente, habilidade, evidência inicial, ação aplicada, evidência posterior e próxima decisão. Compare a mesma habilidade e informe quantos estudantes participaram dos dois momentos.</p></div>
+<div class="card"><h3>Por aula de continuidade</h3><p>Turma, data, objetivo previsto, material validado, quem acompanhou, atividade realizada e devolutiva ao regente. Não substitui o diário, a organização institucional da aula nem a mediação docente.</p></div>
+<div class="card"><h3>Para o relato de experiência</h3><p>Reúna exemplos de decisões pedagógicas em diferentes componentes, dados agregados e evidências anonimizadas. Acessos e conclusões mostram uso, não comprovam aprendizagem por si sós.</p></div>
+</div></section>
+</main>
+<footer><div class="wrap"><a href="recomposicao.html">Recomposição por habilidades</a> · <a href="busca-ativa.html">Busca Ativa Escolar</a></div></footer>
+<script>
+'use strict';
+const purpose = document.querySelector('#purpose');
+const subject = document.querySelector('#subject');
+const cards = Array.from(document.querySelectorAll('[data-purpose]'));
+const details = Array.from(document.querySelectorAll('#cards details'));
+const match = (item, p, s) => (p === 'todos' || item.purpose === p) && (s === 'todos' || item.subject === s);
+function refresh(){
+  let n = 0;
+  for (const card of cards) { card.hidden = !match(card.dataset, purpose.value, subject.value); if (!card.hidden) n++; }
+  document.querySelector('#empty').hidden = n !== 0;
+  document.querySelector('#count').textContent = n === 1 ? '1 roteiro exibido.' : n + ' roteiros exibidos.';
+}
+let beforePrint = null;
+window.addEventListener('beforeprint', () => { beforePrint ??= details.map(x => x.open); details.forEach(x=>{x.open=true;}); });
+window.addEventListener('afterprint', () => { if(beforePrint) details.forEach((x,i)=>{x.open=beforePrint[i];}); beforePrint = null; });
+purpose.addEventListener('change', refresh);
+subject.addEventListener('change', refresh);
+document.querySelector('#print').addEventListener('click', () => window.print());
+refresh();
+</script>
+<section class="wrap print-record" id="print-record" aria-label="Ficha para impressão"></section><script>
+(() => {
+'use strict';
+const K='portal-jp-coordenacao-2027-v1', $=s=>document.querySelector(s);
+const kinds={intervencao:'Registro de intervenção',continuidade:'Ficha de aula de continuidade'};
+const subjects=['Matemática','Língua Portuguesa','Literatura','Língua Inglesa','Arte','Educação Física','Ciências','Geografia','História','Biologia','Física','Química','Filosofia','Sociologia','Outro componente'];
+const stage={
+ intervencao:['Planejada','Em andamento','Concluída'],
+ continuidade:['Rascunho','Validada pelo regente','Aplicada']
+};
+const common=[
+ ['date','Data do registro','date',true],['period','Bimestre','select',true,['1','2','3','4']],
+ ['group','Turma (ex.: 9º A EF ou 3ª A EM)','text',true],['subject','Componente curricular','select',true,subjects],
+ ['skill','Habilidade ou objetivo de aprendizagem','text',true],['status','Situação','status',true]
+];
+const sections={
+ intervencao:[
+ ['baseline','Diagnóstico: o que as respostas mostraram?','textarea',true],
+ ['action','Intervenção prevista ou realizada','textarea',true],
+ ['outcome','Reavaliação: evidência observada','textarea',false],
+ ['paired','Participantes avaliados nos dois momentos','number',false],
+ ['before','Desses, quantos atingiram o critério antes?','number',false],
+ ['after','Desses, quantos atingiram o critério depois?','number',false],
+ ['next','Próxima decisão pedagógica','textarea',false]
+ ],
+ continuidade:[
+ ['alignment','Referência no planejamento do regente (sequência, unidade ou aula)','text',true],
+ ['material','Atividade escolhida (título ou referência no portal)','text',true],
+ ['minutes','Duração em minutos','number',true],
+ ['steps','Instruções para quem vai acompanhar a turma','textarea',true],
+ ['offline','Alternativa impressa ou sem internet','textarea',true],
+ ['approvedDate','Data de validação pelo regente','date',false],
+ ['lessonDate','Data da aplicação','date',false],
+ ['support','Função de quem acompanhou a turma (sem nome)','text',false],
+ ['feedback','Devolutiva ao regente: o que foi realizado e o que precisa de retomada?','textarea',false]
+ ]
+};
+const instrument=$('#instrument'),form=$('#record-form'),list=$('#records'),mainStatus=$('#form-status'),listStatus=$('#list-status');
+let rows=[],editing=null,available=true;
+try{
+ const raw=localStorage.getItem(K);
+ if(raw){const parsed=JSON.parse(raw);if(!Array.isArray(parsed))throw Error();rows=parsed.filter(r=>r&&typeof r.id==='string'&&Object.hasOwn(kinds,r.kind));}
+} catch { available=false; }
+const el=(tag,msg)=>{const x=document.createElement(tag);if(msg!=null)x.textContent=msg;return x;};
+const formSpec=kind=>[...common,...sections[kind]];
+const fieldsOf=(data)=>formSpec(data.kind).filter(([key])=>data[key]!==''&&data[key]!=null);
+function cleanStatus(node,msg,error=false){node.textContent=msg;node.classList.toggle('error',error);}
+function choices(node,values,placeholder){
+ node.append(new Option(placeholder,''));
+ values.forEach(v=>node.append(new Option(/^\d$/.test(v)?v+'º bimestre':v,v)));
+}
+function formView(data={}){
+ const kind=instrument.value;
+ $('#form-heading').textContent=(editing?'Editar · ':'')+kinds[kind];
+ const target=$('#fields');target.replaceChildren();
+ for(const [key,label,type,required,opts] of formSpec(kind)){
+   const holder=el('label',label+(required?' *':''));if(type==='textarea')holder.className='wide';
+   const control=el(type==='select'||type==='status'?'select':type==='textarea'?'textarea':'input');
+   control.name=key;control.id='jp-'+key;control.required=required;holder.htmlFor=control.id;
+   if(control.tagName==='SELECT')choices(control,opts||stage[kind],'Selecione');
+   if(control.tagName==='INPUT'){control.type=type;if(type==='text')control.maxLength=150;if(type==='number'){control.min=key==='minutes'?1:0;control.max=key==='minutes'?360:999;control.step=1;}}
+   if(type==='textarea')control.maxLength=1400;
+   control.value=data[key]??(key==='status'?stage[kind][0]:'');holder.append(control);target.append(holder);
+ }
+ requestFields();
+ $('#save-record').disabled=!available;
+ if(!available)cleanStatus(mainStatus,'Os registros não estão acessíveis neste navegador. Não foi possível habilitar o salvamento.',true);
+}
+function requestFields(){
+ const kind=instrument.value,v=form.elements.status?.value;
+ if(kind==='intervencao'){for(const k of ['outcome','next'])form.elements[k].required=v==='Concluída';}
+ else{form.elements.approvedDate.required=v!=='Rascunho';for(const k of ['lessonDate','support','feedback'])form.elements[k].required=v==='Aplicada';}
+ for(const label of $('#fields').children){const c=label.lastElementChild;label.firstChild.nodeValue=label.firstChild.nodeValue.replace(/ \*$/,'')+(c.required?' *':'');}
+}
+function save(next){
+ if(!available)return false;
+ try{localStorage.setItem(K,JSON.stringify(next));rows=next;return true;}catch{return false;}
+}
+function check(d){
+ if(formSpec(d.kind).some(([k])=>form.elements[k].required&&!d[k]))return 'Preencha os campos obrigatórios; espaços em branco não contam.';
+ if(d.kind==='intervencao'){
+  const keys=['paired','before','after'],set=keys.filter(k=>d[k]!=='').length;
+  if(set&&set!==3)return 'Preencha os três campos de contagem ou deixe os três em branco.';
+  if(set&&(Number(d.paired)<1||Number(d.before)>Number(d.paired)||Number(d.after)>Number(d.paired)))return 'O número que atingiu o critério não pode ser maior que o dos avaliados nos dois momentos.';
+ }else if(d.status==='Aplicada'&&d.approvedDate>d.lessonDate)return 'A validação deve ser anterior ou na mesma data da aplicação.';
+ return '';
+}
+function filtered(){
+ const p=$('#filter-period').value,k=$('#filter-kind').value,g=$('#filter-class').value,s=$('#filter-subject').value;
+ return rows.filter(r=>(!p||r.period===p)&&(!k||r.kind===k)&&(!g||r.group===g)&&(!s||r.subject===s));
+}
+function updateFilter(id,key,placeholder){
+ const node=$(id),old=node.value,v=[...new Set(rows.map(r=>r[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b,'pt-BR'));node.replaceChildren();choices(node,v,placeholder);if(v.includes(old))node.value=old;
+}
+function defList(d){
+ const dl=el('dl');for(const [k,l] of fieldsOf(d)){dl.append(el('dt',l),el('dd',k==='period'?d[k]+'º bimestre':/^\d{4}-\d{2}-\d{2}$/.test(d[k])?d[k].split('-').reverse().join('/'):d[k]));}return dl;
+}
+function action(label,fn){const b=el('button',label);b.type='button';b.addEventListener('click',fn);return b;}
+let printingOne=false;
+function printOne(d){
+ const p=$('#print-record');p.replaceChildren(el('p','EE João Paulo I · Coordenação Pedagógica 2027'),el('h1',kinds[d.kind]),defList(d));
+ document.body.classList.add('single-print');printingOne=true;window.print();
+}
+window.addEventListener('afterprint',()=>{if(printingOne){document.body.classList.remove('single-print');$('#print-record').replaceChildren();printingOne=false;}});
+function render(){
+ updateFilter('#filter-class','group','Todas');updateFilter('#filter-subject','subject','Todos');
+ const shown=filtered();const int=shown.filter(x=>x.kind==='intervencao'), cont=shown.filter(x=>x.kind==='continuidade');
+ $('#metrics').replaceChildren(el('span','Intervenções: '+int.length+' · concluídas: '+int.filter(x=>x.status==='Concluída').length),el('span','Fichas de continuidade: '+cont.length+' · aplicadas: '+cont.filter(x=>x.status==='Aplicada').length));
+ $('#export-csv').disabled=!shown.length;list.replaceChildren();
+ if(!shown.length)list.append(el('p',rows.length?'Nenhum registro corresponde aos filtros.':'Ainda não há registros neste navegador.'));
+ for(const r of shown){
+   const item=el('details');item.className='card record';
+   item.append(el('summary',[r.group,r.subject,r.skill,r.status].join(' · ')),defList(r));
+   const bar=el('div');bar.className='toolbar';
+   bar.append(action('Editar',()=>{instrument.value=r.kind;editing=r.id;formView(r);cleanStatus(mainStatus,'Editando um registro salvo.');$('#jp-date').focus();}),
+     action('Imprimir ficha',()=>printOne(r)),
+     action('Excluir',()=>{if(!window.confirm('Excluir este registro deste navegador?'))return;const ok=save(rows.filter(x=>x.id!==r.id));if(ok){if(editing===r.id){editing=null;formView();}render();}cleanStatus(listStatus,ok?'Registro excluído.':'Não foi possível excluir o registro.',!ok);}));
+   item.append(bar);list.append(item);
+ }
+}
+const csvEscape=value=>{
+ let v=String(value??'');if(/^\s*[=+\-@]/u.test(v)||/^[\t\r\n]/u.test(v))v="'"+v;
+ return '"'+v.replace(/"/g,'""')+'"';
+};
+$('#export-csv').addEventListener('click',()=>{
+ const shown=filtered();if(!shown.length)return;
+ const keys=[...common,...sections.intervencao,...sections.continuidade];
+ const out=[['Instrumento',...keys.map(x=>x[1])],...shown.map(r=>[kinds[r.kind],...keys.map(x=>r[x[0]])])].map(r=>r.map(csvEscape).join(';')).join('\r\n');
+ const url=URL.createObjectURL(new Blob(['\uFEFF',out],{type:'text/csv;charset=utf-8;'}));
+ const a=el('a');a.href=url;a.download='portal-jp-coordenacao-2027.csv';document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);
+});
+form.addEventListener('submit',e=>{
+ e.preventDefault();
+ const kind=instrument.value,data={kind};for(const [key] of formSpec(kind))data[key]=form.elements[key].value.trim();
+ const msg=check(data);if(msg){cleanStatus(mainStatus,msg,true);return;}
+ const id=editing||globalThis.crypto?.randomUUID?.()||Date.now()+'-'+Math.random().toString(36).slice(2);
+ const next=[{...data,id},...rows.filter(r=>r.id!==id)];
+ if(!save(next)){cleanStatus(mainStatus,'Não foi possível salvar. Verifique o armazenamento deste navegador; nada foi registrado.',true);return;}
+ editing=null;formView();render();cleanStatus(mainStatus,'Registro salvo neste navegador. Consulte-o no acompanhamento local.');
+});
+form.addEventListener('change',e=>{if(e.target.name==='status')requestFields();});
+instrument.addEventListener('change',()=>{editing=null;formView();if(available)cleanStatus(mainStatus,'Instrumento alterado.');});
+$('#reset-record').addEventListener('click',()=>{editing=null;formView();if(available)cleanStatus(mainStatus,'Formulário limpo.');});
+for(const id of ['#filter-kind','#filter-period','#filter-class','#filter-subject'])$(id).addEventListener('change',render);
+formView();render();
+})();
+</script>
+</body></html>
