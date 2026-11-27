@@ -220,6 +220,50 @@ $('ja-import-action').onclick=async()=>{
   status.textContent='Importação interrompida: '+error.message+'. Confira o arquivo parcial antes de tentar novamente.';
  }finally{btn.disabled=false;}
 };
+
+$('ja-pass-form').onsubmit=async e=>{
+ e.preventDefault();
+ const status=$('ja-pass-status'),passe=$('ja-passe').value.trim().toUpperCase();
+ status.textContent='Verificando passe individual...';
+ if(!/^JP-(?:[A-HJ-NP-Z2-9]{6}-){3}[A-HJ-NP-Z2-9]{6}$/.test(passe)){status.textContent='Formato do passe inválido. Confira o cartão entregue pela coordenação.';return;}
+ try{
+  const result=await fetch(base+'/functions/v1/jp-student-pass',{
+   method:'POST',headers:{apikey:pubKey,'Content-Type':'application/json'},body:JSON.stringify({action:'login',passe}),cache:'no-store'
+  });
+  const info=await result.json();
+  if(!result.ok||!info.access_token)throw Error('Passe não reconhecido. Solicite orientação à coordenação.');
+  token=info.access_token;putToken(token);$('ja-passe').value='';await identify();
+ }catch(err){status.textContent=err.message;message('Não foi possível autenticar com o passe.');}
+};
+$('ja-issue-passes').onclick=async()=>{
+ const btn=$('ja-issue-passes'),status=$('ja-issue-status');
+ if(!confirm('CONFIRMA A EMISSÃO DOS PASSES? As senhas anteriores serão substituídas. Será gerado um CSV CONFIDENCIAL com os códigos dos estudantes. É necessário guardar os passes antes de encerrar esta sessão.'))return;
+ btn.disabled=true;const all=[];let finished=false,offset=0;
+ try{
+  while(!finished&&offset<600){
+   status.textContent='Emitindo passes para '+(offset+1)+' a '+Math.min(offset+20,600)+'... Não feche esta página.';
+   const result=await callFunction('jp-student-pass',{action:'issue',offset});
+   if(!Array.isArray(result.results))throw Error('Resposta inesperada do serviço.');
+   all.push(...result.results);
+   finished=Boolean(result.finished);
+   if(result.next_offset<=offset)throw Error('Não foi possível avançar no cadastro.');
+   offset=result.next_offset;
+  }
+  const rows=[['usuario','estudante','turma','passe_individual','situacao']];
+  all.forEach(a=>rows.push([a.login||'',a.name||'',a.class_name||'',a.passe||'',a.status||'']));
+  downloadCSV('JP-PASSES-CONFIDENCIAIS-'+new Date().toISOString().slice(0,10)+'.csv',rows);
+  const ok=all.filter(x=>x.status==='issued').length;
+  const problem=all.length-ok;
+  status.textContent='Concluído: '+ok+' passes emitidos; '+problem+' com pendências. CSV baixado: guarde em pasta privada e distribua individualmente. Em caso de pendências, NÃO reemita todos os passes sem conferir o arquivo.';
+ }catch(error){
+  if(all.length){
+   const rows=[['usuario','estudante','turma','passe_individual','situacao']];
+   all.forEach(a=>rows.push([a.login||'',a.name||'',a.class_name||'',a.passe||'',a.status||'']));
+   downloadCSV('JP-PASSES-PARCIAIS-RESTRITOS.csv',rows);
+  }
+  status.textContent='Emissão interrompida: '+error.message+'. Guarde o CSV parcial antes de prosseguir.';
+ }finally{btn.disabled=false;}
+};
 $('ja-refresh').onclick=async()=>{try{await refresh()}catch(e){message('Atualização indisponível: '+e.message)}};
 $('ja-admin-exit').onclick=logout;$('ja-student-exit').onclick=logout;
 $('ja-login-form').onsubmit=async e=>{
